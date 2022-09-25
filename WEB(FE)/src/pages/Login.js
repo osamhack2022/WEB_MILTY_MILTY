@@ -1,6 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
-import 'antd/dist/antd.css';
 
 const Login = () => {
   const onFinish = (values) => {
