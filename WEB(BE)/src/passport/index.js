@@ -2,7 +2,7 @@
 const passport = require('passport');
 
 const local = require('./localStrategy');
-const user = require('../models/index').models.user;
+const user = require('../models/index').models.user;  // DB
 
 module.exports = () => {
   // 7. 로그인시 실행되며, req.session에 데이터를 저장 즉, 사용자 정보를 세션에 아이디로 저장함.
