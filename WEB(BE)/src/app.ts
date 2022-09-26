@@ -3,11 +3,11 @@ import { createServer } from "http";
 const session = require('express-session')
 const passport = require('passport');
 
-const passportConfig = require('./passport');
+const passportConfig = require('./passport'); // passport의 설정 적용
 
 const app = express();
 
-app.use(session({
+app.use(session({ // 세션 설정 적용
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false,
