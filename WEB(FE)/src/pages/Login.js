@@ -1,5 +1,6 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const onFinish = (values) => {
@@ -105,7 +106,7 @@ const Login = () => {
             <Button type="primary" htmlType="submit" className="login-form-button">
               Login
             </Button>
-            <a href="">신규등록</a>
+            <Link to="/register">신규등록</Link>
           </Form.Item>
         </Form>
       </div>
