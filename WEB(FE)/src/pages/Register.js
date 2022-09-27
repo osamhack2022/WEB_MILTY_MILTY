@@ -276,14 +276,12 @@ const Register = () => {
         <Form.Item
             name="class"
             label="계급"
-        >
-            <Input.Group compact>
-                <Select defaultValue="private">
-                    <Option value="private">이병/일병</Option>
-                    <Option value="corporal">상병</Option>
-                    <Option value="segrent">병장</Option>
-                </Select>
-            </Input.Group>
+        >   
+            <Select defaultValue="private">
+                <Select.Option value="private">이병/일병</Select.Option>
+                <Select.Option value="corporal">상병</Select.Option>
+                <Select.Option value="segrent">병장</Select.Option>
+            </Select>
         </Form.Item>
 
         <Form.Item
@@ -296,7 +294,7 @@ const Register = () => {
             },
             ]}
         >
-            <DatePicker defaultValue={moment('2015/01/01', dateFormat)} format={dateFormat} />
+            <DatePicker defaultValue={moment('2022/01/01', dateFormat)} format={dateFormat} />
         </Form.Item>
 
         <Form.Item
@@ -316,7 +314,7 @@ const Register = () => {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
-            Register
+            회원가입
             </Button>
         </Form.Item>
         </Form>
