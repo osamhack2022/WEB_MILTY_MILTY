@@ -16,40 +16,7 @@ import moment from 'moment';
 
 const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
-const residences = [
-    {
-        value: 'zhejiang',
-        label: 'Zhejiang',
-        children: [
-        {
-            value: 'hangzhou',
-            label: 'Hangzhou',
-            children: [
-            {
-                value: 'xihu',
-                label: 'West Lake',
-            },
-            ],
-        },
-        ],
-    },
-    {
-        value: 'jiangsu',
-        label: 'Jiangsu',
-        children: [
-        {
-            value: 'nanjing',
-            label: 'Nanjing',
-            children: [
-            {
-                value: 'zhonghuamen',
-                label: 'Zhong Hua Men',
-            },
-            ],
-        },
-        ],
-    },
-];
+
 const formItemLayout = {
     labelCol: {
         xs: {
@@ -88,67 +55,13 @@ const Register = () => {
         console.log('Received values of form: ', values);
     };
 
-    const classSelector = (
-        <Form.Item name="class" noStyle>
-        <Select
-            style={{
-            width: 70,
-            }}
-        >
-            <Option value="private">이병/일병</Option>
-            <Option value="corporal">상병</Option>
-            <Option value="segrent">병장</Option>
-        </Select>
-        </Form.Item>
-    );
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-        <Select
-            style={{
-            width: 70,
-            }}
-        >
-            <Option value="86">+86</Option>
-            <Option value="87">+87</Option>
-        </Select>
-        </Form.Item>
-    );
-    const suffixSelector = (
-        <Form.Item name="suffix" noStyle>
-        <Select
-            style={{
-            width: 70,
-            }}
-        >
-            <Option value="USD">$</Option>
-            <Option value="CNY">¥</Option>
-        </Select>
-        </Form.Item>
-    );
-    const [autoCompleteResult, setAutoCompleteResult] = useState([]);
-
-    const onWebsiteChange = (value) => {
-        if (!value) {
-        setAutoCompleteResult([]);
-        } else {
-        setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
-        }
-    };
-
-    const websiteOptions = autoCompleteResult.map((website) => ({
-        label: website,
-        value: website,
-    }));
     return (
         <Form
         {...formItemLayout}
         form={form}
         name="register"
         onFinish={onFinish}
-        initialValues={{
-            residence: ['zhejiang', 'hangzhou', 'xihu'],
-            prefix: '86',
-        }}
+
         scrollToFirstError
         >
         <Form.Item
@@ -277,7 +190,7 @@ const Register = () => {
             name="class"
             label="계급"
         >   
-            <Select defaultValue="private">
+            <Select values="private">
                 <Select.Option value="private">이병/일병</Select.Option>
                 <Select.Option value="corporal">상병</Select.Option>
                 <Select.Option value="segrent">병장</Select.Option>
@@ -294,24 +207,9 @@ const Register = () => {
             },
             ]}
         >
-            <DatePicker defaultValue={moment('2022/01/01', dateFormat)} format={dateFormat} />
+            <DatePicker Value={moment('2022/01/01', dateFormat)} format={dateFormat} />
         </Form.Item>
 
-        <Form.Item
-            name="agreement"
-            valuePropName="checked"
-            rules={[
-            {
-                validator: (_, value) =>
-                value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
-            },
-            ]}
-            {...tailFormItemLayout}
-        >
-            <Checkbox>
-            I have read the <a href="">agreement</a>
-            </Checkbox>
-        </Form.Item>
         <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
             회원가입
