@@ -65,7 +65,7 @@ const Register = () => {
         // backgroundImage: "url('http://www.1gan.co.kr/news/photo/201801/140050_92606_65.jpg')",
         // backgroundRepeat: "no-repeat",
         // backgroundSize: "cover",
-        backgroundColor: "rgba( 123, 132, 80, 0.5 )",
+        // backgroundColor: "rgba( 123, 132, 80, 0.5 )",
       }}
     >
       <div
@@ -74,6 +74,27 @@ const Register = () => {
           margin: "auto",
         }}
       >
+        <div
+          className="logo-crop"
+          style={{
+            position: "relative",
+            width: "300px",
+            height: "110px",
+            overflow: "hidden",
+            margin: "10px auto",
+          }}
+        >
+          <img
+            src="https://user-images.githubusercontent.com/69956347/192787713-99f639c0-2b12-42a8-a2fa-786493936995.png"
+            style={{
+              position: "absolute",
+              top: "-100px",
+              left: "0px",
+              width: "300px",
+              height: "300px",
+            }}
+          />
+        </div>
         <Form
           {...formItemLayout}
           form={form}

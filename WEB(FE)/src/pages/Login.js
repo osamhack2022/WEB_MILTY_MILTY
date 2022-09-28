@@ -17,7 +17,7 @@ const Login = () => {
         // backgroundImage: "url('http://www.1gan.co.kr/news/photo/201801/140050_92606_65.jpg')",
         // backgroundRepeat: "no-repeat",
         // backgroundSize: "cover",
-        backgroundColor: "rgba( 123, 132, 80, 0.5 )",
+        // backgroundColor: "rgba( 210, 210, 202, 1.0)",
       }}
     >
       <div
@@ -32,18 +32,18 @@ const Login = () => {
           style={{
             position: "relative",
             width: "300px",
-            height: "100px",
+            height: "110px",
             overflow: "hidden",
           }}
         >
           <img
-            src="https://user-images.githubusercontent.com/88999549/191758736-7b93192f-78c8-4e2f-8229-b41c2f27aa8e.jpg"
+            src="https://user-images.githubusercontent.com/69956347/192787713-99f639c0-2b12-42a8-a2fa-786493936995.png"
             style={{
               position: "absolute",
-              top: "-200px",
-              left: "-100px",
-              width: "500px",
-              height: "500px",
+              top: "-100px",
+              left: "0px",
+              width: "300px",
+              height: "300px",
             }}
           />
         </div>
@@ -106,7 +106,15 @@ const Login = () => {
             >
               Login
             </Button>
-            <Link to="/register">신규등록</Link>
+            <Link to="/register">
+              <div
+                style={{
+                  marginTop: "5px",
+                }}
+              >
+                신규등록
+              </div>
+            </Link>
           </Form.Item>
         </Form>
       </div>
