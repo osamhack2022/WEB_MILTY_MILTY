@@ -1,8 +1,44 @@
 import express from "express";
 import { createServer } from "http";
+import session from "express-session";
+import passport from "passport";
+import routes from "./routes";
+import dotenv from "dotenv";
+dotenv.config();
+import passportConfig from "./middleware/passport"; // passport의 설정 적용
+
 const app = express();
+
+/* ### MiddleWare ### */
+app.use(
+  session({
+    // 세션 설정 적용
+    secret: process.env.SECRET as string,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// 이 부분의 설정은 반드시 세션 설정 뒤에 사용해야 함.
+app.use(passport.initialize()); // 요청에 passport 설정을 넣는다.
+app.use(passport.session()); // req.session에 passport 정보를 저장한다.
+
+/* ### MEMO ###
+   passport 로그인 이후 과정
+   1. 모든 요청에 passport.session() 미들웨어가 passport/index.js의 passport.deserializeUser() 메서드를 매번 호출한다.
+   2. deserializeUser에서 req.session에 저장된 아이디로 데이터베이스에서 사용자 조회한다.
+   3. 조회된 사용자 전체 정보를 req.user 객체에 저장한다.
+   4. 이제부터 라우터에서 req.user를 공용적으로 사용 가능하게 된다.
+*/
+
+/* ### Routes ### */
+// 라우터(아직 구현X)
+app.use(routes);
+
+/* ### Test or Debuging ### */
 app.get("/", (req, res) => {
   res.send("Hello world!");
 });
+
 const server = createServer(app);
 server.listen(process.env.PORT || 5000);
