@@ -39,9 +39,12 @@ router.post("/localLogin", isNotLoggedIn, async (req, res, next) => {
 });
 
 //<로그아웃>
-router.get("/logout", isLoggedIn, (req, res) => {
+router.get("/logout", isLoggedIn, (req, res, next) => {
   try {
-    req.logout();
+    req.logout((err) => {
+      // ! 현재 eslint에서 no-empty-function을 임시로 console.log 내용을 추가했습니다.
+      console.log(err);
+    });
     req.session.destroy(() => {
       // 응답에 쿠키를 강제로 없애는 method(안정성을 보장할 수 없어서 이 부분은 추후에 확인해봐야 할 것 같음.)
       res.clearCookie("connect.sid");
@@ -66,6 +69,3 @@ router.post("/localSignup", isNotLoggedIn, async (req, res, next) => {
 });
 
 export default router;
-function next(error: unknown) {
-  throw new Error("Function not implemented.");
-}
