@@ -4,17 +4,26 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+<<<<<<< HEAD
     "@craco/craco": "^6.4.5",
+=======
+>>>>>>> main
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "antd": "^4.23.2",
+<<<<<<< HEAD
     "craco-less": "^2.0.0",
     "global": "^4.4.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.1",
+=======
+    "global": "^4.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+>>>>>>> main
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.0"
   },
