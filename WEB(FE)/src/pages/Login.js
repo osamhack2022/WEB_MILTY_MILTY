@@ -73,13 +73,13 @@ const Login = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your Username!",
+                message: "아이디(군번)를 입력하세요!",
               },
             ]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
+              placeholder="사용자 아이디 (군번)"
             />
           </Form.Item>
           <Form.Item
@@ -87,14 +87,14 @@ const Login = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your Password!",
+                message: "비밀번호를 입력하세요!",
               },
             ]}
           >
             <Input
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
-              placeholder="Password"
+              placeholder="비밀번호"
             />
           </Form.Item>
           <Form.Item>

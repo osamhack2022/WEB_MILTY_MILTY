@@ -45,7 +45,6 @@ const Register = () => {
       user_name,
       user_id,
       user_password,
-      user_service_number,
       user_birthday,
       user_division,
       user_division_code,
@@ -60,7 +59,6 @@ const Register = () => {
         user_name,
         user_id,
         user_password,
-        user_service_number,
         user_birthday,
         user_division,
         user_division_code,
@@ -138,7 +136,7 @@ const Register = () => {
             <Input placeholder="이름" />
           </Form.Item>
           <Form.Item
-            name="user_service_number"
+            name="user_id"
             label="군번"
             rules={[
               {
