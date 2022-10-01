@@ -1,3 +1,4 @@
+import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Link } from "react-router-dom";
@@ -38,6 +39,7 @@ const Login = () => {
         >
           <img
             src="https://user-images.githubusercontent.com/69956347/192787713-99f639c0-2b12-42a8-a2fa-786493936995.png"
+            alt="MILTY 로고"
             style={{
               position: "absolute",
               top: "-100px",
@@ -93,7 +95,7 @@ const Login = () => {
               <Checkbox>로그인 저장</Checkbox>
             </Form.Item>
 
-            <a className="login-form-forgot" href="">
+            <a className="login-form-forgot" href="/password-reset">
               PW 초기화
             </a>
           </Form.Item>

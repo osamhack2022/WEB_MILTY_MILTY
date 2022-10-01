@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "MILTY",
+  "name": "MILTY : 장병 근무관리 플랫폼",
   "icons": [
     {
       "src": "favicon.ico",
