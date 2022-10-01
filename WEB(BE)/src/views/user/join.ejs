@@ -5,26 +5,33 @@
     <body>
         <div>
             <h3>Join</h3>
-            <form action="/user/joinProc" method="post">
+            <form action="/api/register" method="post">
 
               <div>
-                <label>ID</label>
+                <label>user_id</label>
                 <div>
                   <input type="text" id="user_id" name="user_id" value="">
                 </div>
               </div>
 
               <div>
-                <label for="user_password">Password</label>
+                <label for="password">Password</label>
                 <div >
                   <input type="password" id="user_password" name="user_password" value="" >
                 </div>
               </div>
 
               <div>
+                <label for="passwordConfirmation" >Password Confirmation</label>
+                <div>
+                  <input type="password" id="passwordConfirmation" name="passwordConfirmation" value="">
+                </div>
+              </div>
+
+              <div>
                 <label for="username">Username</label>
                 <div>
-                  <input type="text" id="name" name="name" value="">
+                  <input type="text" id="user_name" name="user_name" value="">
                 </div>
               </div>
 

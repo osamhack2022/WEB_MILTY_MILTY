@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const { join } = require('../controllers/user');
-var passport = require('passport');
+const passport = require('passport');
 
-//로그인 
-router.get('/api/login', function (req, res) {
-    res.render('user/login');
+// Login(login 화면을 차라리 첫 화면으로 잡기 위해 주소를 '/'로 설정했습니다.)
+router.get('/', function (req, res) {       // localhost:3000
+    res.render('user/login');               // [views 에 있는 login.ejs 실행(이 부분을 수정해서 Front단 페이지와 연결하면 됨)]
 })
 
-router.post('/loginProc',
+router.post('/api/login',                   // login 데이터 받는 곳(<form action="/api/login" method="post">)
     // authenticate : /config/passport.js 의 passport.use 호출
     passport.authenticate('local', {
-        successRedirect: "/user/mypage",
-        failureRedirect: "/user/login",
-        failureFlash: true
+        successRedirect: "/mypage",
+        failureRedirect: "/",
+        failureFlash: false
     })
 );
 
@@ -21,9 +21,9 @@ router.post('/loginProc',
 router.get('/mypage', (req, res) => {
     const user = res.locals.currentUser
     if (user === undefined) { //로그인X 
-        res.render('user/login');
+        res.render('user/login');           // [views 에 있는 login.ejs 실행(이 부분을 수정해서 Front단 페이지와 연결하면 됨)]
     } else {
-        res.render('user/mypage');
+        res.render('user/mypage');          // [views 에 있는 mypage.ejs 실행(이 부분을 수정해서 Front단 페이지와 연결하면 됨)]
     }
 });
 
@@ -34,11 +34,11 @@ router.get('/logout', function (req, res) {
 });
 
 //회원가입 페이지
-router.get('/api/register', (req, res) => {
-    res.render('user/join');
+router.get('/register', (req, res) => {         // localhost:3000/register
+    res.render('user/join');                    // [views 에 있는 join.ejs 실행(이 부분을 수정해서 Front단 페이지와 연결하면 됨)]
 })
 
 //회원가입 진행
-router.post('/joinProc', join);
+router.post('/api/register', join);             // register 데이터 받는 곳(<form action="/api/register" method="post">)
 
 module.exports = router;

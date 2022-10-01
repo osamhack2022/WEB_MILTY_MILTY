@@ -21,27 +21,27 @@ module.exports = class User extends Sequelize.Model {
             },
             user_birthday: {
                 type: Sequelize.DATE,
-                allowNull: false,
+                allowNull: true,
                 unique: false
             },
             user_divsion: {
                 type: Sequelize.STRING(20),
-                allowNull: false,
+                allowNull: true,
                 unique: false
             },
             user_divsion_code: {
                 type: Sequelize.INTEGER(10),
-                allowNull: false,
+                allowNull: true,
                 unique: false
             },
             user_class: {
                 type: Sequelize.CHAR(10),
-                allowNull: false,
+                allowNull: true,
                 unique: false
             },
             user_discharge_date: {
                 type: Sequelize.DATE,
-                allowNull: false,
+                allowNull: true,
                 unique: false
             },
         },

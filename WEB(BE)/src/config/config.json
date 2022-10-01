@@ -1,25 +1,25 @@
 {
   "development": {
-    "username": "admin",
-    "password": "888888",
+    "username": "milty_user",
+    "password": "milty",
     "database": "milty",
-    "host": "127.0.0.1",
+    "host": "125.178.45.36",
     "dialect": "mysql",
     "operatorsAliases": false
   },
   "test": {
-    "username": "admin",
-    "password": "888888",
+    "username": "milty_user",
+    "password": "milty",
     "database": "milty",
-    "host": "127.0.0.1",
+    "host": "125.178.45.36",
     "dialect": "mysql",
     "operatorsAliases": false
   },
   "production": {
-    "username": "admin",
-    "password": "888888",
+    "username": "milty_user",
+    "password": "milty",
     "database": "milty",
-    "host": "127.0.0.1",
+    "host": "125.178.45.36",
     "dialect": "mysql",
     "operatorsAliases": false
   }
