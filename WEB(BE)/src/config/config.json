@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "admin",
+    "password": "888888",
+    "database": "milty",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "admin",
+    "password": "888888",
+    "database": "milty",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "admin",
+    "password": "888888",
+    "database": "milty",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }
+}
