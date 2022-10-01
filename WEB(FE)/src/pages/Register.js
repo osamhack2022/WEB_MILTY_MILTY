@@ -1,21 +1,9 @@
-import {
-  AutoComplete,
-  Button,
-  Cascader,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Row,
-  Select,
-  DatePicker,
-} from "antd";
+/* eslint-disable react/jsx-props-no-spreading */
+import { Button, Form, Input, Select, DatePicker } from "antd";
 import React from "react";
 import moment from "moment";
 
 const dateFormat = "YYYY/MM/DD";
-const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
@@ -52,7 +40,37 @@ const Register = () => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    /* eslint-disable camelcase */
+    const {
+      user_name,
+      user_id,
+      user_password,
+      user_service_number,
+      user_birthday,
+      user_division,
+      user_division_code,
+      user_class,
+      user_discharge_date,
+    } = values;
+
+    fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_name,
+        user_id,
+        user_password,
+        user_service_number,
+        user_birthday,
+        user_division,
+        user_division_code,
+        user_class,
+        user_discharge_date,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.warn(error));
   };
 
   return (
@@ -86,6 +104,7 @@ const Register = () => {
         >
           <img
             src="https://user-images.githubusercontent.com/69956347/192787713-99f639c0-2b12-42a8-a2fa-786493936995.png"
+            alt="MILTY 로고"
             style={{
               position: "absolute",
               top: "-100px",
@@ -103,7 +122,7 @@ const Register = () => {
           scrollToFirstError
         >
           <Form.Item
-            name="name"
+            name="user_name"
             label="이름"
             rules={[
               {
@@ -119,7 +138,7 @@ const Register = () => {
             <Input placeholder="이름" />
           </Form.Item>
           <Form.Item
-            name="service_number"
+            name="user_service_number"
             label="군번"
             rules={[
               {
@@ -136,7 +155,7 @@ const Register = () => {
           </Form.Item>
 
           <Form.Item
-            name="password"
+            name="user_password"
             label="비밀번호"
             rules={[
               {
@@ -150,7 +169,7 @@ const Register = () => {
           </Form.Item>
 
           <Form.Item
-            name="confirm"
+            name="user_confirm"
             label="비밀번호 확인"
             dependencies={["password"]}
             hasFeedback
@@ -176,7 +195,7 @@ const Register = () => {
           </Form.Item>
 
           <Form.Item
-            name="birthday"
+            name="user_birthday"
             label="생년월일"
             rules={[
               {
@@ -193,7 +212,7 @@ const Register = () => {
           </Form.Item>
 
           <Form.Item
-            name="division"
+            name="user_division"
             label="소속부대"
             rules={[
               {
@@ -210,7 +229,7 @@ const Register = () => {
           </Form.Item>
 
           <Form.Item
-            name="division_code"
+            name="user_division_code"
             label="부대코드"
             rules={[
               {
@@ -226,7 +245,7 @@ const Register = () => {
             <Input placeholder="부대코드" />
           </Form.Item>
 
-          <Form.Item name="class" label="계급">
+          <Form.Item name="user_class" label="계급">
             <Select values="private">
               <Select.Option value="private">이병/일병</Select.Option>
               <Select.Option value="corporal">상병</Select.Option>
@@ -235,7 +254,7 @@ const Register = () => {
           </Form.Item>
 
           <Form.Item
-            name="discharge_date"
+            name="user_discharge_date"
             label="전역일"
             rules={[
               {

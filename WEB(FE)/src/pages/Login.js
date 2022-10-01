@@ -5,7 +5,14 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.warn(error));
   };
 
   return (
@@ -62,7 +69,7 @@ const Login = () => {
           onFinish={onFinish}
         >
           <Form.Item
-            name="username"
+            name="user_id"
             rules={[
               {
                 required: true,
@@ -76,7 +83,7 @@ const Login = () => {
             />
           </Form.Item>
           <Form.Item
-            name="password"
+            name="user_password"
             rules={[
               {
                 required: true,
