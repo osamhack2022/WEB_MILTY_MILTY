@@ -1,5 +1,5 @@
 # MILTY(장병 근무 관리 웹 플랫폼)
-![MILTY](https://user-images.githubusercontent.com/88999549/191758736-7b93192f-78c8-4e2f-8229-b41c2f27aa8e.jpg)
+![MILTY_logo](https://user-images.githubusercontent.com/69956347/192787713-99f639c0-2b12-42a8-a2fa-786493936995.png)
 
 
 
