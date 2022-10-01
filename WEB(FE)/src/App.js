@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
+import Main from "./pages/Main";
 import "./App.less";
 
 const App = () => {
