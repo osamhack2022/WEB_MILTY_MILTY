@@ -1,4 +1,4 @@
-// const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 exports.join = function (req, res) {
@@ -14,11 +14,9 @@ exports.join = function (req, res) {
         user_discharge_date } = req.body;
 
     // 비밀번호 암호화 
-    // user_password = bcrypt.hashSync(user_password)
+    user_password = bcrypt.hashSync(user_password)
 
     // 회원가입 저장
-    var now = new Date();
-
     User.create({
         usr_name: user_name,
         usr_id: user_id,
@@ -27,8 +25,7 @@ exports.join = function (req, res) {
         usr_division: user_division,
         usr_division_code: user_division_code,
         usr_class: user_class,
-        user_discharge_date: user_discharge_date,
-        created_at: now
+        usr_discharge_date: user_discharge_date,
     })
         .then(() => {
             res.redirect('/');

@@ -5,6 +5,8 @@ const app = express();
 const path = require("path");
 const helmet = require('helmet');
 app.use(helmet());
+const cookieParser = require('cookie-parser');
+const session = require("express-session");
 
 //DB connect 
 const { sequelize } = require('./models');
@@ -17,7 +19,6 @@ sequelize.sync({ force: false })
     });
 
 // Session
-const session = require("express-session");
 app.use(session({
     resave: false,
     saveUninitialized: true,

@@ -4,7 +4,7 @@ module.exports = class User extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
             usr_id: {
-                type: Sequelize.INTEGER(20),
+                type: Sequelize.STRING(20),
                 primaryKey: true,
                 allowNull: false,
                 unique: true
@@ -19,27 +19,27 @@ module.exports = class User extends Sequelize.Model {
                 allowNull: false,
                 unique: true
             },
-            user_birthday: {
+            usr_birthday: {
                 type: Sequelize.DATE,
                 allowNull: true,
                 unique: false
             },
-            user_divsion: {
+            usr_divsion: {
                 type: Sequelize.STRING(20),
                 allowNull: true,
                 unique: false
             },
-            user_divsion_code: {
+            usr_divsion_code: {
                 type: Sequelize.INTEGER(10),
                 allowNull: true,
                 unique: false
             },
-            user_class: {
+            usr_class: {
                 type: Sequelize.CHAR(10),
                 allowNull: true,
                 unique: false
             },
-            user_discharge_date: {
+            usr_discharge_date: {
                 type: Sequelize.DATE,
                 allowNull: true,
                 unique: false

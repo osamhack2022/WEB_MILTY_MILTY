@@ -3,7 +3,7 @@
     "username": "milty_user",
     "password": "milty",
     "database": "milty",
-    "host": "125.178.45.36",
+    "host": "gongtee.com",
     "dialect": "mysql",
     "operatorsAliases": false
   },
@@ -11,7 +11,7 @@
     "username": "milty_user",
     "password": "milty",
     "database": "milty",
-    "host": "125.178.45.36",
+    "host": "gongtee.com",
     "dialect": "mysql",
     "operatorsAliases": false
   },
@@ -19,7 +19,7 @@
     "username": "milty_user",
     "password": "milty",
     "database": "milty",
-    "host": "125.178.45.36",
+    "host": "gongtee.com",
     "dialect": "mysql",
     "operatorsAliases": false
   }

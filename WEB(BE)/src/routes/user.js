@@ -11,9 +11,8 @@ router.get('/', function (req, res) {       // localhost:3000
 router.post('/api/login',                   // login 데이터 받는 곳(<form action="/api/login" method="post">)
     // authenticate : /config/passport.js 의 passport.use 호출
     passport.authenticate('local', {
-        successRedirect: "/mypage",
+        successRedirect: "/mypage",         // 만약 admin이면 '/admin'으로 redirect 해야하므로 나중에 조건식 사용할 것
         failureRedirect: "/",
-        failureFlash: false
     })
 );
 
@@ -30,7 +29,7 @@ router.get('/mypage', (req, res) => {
 //로그아웃 
 router.get('/logout', function (req, res) {
     req.logout();
-    res.redirect('/');
+    res.redirect('/');                      // 다시 로그인창으로
 });
 
 //회원가입 페이지
