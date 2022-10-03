@@ -1,7 +1,7 @@
 import React from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input } from "antd";
 import { Link } from "react-router-dom";
+import { Button, Checkbox, Form, Input } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 const Login = () => {
   const onFinish = (values) => {
@@ -21,6 +21,7 @@ const Login = () => {
       style={{
         display: "flex",
         alignItems: "center",
+        justifyContent: "center",
         height: window.innerHeight,
         // backgroundImage: "url('http://www.1gan.co.kr/news/photo/201801/140050_92606_65.jpg')",
         // backgroundRepeat: "no-repeat",
@@ -28,39 +29,16 @@ const Login = () => {
         // backgroundColor: "rgba( 210, 210, 202, 1.0)",
       }}
     >
-      <div
-        style={{
-          maxWidth: "300px",
-          maxHeight: "290px",
-          margin: "auto",
-        }}
-      >
-        <div
-          className="logo-crop"
-          style={{
-            position: "relative",
-            width: "300px",
-            height: "110px",
-            overflow: "hidden",
-          }}
-        >
+      <div style={{ maxWidth: "500px", padding: "0.5rem" }}>
+        <Link to="/">
           <img
-            src="https://user-images.githubusercontent.com/69956347/192787713-99f639c0-2b12-42a8-a2fa-786493936995.png"
+            src={`${process.env.PUBLIC_URL}/logo_crop.png`}
             alt="MILTY 로고"
-            style={{
-              position: "absolute",
-              top: "-100px",
-              left: "0px",
-              width: "300px",
-              height: "300px",
-            }}
+            style={{ maxWidth: "90%", display: "block", margin: "0 auto" }}
           />
-        </div>
+        </Link>
         <Form
-          style={{
-            margin: "0 auto",
-            paddingTop: "10px",
-          }}
+          style={{ paddingTop: "1.5rem" }}
           name="normal_login"
           className="login-form"
           initialValues={{
@@ -108,21 +86,11 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-            >
-              Login
+            <Button style={{ width: "100%" }} type="primary" htmlType="submit">
+              로그인
             </Button>
             <Link to="/register">
-              <div
-                style={{
-                  marginTop: "5px",
-                }}
-              >
-                신규등록
-              </div>
+              <div style={{ marginTop: "12px" }}>신규등록</div>
             </Link>
           </Form.Item>
         </Form>

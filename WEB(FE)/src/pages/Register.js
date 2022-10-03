@@ -1,40 +1,9 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import { Button, Form, Input, Select, DatePicker } from "antd";
 import React from "react";
+import { Link } from "react-router-dom";
+import { Button, Form, Input, Select, DatePicker } from "antd";
 import moment from "moment";
 
 const dateFormat = "YYYY/MM/DD";
-
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 8,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-  },
-};
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
 
 const Register = () => {
   const [form] = Form.useForm();
@@ -77,6 +46,7 @@ const Register = () => {
       style={{
         display: "flex",
         alignItems: "center",
+        justifyContent: "center",
         height: window.innerHeight,
         // backgroundImage: "url('http://www.1gan.co.kr/news/photo/201801/140050_92606_65.jpg')",
         // backgroundRepeat: "no-repeat",
@@ -84,36 +54,17 @@ const Register = () => {
         // backgroundColor: "rgba( 123, 132, 80, 0.5 )",
       }}
     >
-      <div
-        style={{
-          minWidth: "600px",
-          margin: "auto",
-        }}
-      >
-        <div
-          className="logo-crop"
-          style={{
-            position: "relative",
-            width: "300px",
-            height: "110px",
-            overflow: "hidden",
-            margin: "10px auto",
-          }}
-        >
+      <div style={{ maxWidth: "500px", padding: "0.5rem" }}>
+        <Link to="/">
           <img
-            src="https://user-images.githubusercontent.com/69956347/192787713-99f639c0-2b12-42a8-a2fa-786493936995.png"
+            src={`${process.env.PUBLIC_URL}/logo_crop.png`}
             alt="MILTY 로고"
-            style={{
-              position: "absolute",
-              top: "-100px",
-              left: "0px",
-              width: "300px",
-              height: "300px",
-            }}
+            style={{ maxWidth: "90%", display: "block", margin: "0 auto" }}
           />
-        </div>
+        </Link>
         <Form
-          {...formItemLayout}
+          style={{ paddingTop: "1.5rem" }}
+          labelCol={{ span: 6 }}
           form={form}
           name="register"
           onFinish={onFinish}
@@ -267,13 +218,14 @@ const Register = () => {
             />
           </Form.Item>
 
-          <Form.Item {...tailFormItemLayout}>
+          <Form.Item
+            style={{ marginTop: "1rem" }}
+            wrapperCol={{ xs: { offset: 0 }, sm: { offset: 6 } }}
+          >
             <Button
               type="primary"
               htmlType="submit"
-              style={{
-                marginLeft: "-90px",
-              }}
+              style={{ marginTop: "6px" }}
             >
               회원가입
             </Button>
