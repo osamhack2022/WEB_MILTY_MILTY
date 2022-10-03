@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "milty_user",
+    "password": "milty",
+    "database": "milty",
+    "host": "gongtee.com",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "milty_user",
+    "password": "milty",
+    "database": "milty",
+    "host": "gongtee.com",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "milty_user",
+    "password": "milty",
+    "database": "milty",
+    "host": "gongtee.com",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }
+}

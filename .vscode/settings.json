@@ -1,5 +1,17 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "files.autoSave": "off"
+  "files.autoSave": "off",
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "todohighlight.keywords": [
+    {
+      "text": "PROCESS:",
+      "color": "White",
+      "font-weight": "bold",
+      "backgroundColor": "Blue"
+      //other styling properties goes here ...
+    }
+  ]
 }
