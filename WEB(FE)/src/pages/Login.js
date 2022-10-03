@@ -1,11 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
 import axios from "axios";
-=======
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
->>>>>>> 1a9680a3c113a14597bdde35792c9daea73a24ea
 
 const Login = () => {
   const onFinish = (values) => {
