@@ -7,13 +7,14 @@ const passport = require('passport');
 router.get('/', function (req, res) {       // localhost:3000
     res.render('user/login');               // [views 에 있는 login.ejs 실행(이 부분을 수정해서 Front단 페이지와 연결하면 됨)]
 })
+router.get('/register', function (req, res) {       // localhost:3000
+    res.render('user/join');               // [views 에 있는 login.ejs 실행(이 부분을 수정해서 Front단 페이지와 연결하면 됨)]
+})
 
-router.post('/api/login',                   // login 데이터 받는 곳(<form action="/api/login" method="post">)
-    // authenticate : /config/passport.js 의 passport.use 호출
-    passport.authenticate('local', {
-        successRedirect: "/mypage",         // 만약 admin이면 '/admin'으로 redirect 해야하므로 나중에 조건식 사용할 것
-        failureRedirect: "/",
-    })
+// login 데이터 받는 곳(<form action="/api/login" method="post">)
+router.post('/api/login',
+    passport.authenticate('local', { failureRedirect: "/", failureMessage: true }),
+    function (req, res) { res.status(200).json("login done") }
 );
 
 //마이 페이지 

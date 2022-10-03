@@ -3,7 +3,8 @@ const User = require('../models/User');
 
 exports.join = function (req, res) {
 
-    let { user_id,
+    let {
+        user_id,
         user_password,
         passwordConfirmation,
         user_name,
@@ -11,7 +12,8 @@ exports.join = function (req, res) {
         user_division,
         user_division_code,
         user_class,
-        user_discharge_date } = req.body;
+        user_discharge_date
+    } = req.body;
 
     // 비밀번호 암호화 
     user_password = bcrypt.hashSync(user_password)

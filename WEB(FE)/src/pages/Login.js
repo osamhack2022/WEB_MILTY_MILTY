@@ -2,17 +2,24 @@ import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const onFinish = (values) => {
-    fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+    const value = JSON.stringify(values);
+    console.log(value);
+    axios.post('api/login', {
+      "user_id": value.user_id,
+      "user_password": value.user_password
     })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.warn(error));
+      .then((response) => {
+        // eslint-disable-next-line no-alert
+        if (response.status === 200) alert('login success');
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => console.log("data : ", data))
+      .catch((error) => console.warn("ERROR : ", error));
   };
 
   return (

@@ -50,7 +50,7 @@ app.use(methodOverride('_method'));
 app.use('/', require('./routes/user'));
 // app.use('/', require('./routes/menu'));
 
-const port = 3000;
+const port = 5000;
 app.listen(port, function () {
     console.log('server on! http://localhost:' + port);
 });
