@@ -1,54 +1,89 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Layout, Col, Row, Button } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
-const { Header, Content, Footer } = Layout;
+import { Layout, Menu, Col, Row, Typography } from "antd";
+import {
+  UnorderedListOutlined,
+  BarChartOutlined,
+  SwapOutlined,
+  UserOutlined,
+  NotificationOutlined,
+} from "@ant-design/icons";
 
-const Main = () => {
-  return (
-    <div className="background">
-      <Layout className="layout" style={{ height: window.innerHeight }}>
-        <Header style={{ height: "70px" }}>
-          <Row justify="space-between" align="middle">
-            <Col span={8}>
-              <div className="logo-crop-small">
-                <img
-                  src="https://user-images.githubusercontent.com/69956347/192787713-99f639c0-2b12-42a8-a2fa-786493936995.png"
-                  className="logo-img"
-                />
-              </div>
-            </Col>
-            <Col flex="0 1 425px">
-              <div>
-                <span style={{ color: "#ECEBE2" }}>
-                  홍길동님, 당신의 열정을 응원하겠습니다!
-                </span>
-                <Link to="/" style={{ marginLeft: "10px" }}>
-                  <Button icon={<UserOutlined />}>마이페이지</Button>
-                </Link>
-              </div>
-            </Col>
-          </Row>
-        </Header>
-        <Content
-          style={{
-            padding: "0 50px",
-          }}
-        >
-          <div className="site-layout-content" style={{ margin: "16px 0" }}>
-            Content
+const { Header, Content, Footer } = Layout;
+const { Title } = Typography;
+
+const Main = () => (
+  <Layout className="layout" style={{ minHeight: window.innerHeight }}>
+    <Header>
+      <Row justify="space-between">
+        <Col>
+          <Link to="/">
+            <img
+              src={`${process.env.PUBLIC_URL}/logo_crop.png`}
+              alt="MILTY 로고"
+              style={{
+                height: "2.5rem",
+              }}
+            />
+          </Link>
+        </Col>
+        <Col>
+          <Menu
+            mode="horizontal"
+            theme="dark"
+            items={[
+              { key: "1", icon: <UnorderedListOutlined />, label: "근무 확인" },
+              { key: "2", icon: <BarChartOutlined />, label: "근무 횟수" },
+              { key: "3", icon: <SwapOutlined />, label: "근무 변경" },
+              { key: "4", icon: <UserOutlined />, label: "마이페이지" },
+              { key: "5", icon: <NotificationOutlined />, label: "공지사항" },
+            ]}
+          />
+        </Col>
+      </Row>
+    </Header>
+    <Content
+      style={{
+        padding: "0.5rem",
+      }}
+    >
+      <Row justify="center" gutter={[16, 16]}>
+        <Col xs={24} xl={11}>
+          <div
+            style={{
+              backgroundColor: "#ECEBE2",
+              padding: "1rem",
+              minHeight: "40rem",
+            }}
+          >
+            <Typography>
+              <Title level={2}>오늘의 근무</Title>
+            </Typography>
           </div>
-        </Content>
-        <Footer
-          style={{
-            textAlign: "center",
-          }}
-        >
-          Milty created by team Milty, in 2022
-        </Footer>
-      </Layout>
-    </div>
-  );
-};
+        </Col>
+        <Col xs={24} xl={11}>
+          <div
+            style={{
+              backgroundColor: "#ECEBE2",
+              padding: "1rem",
+              minHeight: "40rem",
+            }}
+          >
+            <Typography>
+              <Title level={2}>내일 근무</Title>
+            </Typography>
+          </div>
+        </Col>
+      </Row>
+    </Content>
+    <Footer
+      style={{
+        textAlign: "center",
+      }}
+    >
+      본인의 개인정보를 절대로 타인에게 넘겨주지 말아야 합니다.
+    </Footer>
+  </Layout>
+);
 
 export default Main;
