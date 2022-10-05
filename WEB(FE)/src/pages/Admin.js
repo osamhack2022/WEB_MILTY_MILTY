@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import {
   EditOutlined,
@@ -13,63 +13,119 @@ import Soldierlist from "./Soldierlist";
 
 const { Sider } = Layout;
 
-const Admin = () => (
-  <Layout style={{ minHeight: "100vh" }}>
-    <Layout>
-      <Sider width="18rem">
-        <Link to="/">
-          <img
-            src={`${process.env.PUBLIC_URL}/logo_crop.png`}
-            alt="MILTY 로고"
-            style={{
-              maxWidth: "80%",
-              display: "block",
-              margin: "3rem auto",
-            }}
+const Admin = () => {
+  const navigate = useNavigate();
+
+  return (
+    <Layout style={{ minHeight: "100vh" }}>
+      <Layout>
+        <Sider width="18rem">
+          <Link to="/">
+            <img
+              src={`${process.env.PUBLIC_URL}/logo_crop.png`}
+              alt="MILTY 로고"
+              style={{
+                maxWidth: "80%",
+                display: "block",
+                margin: "3rem auto",
+              }}
+            />
+          </Link>
+          <Menu
+            theme="dark"
+            mode="inline"
+            items={[
+              {
+                key: "1",
+                icon: <EditOutlined />,
+                label: "근무 작성",
+                onClick: () => {
+                  navigate("/admin/write-duty");
+                },
+              },
+              {
+                key: "2",
+                icon: <ControlOutlined />,
+                label: "근무 설정",
+                children: [
+                  {
+                    key: "3",
+                    label: "열외자 목록",
+                    onClick: () => {
+                      navigate("/admin/set-duty");
+                    },
+                  },
+                  {
+                    key: "4",
+                    label: "장병 일반 근무 설정",
+                    onClick: () => {
+                      navigate("/admin/set-duty");
+                    },
+                  },
+                  {
+                    key: "5",
+                    label: "당직 사령 근무 설정",
+                    onClick: () => {
+                      navigate("/admin/set-duty");
+                    },
+                  },
+                  {
+                    key: "6",
+                    label: "당직 / 상황병 근무 설정",
+                    onClick: () => {
+                      navigate("/admin/set-duty");
+                    },
+                  },
+                  {
+                    key: "7",
+                    label: "기타 특수근무직 근무 설정",
+                    onClick: () => {
+                      navigate("/admin/set-duty");
+                    },
+                  },
+                ],
+              },
+              {
+                key: "8",
+                icon: <UserOutlined />,
+                label: "장병 리스트",
+                onClick: () => {
+                  navigate("/admin/soldierlist");
+                },
+              },
+              {
+                key: "9",
+                icon: <SwapOutlined />,
+                label: "근무 변경 요청 목록",
+                onClick: () => {
+                  navigate("/admin/request");
+                },
+              },
+              {
+                key: "10",
+                icon: <BarChartOutlined />,
+                label: "장병 근무 현황",
+                onClick: () => {
+                  navigate("/admin/check-count");
+                },
+              },
+              {
+                key: "11",
+                icon: <CommentOutlined />,
+                label: "건의 사항",
+                onClick: () => {
+                  navigate("/admin/reportlist");
+                },
+              },
+            ]}
           />
-        </Link>
-        <Menu
-          theme="dark"
-          defaultSelectedKeys={["3"]}
-          items={[
-            {
-              key: "1",
-              icon: <EditOutlined />,
-              label: "근무 작성",
-            },
-            {
-              key: "2",
-              icon: <ControlOutlined />,
-              label: "근무 설정",
-            },
-            {
-              key: "3",
-              icon: <UserOutlined />,
-              label: "장병 리스트",
-            },
-            {
-              key: "4",
-              icon: <SwapOutlined />,
-              label: "근무 변경 요청 목록",
-            },
-            {
-              key: "5",
-              icon: <BarChartOutlined />,
-              label: "장병 근무 현황",
-            },
-            {
-              key: "6",
-              icon: <CommentOutlined />,
-              label: "건의 사항",
-            },
-          ]}
-        />
-      </Sider>
-      <Routes>
-        <Route path="/soldierlist" element={<Soldierlist />} />
-      </Routes>
+        </Sider>
+        <Routes>
+          <Route path="/soldierlist" element={<Soldierlist />} />
+        </Routes>
+      </Layout>
     </Layout>
-  </Layout>
-);
+  );
+};
 
 export default Admin;
