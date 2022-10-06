@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
+import Soldier from "./pages/Soldier";
 import "./App.less";
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/info" render={() => <Info userInfo={userInfo} />} />
         <Route path="/admin/*" element={<Admin />} />
+        <Route path="/soldier/*" element={<Soldier />} />
       </Routes>
     </BrowserRouter>
   );
