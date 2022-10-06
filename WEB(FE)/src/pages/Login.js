@@ -1,22 +1,21 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 const Login = () => {
+  const navigate = useNavigate();
   const onFinish = (values) => {
     const value = JSON.stringify(values);
     console.log(value);
-    axios.post('api/login', {
-      "user_id": value.user_id,
-      "user_password": value.user_password
+    axios.post('localhost:5000/api/login', {
+      user_id: value.user_id,
+      user_password: value.user_password
     })
       .then((response) => {
-        // eslint-disable-next-line no-alert
-        if (response.status === 200) alert('login success');
         console.log(response);
-        return response.json();
+        response.status === 200 && navigate('/info');
       })
       .then((data) => console.log("data : ", data))
       .catch((error) => console.warn("ERROR : ", error));
