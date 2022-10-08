@@ -7,7 +7,8 @@ import {
   BarChartOutlined,
   CommentOutlined,
 } from "@ant-design/icons";
-import Soldierlist from "./Soldierlist";
+import Dutycalender from "./Dutycalendar";
+import Changecalendar from "./Changecalendar";
 
 const { Sider } = Layout;
 
@@ -89,7 +90,8 @@ const Admin = () => {
           />
         </Sider>
         <Routes>
-          <Route path="/soldierlist" element={<Soldierlist />} />
+          <Route path="/check-duty" element={<Dutycalender />} />
+          <Route path="/change-duty" element={<Changecalendar />} />
         </Routes>
       </Layout>
     </Layout>
