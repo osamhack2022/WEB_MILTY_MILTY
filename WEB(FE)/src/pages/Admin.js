@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import WriteDuty from "./WriteDuty";
 import Soldierlist from "./Soldierlist";
+import Request from "./Request";
 
 const { Sider } = Layout;
 
@@ -124,6 +125,7 @@ const Admin = () => {
         <Routes>
           <Route path="/write-duty" element={<WriteDuty />} />
           <Route path="/soldierlist" element={<Soldierlist />} />
+          <Route path="/request" element={<Request />} />
         </Routes>
       </Layout>
     </Layout>
