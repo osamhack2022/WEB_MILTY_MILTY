@@ -6,19 +6,20 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 const Login = () => {
   const navigate = useNavigate();
-  const onFinish = (values) => {
-    const value = JSON.stringify(values);
-    console.log(value);
-    axios.post('localhost:5000/api/login', {
-      user_id: value.user_id,
-      user_password: value.user_password
+  const onFinish = ({ user_id, user_password }) => {
+
+    axios.post('http://localhost:5000/api/login', {
+      user_id,
+      user_password
     })
       .then((response) => {
-        console.log(response);
-        response.status === 200 && navigate('/info');
+        response.status === 200 && navigate('/main');
       })
       .then((data) => console.log("data : ", data))
-      .catch((error) => console.warn("ERROR : ", error));
+      .catch((error) => {
+        console.warn("ERROR : ", error);
+        error.response.status === 401 && alert("잘못된 로그인");
+      });
   };
 
   return (

@@ -4,13 +4,13 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ["airbnb", "plugin:prettier/recommended"],
+  extends: ['airbnb', 'plugin:prettier/recommended'],
   rules: {
-    "prettier/prettier": ["error"],
+    'prettier/prettier': ['error'],
   },
 
   overrides: [],
   parserOptions: {
-    ecmaVersion: "latest",
+    ecmaVersion: 'latest',
   },
 };

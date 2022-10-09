@@ -2,12 +2,19 @@ const Sequelize = require('sequelize');
 
 const User = require('./User');
 
-const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config')[env];
+require('dotenv').config();
 
 const db = {};
 
-const sequelize = new Sequelize('sqlite::memory:');
+const sequelize = new Sequelize(
+  process.env.DB_TABLE,
+  process.env.DB_ID,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+  },
+);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

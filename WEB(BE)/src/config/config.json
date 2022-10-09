@@ -1,25 +1,25 @@
 {
   "development": {
-    "username": "milty_user",
-    "password": "milty",
-    "database": "milty",
-    "host": "gongtee.com",
+    "username": "Milly",
+    "password": "Milly1234",
+    "database": "Milly",
+    "host": "20.214.204.98",
     "dialect": "mysql",
     "operatorsAliases": false
   },
   "test": {
-    "username": "milty_user",
-    "password": "milty",
-    "database": "milty",
-    "host": "gongtee.com",
+    "username": "Milly",
+    "password": "Milly1234",
+    "database": "Milly",
+    "host": "20.214.204.98",
     "dialect": "mysql",
     "operatorsAliases": false
   },
   "production": {
-    "username": "milty_user",
-    "password": "milty",
-    "database": "milty",
-    "host": "gongtee.com",
+    "username": "Milly",
+    "password": "Milly1234",
+    "database": "Milly",
+    "host": "20.214.204.98",
     "dialect": "mysql",
     "operatorsAliases": false
   }
