@@ -9,6 +9,7 @@ import {
   BarChartOutlined,
   CommentOutlined,
 } from "@ant-design/icons";
+import WriteDuty from "./WriteDuty";
 import Soldierlist from "./Soldierlist";
 
 const { Sider } = Layout;
@@ -121,6 +122,7 @@ const Admin = () => {
           />
         </Sider>
         <Routes>
+          <Route path="/write-duty" element={<WriteDuty />} />
           <Route path="/soldierlist" element={<Soldierlist />} />
         </Routes>
       </Layout>
