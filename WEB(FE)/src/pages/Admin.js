@@ -10,6 +10,7 @@ import {
   CommentOutlined,
 } from "@ant-design/icons";
 import WriteDuty from "./WriteDuty";
+import Exemptlist from "./Exemptlist";
 import Soldierlist from "./Soldierlist";
 import Request from "./Request";
 import Reportlist from "./Reportlist";
@@ -55,7 +56,7 @@ const Admin = () => {
                     key: "3",
                     label: "열외자 목록",
                     onClick: () => {
-                      navigate("/admin/set-duty");
+                      navigate("/admin/exemptlist");
                     },
                   },
                   {
@@ -125,6 +126,7 @@ const Admin = () => {
         </Sider>
         <Routes>
           <Route path="/write-duty" element={<WriteDuty />} />
+          <Route path="/exemptlist" element={<Exemptlist />} />
           <Route path="/soldierlist" element={<Soldierlist />} />
           <Route path="/request" element={<Request />} />
           <Route path="/reportlist" element={<Reportlist />} />
