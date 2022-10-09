@@ -8,6 +8,7 @@ import {
   CommentOutlined,
 } from "@ant-design/icons";
 import Dutycalender from "./Dutycalendar";
+import Dutyprecept from "./Dutyprecept";
 import Changecalendar from "./Changecalendar";
 import Dutycount from "./Dutycount";
 
@@ -92,6 +93,7 @@ const Admin = () => {
         </Sider>
         <Routes>
           <Route path="/check-duty" element={<Dutycalender />} />
+          <Route path="/check-duty/dutyprecept/:date" element={<Dutyprecept />} />
           <Route path="/change-duty" element={<Changecalendar />} />
           <Route path="/check-count/count" element={<Dutycount />} />
         </Routes>

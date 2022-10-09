@@ -1,5 +1,6 @@
-import { Layout, Badge, Button, PageHeader, Calendar } from 'antd';
 import React from 'react';
+import { Link } from "react-router-dom"
+import { Layout, Badge, Button, PageHeader, Calendar } from 'antd';
 import moment from 'moment';
 
 const { Content } = Layout;
@@ -67,7 +68,7 @@ const Dutycalendar = () => {
             </li>
           ))}
         </ul>
-        {(listData.length === 0 ? (<div></div>) : (<Button>경작서 확인</Button>))}
+        {(listData.length === 0 ? (<div></div>) : (<Link to={"dutyprecept/" + value.format('YYYY-MM-DD')}><Button>경작서 확인</Button></Link>))}
       </div>
     );
   };
