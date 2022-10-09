@@ -160,7 +160,7 @@ const data = [
   },
 ];
 
-const Soldierlist = () => {
+const Request = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loadingApprove, setLoadingApprove] = useState(false);
   const [loadingDisapprove, setLoadingDisapprove] = useState(false);
@@ -241,4 +241,4 @@ const Soldierlist = () => {
   );
 };
 
-export default Soldierlist;
+export default Request;
