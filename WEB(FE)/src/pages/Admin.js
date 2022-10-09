@@ -12,6 +12,7 @@ import {
 import WriteDuty from "./WriteDuty";
 import Soldierlist from "./Soldierlist";
 import Request from "./Request";
+import Reportlist from "./Reportlist";
 
 const { Sider } = Layout;
 
@@ -126,6 +127,7 @@ const Admin = () => {
           <Route path="/write-duty" element={<WriteDuty />} />
           <Route path="/soldierlist" element={<Soldierlist />} />
           <Route path="/request" element={<Request />} />
+          <Route path="/reportlist" element={<Reportlist />} />
         </Routes>
       </Layout>
     </Layout>
