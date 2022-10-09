@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import Dutycalender from "./Dutycalendar";
 import Changecalendar from "./Changecalendar";
+import Dutycount from "./Dutycount";
 
 const { Sider } = Layout;
 
@@ -59,7 +60,7 @@ const Admin = () => {
                     key: "4",
                     label: "근무 횟수",
                     onClick: () => {
-                      navigate("/soldier/check-count");
+                      navigate("/soldier/check-count/count");
                     },
                   },
                   {
@@ -92,6 +93,7 @@ const Admin = () => {
         <Routes>
           <Route path="/check-duty" element={<Dutycalender />} />
           <Route path="/change-duty" element={<Changecalendar />} />
+          <Route path="/check-count/count" element={<Dutycount />} />
         </Routes>
       </Layout>
     </Layout>
