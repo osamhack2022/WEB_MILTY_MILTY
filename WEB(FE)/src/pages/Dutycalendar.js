@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from "react-router-dom"
-import { Layout, Badge, Button, PageHeader, Calendar } from 'antd';
-import moment from 'moment';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Layout, Badge, Button, PageHeader } from "antd";
+import CustomCalendar from "../components/CustomCalendar";
 
 const { Content } = Layout;
 
@@ -44,17 +44,19 @@ const getListData = (value) => {
 };
 
 const Dutycalendar = () => {
-  const onPanelChange = (value, mode) => {
-    console.log(value.format('YYYY-MM-DD'), mode);
-  };
-
   const dateCellRender = (value) => {
     const listData = getListData(value);
     return (
       <div style={{ overflow: "hidden" }}>
-        <ul className="events" style={{ margin: "0", padding: "0", listStyle: "none", }}>
+        <ul
+          className="events"
+          style={{ margin: "0", padding: "0", listStyle: "none" }}
+        >
           {listData.map((item) => (
-            <li key={(item.startTime + "-" + item.endTime)} style={{ maxHeight: "22px" }}>
+            <li
+              key={`${item.startTime}-${item.endTime}`}
+              style={{ maxHeight: "22px" }}
+            >
               <Badge
                 style={{
                   width: "100%",
@@ -62,13 +64,21 @@ const Dutycalendar = () => {
                   whiteSpace: "nowrap",
                   textOverflow: "ellipsis",
                 }}
-                status={item.isDone ? "success" : (item.isSigned ? "warning" : "error")}
-                text={(item.startTime + "-" + item.endTime)}
+                status={
+                  item.isDone ? "success" : item.isSigned ? "warning" : "error"
+                }
+                text={`${item.startTime}-${item.endTime}`}
               />
             </li>
           ))}
         </ul>
-        {(listData.length === 0 ? (<div></div>) : (<Link to={"dutyprecept/" + value.format('YYYY-MM-DD')}><Button>경작서 확인</Button></Link>))}
+        {listData.length === 0 ? (
+          <div></div>
+        ) : (
+          <Link to={`dutyprecept/${value.format("YYYY-MM-DD")}`}>
+            <Button>경작서 확인</Button>
+          </Link>
+        )}
       </div>
     );
   };
@@ -84,13 +94,7 @@ const Dutycalendar = () => {
           onBack={() => null}
           title="근무 확인"
         />
-        <Calendar
-          defaultValue={moment()}
-          onPanelChange={onPanelChange}
-          dateCellRender={dateCellRender}
-          mode={"month"}
-          style={{ padding: "0.5rem" }}
-        />
+        <CustomCalendar dateCellRender={dateCellRender} />
       </Content>
     </Layout>
   );
