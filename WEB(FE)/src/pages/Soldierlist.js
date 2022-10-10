@@ -192,6 +192,7 @@ const Soldierlist = () => {
             rowSelection={rowSelection}
             columns={columns}
             dataSource={data}
+            scroll={{ x: 768 }}
           />
         </div>
       </Content>
