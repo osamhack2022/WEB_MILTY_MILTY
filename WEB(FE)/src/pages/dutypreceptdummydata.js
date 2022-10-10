@@ -12,6 +12,7 @@ export const topTableColumns = [
     align: "center",
   },
 ];
+
 export const topTabledata = [
   {
     key: "1",
@@ -49,7 +50,8 @@ export const middleTableColumns = [
     key: "mentee",
     align: "center",
   },
-]
+];
+
 export const middleTabledata = [
   {
     key: "1",
@@ -103,7 +105,8 @@ export const bottomTableColumns = [
     key: "official-statement",
     align: "center",
   },
-]
+];
+
 export const bottomTabledata = [
   {
     key: "1",
