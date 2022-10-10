@@ -23,7 +23,7 @@ const Admin = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Layout>
-        <Sider width="18rem">
+        <Sider collapsible collapsedWidth="0" breakpoint="lg" width="18rem">
           <Link to="/">
             <img
               src={`${process.env.PUBLIC_URL}/logo_crop.png`}
