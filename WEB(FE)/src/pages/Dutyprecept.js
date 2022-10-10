@@ -7,7 +7,14 @@ const { Content } = Layout;
 
 const Dutyprecept = () => {
   const params = useParams();
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
 
+  console.log(params); // 날짜값 잘 넘어오는지 확인
   return (
     <Layout>
       <Content style={{ padding: "1rem" }}>
