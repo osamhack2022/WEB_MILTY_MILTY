@@ -11,20 +11,18 @@ const Register = () => {
 
   const navigate = useNavigate();
   const onFinish = (values) => {
-
     console.log(values);
-    axios.post('http://localhost:5000/api/register', values)
+    axios
+      .post("/api/register", values)
       .then((response) => {
         if (response.status === 200) {
           alert("성공적으로 가입이 되었습니다.");
-          navigate('/');
+          navigate("/");
         }
-
       })
       .catch((error) => {
-        if (error.response.status === 401) alert("이미 등록된 ID입니다.")
+        if (error.response.status === 401) alert("이미 등록된 ID입니다.");
       });
-
   };
 
   return (

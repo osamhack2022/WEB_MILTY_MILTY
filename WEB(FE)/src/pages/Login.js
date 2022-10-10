@@ -7,13 +7,13 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 const Login = () => {
   const navigate = useNavigate();
   const onFinish = ({ user_id, user_password }) => {
-
-    axios.post('http://localhost:5000/api/login', {
-      user_id,
-      user_password
-    })
+    axios
+      .post("/api/login", {
+        user_id,
+        user_password,
+      })
       .then((response) => {
-        response.status === 200 && navigate('/main');
+        response.status === 200 && navigate("/main");
       })
       .then((data) => console.log("data : ", data))
       .catch((error) => {
