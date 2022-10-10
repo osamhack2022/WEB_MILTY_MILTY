@@ -1,43 +1,30 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Input, Select, DatePicker } from "antd";
 import moment from "moment";
+import axios from "axios";
 
 const dateFormat = "YYYY/MM/DD";
 
 const Register = () => {
   const [form] = Form.useForm();
 
+  const navigate = useNavigate();
   const onFinish = (values) => {
-    /* eslint-disable camelcase */
-    const {
-      user_name,
-      user_id,
-      user_password,
-      user_birthday,
-      user_division,
-      user_division_code,
-      user_class,
-      user_discharge_date,
-    } = values;
 
-    fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_name,
-        user_id,
-        user_password,
-        user_birthday,
-        user_division,
-        user_division_code,
-        user_class,
-        user_discharge_date,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.warn(error));
+    console.log(values);
+    axios.post('http://localhost:5000/api/register', values)
+      .then((response) => {
+        if (response.status === 200) {
+          alert("성공적으로 가입이 되었습니다.");
+          navigate('/');
+        }
+
+      })
+      .catch((error) => {
+        if (error.response.status === 401) alert("이미 등록된 ID입니다.")
+      });
+
   };
 
   return (
@@ -129,7 +116,7 @@ const Register = () => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
+                  if (!value || getFieldValue("user_password") === value) {
                     return Promise.resolve();
                   }
 
@@ -196,9 +183,10 @@ const Register = () => {
 
           <Form.Item name="user_class" label="계급">
             <Select values="private">
-              <Select.Option value="private">이병/일병</Select.Option>
-              <Select.Option value="corporal">상병</Select.Option>
-              <Select.Option value="segrent">병장</Select.Option>
+              <Select.Option value="이병">이병</Select.Option>
+              <Select.Option value="일병">일병</Select.Option>
+              <Select.Option value="상병">상병</Select.Option>
+              <Select.Option value="병장">병장</Select.Option>
             </Select>
           </Form.Item>
 

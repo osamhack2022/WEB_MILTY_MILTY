@@ -8,14 +8,38 @@
   float: left;
 }
 
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.events .ant-badge-status {
+  width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ant-picker-panel {
+  overflow-x: scroll;
+}
+
+.ant-picker-body {
+  min-width: 800px;
+}
+
 @primary-color: #7b8450;
 @error-color: #854944;
 @body-background: #d2d2ca;
 @component-background: #ecebe2;
 @layout-body-background: #d2d2ca;
 @layout-sider-background: #29302b;
-@layout-header-background: #d2d2ca;
+@layout-header-background: #29302b;
 @layout-header-color: #29302b;
+@layout-zero-trigger-width: 2rem;
+@layout-zero-trigger-height: 2rem;
 @menu-dark-bg: #29302b;
 @menu-dark-inline-submenu-bg: #202622;
 @form-item-margin-bottom: 12px;
