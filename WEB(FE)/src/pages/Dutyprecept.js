@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Layout, PageHeader } from "antd";
+import { Layout, PageHeader, Form, Input, Button } from "antd";
 import Precept from "../components/Precept";
 
 const { Content } = Layout;
@@ -26,6 +26,42 @@ const Dutyprecept = () => {
           title={`경계작전명령서 (${params.date})`}
         />
         <Precept />
+        <div
+          style={{
+            backgroundColor: "#ECEBE2",
+            padding: "1rem",
+          }}
+        >
+          <Form
+            name="change-form"
+            labelCol={{
+              span: 4,
+            }}
+            wrapperCol={{
+              span: 16,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item
+              label="서명"
+              name="sign"
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              wrapperCol={{
+                offset: 4,
+                span: 16,
+              }}
+            >
+              <Button type="primary" htmlType="submit">
+                서명 제출
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
       </Content>
     </Layout>
   );
