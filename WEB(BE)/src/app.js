@@ -5,7 +5,6 @@ const methodOverride = require('method-override');
 const app = express();
 const path = require('path');
 const helmet = require('helmet');
-const cors = require('cors');
 
 app.use(helmet());
 const cookieParser = require('cookie-parser');
@@ -49,13 +48,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 // #region ROUTES
-app.use(express.static(path.join(__dirname, '../../WEB(FE)/public')))
+app.use(express.static(path.join(__dirname, '../../WEB(FE)/build')))
 app.use('/', require('./routes'));
 // #endregion
 

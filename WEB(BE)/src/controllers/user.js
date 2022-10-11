@@ -35,11 +35,14 @@ exports.join = async function (req, res) {
       usr_discharge_date: user_discharge_date,
     })
       .then(() => {
-        return res.status(200).json();
+        // return res.status(200).json();
+        res.send("SUCCESS")
       })
       .catch(err => {
         throw err;
       });
+    a.tehn((data) => console.log("로그: " + data))
+    console.log("로그 : " + a);
   } else return res.status(401).json('ID is already taken.');
 };
 

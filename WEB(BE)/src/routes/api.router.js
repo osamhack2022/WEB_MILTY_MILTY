@@ -17,6 +17,7 @@ router.post(
 
 // 로그아웃
 router.get('/logout', function (req, res) {
+  console.log("LOGOUT TRY");
   req.logout();
   res.status(200).json('logout');
 });
