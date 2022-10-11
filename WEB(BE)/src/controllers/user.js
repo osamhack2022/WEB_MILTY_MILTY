@@ -24,7 +24,7 @@ exports.join = async function (req, res) {
   console.log('########## ID :  ', id, '######## \n');
   if (id == null) {
     // 존재하지 않으면 회원가입 저장
-    User.create({
+    var a = User.create({
       usr_name: user_name,
       usr_id: user_id,
       usr_password: user_password,
@@ -41,7 +41,7 @@ exports.join = async function (req, res) {
       .catch(err => {
         throw err;
       });
-    a.tehn((data) => console.log("로그: " + data))
+    a.then((data) => console.log("로그: " + data))
     console.log("로그 : " + a);
   } else return res.status(401).json('ID is already taken.');
 };
