@@ -54,6 +54,9 @@ app.use(methodOverride('_method'));
 
 // #region ROUTES
 app.use(express.static(path.join(__dirname, '../../WEB(FE)/build')))
+app.get('/', function (res, req) {
+  req.sendFile(path.join(__dirname, '../../WEB(FE)/build/index.html'))
+})
 app.use('/', require('./routes'));
 // #endregion
 
@@ -61,3 +64,9 @@ const port = 5000;
 app.listen(port, function () {
   console.log(`server on! http://localhost:${port}`);
 });
+
+// #region ROUTES(Bottom)
+app.get('*', function (res, req) {
+  req.sendFile(path.join(__dirname, '../../WEB(FE)/build/index.html'))
+})
+// #endregion
