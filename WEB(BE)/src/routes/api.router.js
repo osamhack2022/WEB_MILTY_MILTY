@@ -8,7 +8,7 @@ const { join } = require('../controllers/user');
 router.post(
   '/login',
   passport.authenticate('local', {
-    failureMessage: true,
+    failureMessage: false,
   }),
   function (req, res) {
     res.status(200).json('login done');
@@ -21,6 +21,7 @@ router.get('/logout', function (req, res) {
   res.status(200).json('logout');
 });
 
+/*
 // 마이 페이지
 router.get('/mypage', (req, res) => {
   const user = res.locals.currentUser;
@@ -31,9 +32,10 @@ router.get('/mypage', (req, res) => {
     res.render('user/mypage'); // [views 에 있는 mypage.ejs 실행(이 부분을 수정해서 Front단 페이지와 연결하면 됨)]
   }
 });
+*/
 
 
 // 회원가입 진행
-router.post('/register', join); // register 데이터 받는 곳(<form action="/api/register" method="post">)
+router.post('/register', join); // register 데이터 받는 곳
 
 module.exports = router;

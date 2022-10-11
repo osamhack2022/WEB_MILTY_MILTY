@@ -49,20 +49,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// Other settings
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-// app.use(express.static(__dirname + '/public'));
-// #endregion
-
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 // #region ROUTES
+app.use(express.static(path.join(__dirname, '../../WEB(FE)/public')))
 app.use('/', require('./routes'));
-// app.use('/', require('./routes/menu'));
 // #endregion
 
 const port = 5000;
