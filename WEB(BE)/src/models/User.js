@@ -26,12 +26,12 @@ module.exports = class User extends Sequelize.Model {
             },
             usr_divsion: {
                 type: Sequelize.STRING(20),
-                allowNull: false,
+                allowNull: true,
                 unique: false
             },
             usr_divsion_code: {
                 type: Sequelize.INTEGER(10),
-                allowNull: false,
+                allowNull: true,
                 unique: false
             },
             usr_class: {
