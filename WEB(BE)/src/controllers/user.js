@@ -23,7 +23,7 @@ exports.join = async function (req, res) {
   console.log('########## ID :  ', id, '######## \n');
   if (id == null) {
     // 존재하지 않으면 회원가입 저장
-    var a = User.create({
+    let a = User.create({
       usr_name: user_name,
       usr_password: user_password,
       usr_birthday: user_birthday,
@@ -34,12 +34,12 @@ exports.join = async function (req, res) {
     })
       .then(() => {
         // return res.status(200).json();
-        res.send("SUCCESS")
+        res.send('SUCCESS');
       })
       .catch(err => {
         throw err;
       });
-    a.then((data) => console.log("로그: " + data))
-    console.log("로그 : " + a);
+    a.then(data => console.log(`로그: ${data}`));
+    console.log(`로그 : ${a}`);
   } else return res.status(401).json('ID is already taken.');
 };

@@ -1,51 +1,41 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Login extends Sequelize.Model {
+module.exports = class WorkDay extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        login_pid: {
+        duty_day_pid: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          allowNull: true,
-          unique: true,
-        },
-        login_id: {
-          type: Sequelize.STRING(20),
           allowNull: false,
           unique: true,
         },
-        login_pw: {
-          type: Sequelize.STRING(60),
-          allowNull: false,
-          unique: false,
-        },
-        usr_name: {
-          type: Sequelize.STRING(20),
-          allowNull: false,
-          unique: false,
-        },
-        usr_birthday: {
+        duty_day_start: {
           type: Sequelize.DATE,
           allowNull: false,
           unique: false,
         },
-        usr_divsion: {
-          type: Sequelize.STRING(20),
-          allowNull: true,
-          unique: false,
-        },
-        usr_divsion_code: {
-          type: Sequelize.INTEGER(10),
-          allowNull: true,
-          unique: false,
-        },
-        usr_class: {
-          type: Sequelize.CHAR(10),
+        duty_day_end: {
+          type: Sequelize.DATE,
           allowNull: false,
           unique: false,
         },
-        usr_discharge_date: {
+        usr_division_key: {
+          type: Sequelize.STRING(20),
+          allowNull: false,
+          unique: false,
+        },
+        duty_people_name: {
+          type: Sequelize.STRING(1000),
+          allowNull: true,
+          unique: false,
+        },
+        duty_pid: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          unique: false,
+        },
+        duty_day: {
           type: Sequelize.DATE,
           allowNull: false,
           unique: false,
@@ -55,7 +45,7 @@ module.exports = class Login extends Sequelize.Model {
         sequelize,
         timestamps: false,
         underscored: false,
-        tableName: 'login',
+        tableName: 'workday',
         paranoid: false,
         charset: 'utf8mb4',
         collate: 'utf8mb4_general_ci',

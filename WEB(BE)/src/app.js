@@ -10,17 +10,20 @@ app.use(helmet());
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
-// #region SEQULIZE - connecting DB
-const { sequelize } = require('./models');
+// #region SEQULIZE
+const { sequelize } = require('./config/database');
 
-sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log('connection success');
-  })
-  .catch(err => {
-    console.error(`connection fail - ${err}`);
-  });
+(async () => {
+  await sequelize
+    .sync({ force: true })
+    .then(() => {
+      console.log(sequelize);
+      console.log('connection success');
+    })
+    .catch(err => {
+      console.error(`connection fail - ${err}`);
+    });
+})();
 // #endregion
 
 // #region PASSPORT
@@ -54,10 +57,10 @@ app.use(methodOverride('_method'));
 // #endregion
 
 // #region ROUTES
-app.use(express.static(path.join(__dirname, '../../WEB(FE)/build')))
+app.use(express.static(path.join(__dirname, '../../WEB(FE)/build')));
 app.get('/', function (res, req) {
-  req.sendFile(path.join(__dirname, '../../WEB(FE)/build/index.html'))
-})
+  req.sendFile(path.join(__dirname, '../../WEB(FE)/build/index.html'));
+});
 app.use('/', require('./routes'));
 // #endregion
 
@@ -69,6 +72,6 @@ app.listen(port, function () {
 
 // #region ROUTES(Bottom)
 app.get('*', function (res, req) {
-  req.sendFile(path.join(__dirname, '../../WEB(FE)/build/index.html'))
-})
+  req.sendFile(path.join(__dirname, '../../WEB(FE)/build/index.html'));
+});
 // #endregion
