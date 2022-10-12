@@ -16,6 +16,9 @@ const sequelize = new Sequelize(
   },
 );
 
+// // 메모리에서 DB 저장하는 것
+// const sequelize = new Sequelize('sqlite::memory:');
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
