@@ -1,6 +1,6 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-const User = require('../models/User');
+const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 
 //로그인할 때마다 user_id 저장 
