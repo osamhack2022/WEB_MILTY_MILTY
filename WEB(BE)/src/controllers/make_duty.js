@@ -14,6 +14,8 @@ exports.work_day = async function (req, res) {
   } = req.body;
 }
 
+exports.duty = () => { console.log('duty'); }
+
 
 
 
