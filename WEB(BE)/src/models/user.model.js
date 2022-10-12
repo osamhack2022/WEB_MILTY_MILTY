@@ -6,8 +6,9 @@ module.exports = class User extends Sequelize.Model {
             usr_pid: {
                 type: Sequelize.STRING(20),
                 primaryKey: true,
-                allowNull: false,
-                unique: true
+                allowNull: true,
+                unique: true,
+                autoIncrement: true
             },
             usr_password: {
                 type: Sequelize.STRING(60),
@@ -49,8 +50,8 @@ module.exports = class User extends Sequelize.Model {
                 sequelize,
                 timestamps: false,
                 underscored: false,
-                modelName: 'User',
-                tableName: 'User',
+                modelName: 'Users',
+                tableName: 'Users',
                 paranoid: false,
                 charset: 'utf8mb4',
                 collate: 'utf8mb4_general_ci'
