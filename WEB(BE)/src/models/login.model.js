@@ -6,7 +6,7 @@ module.exports = class Login extends Sequelize.Model {
       login_pid: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        allowNull: false,
+        allowNull: true,
         unique: true
       },
       login_id: {
