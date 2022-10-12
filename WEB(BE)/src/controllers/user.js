@@ -15,7 +15,6 @@ exports.join = async function (req, res) {
     user_class,
     user_discharge_date,
   } = req.body;
-
   // 비밀번호 암호화
   user_password = bcrypt.hashSync(user_password);
 
@@ -26,7 +25,6 @@ exports.join = async function (req, res) {
     // 존재하지 않으면 회원가입 저장
     var a = User.create({
       usr_name: user_name,
-      usr_pid: user_id,
       usr_password: user_password,
       usr_birthday: user_birthday,
       usr_division: user_division,
@@ -44,8 +42,4 @@ exports.join = async function (req, res) {
     a.then((data) => console.log("로그: " + data))
     console.log("로그 : " + a);
   } else return res.status(401).json('ID is already taken.');
-};
-
-exports.idCheck = async userId => {
-  const a = await User.findOne({ where: { user_id: userId } });
 };
