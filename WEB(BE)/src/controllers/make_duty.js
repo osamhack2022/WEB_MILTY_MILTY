@@ -1,21 +1,14 @@
-
 const bcrypt = require('bcryptjs');
 const work = require('../models/work');
 const work_day = require('../models/work_day');
 
 exports.work = async function (req, res) {
-  let {
-
-  } = req.body;
-}
+  let { } = req.body;
+};
 exports.work_day = async function (req, res) {
-  let {
+  let { } = req.body;
+};
 
-  } = req.body;
-}
-
-exports.duty = () => { console.log('duty'); }
-
-
-
-
+exports.duty = () => {
+  console.log('duty');
+};
