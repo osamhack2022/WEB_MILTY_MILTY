@@ -1,4 +1,4 @@
-import { UploadOutlined } from '@ant-design/icons';
+import React from "react";
 import {
   Layout,
   PageHeader,
@@ -8,13 +8,16 @@ import {
   Input,
   Space,
   Upload,
-  Button
-} from 'antd';
-import React from 'react';
+  Button,
+  Typography,
+  Divider,
+} from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 const { Content } = Layout;
+
 const normFile = (e) => {
-  console.log('Upload event:', e);
+  console.log("Upload event:", e);
 
   if (Array.isArray(e)) {
     return e;
@@ -22,6 +25,7 @@ const normFile = (e) => {
 
   return e?.fileList;
 };
+
 const columns = [
   {
     title: "번호",
@@ -59,7 +63,7 @@ const data = [
   },
 ];
 
-const Dutycount = () => {
+const Report = () => {
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -72,18 +76,21 @@ const Dutycount = () => {
       <Content style={{ padding: "1rem" }}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
             backgroundColor: "#ECEBE2",
           }}
           onBack={() => null}
-          title="나의 오류신고&건의사항 목록"
+          title="건의 사항"
         />
         <div
           style={{
             border: "1px solid rgb(235, 237, 240)",
             backgroundColor: "#ECEBE2",
             padding: "1rem",
-          }}>
+          }}
+        >
+          <Typography.Title level={3}>
+            나의 건의사항 & 오류신고 목록
+          </Typography.Title>
           <Table
             columns={columns}
             dataSource={data}
@@ -91,11 +98,16 @@ const Dutycount = () => {
             pagination={{ position: ["none", "none"] }}
             style={{ marginBottom: "10px" }}
           />
-          <div>
-            오류가 발생한 부분이나 건의사항이 있을 경우
-            관리자가 즉각 확인하여 조치하여 답변하겠습니다.<br />
-            (사진 첨부하면 정확한 답변이 가능합니다)
-          </div>
+          <Divider />
+          <Typography>
+            <Typography.Title level={3}>
+              건의사항 & 오류신고 작성하기
+            </Typography.Title>
+            <Typography.Paragraph>
+              오류가 발생한 부분이나 건의사항이 있을 경우 관리자가 즉각 확인하여
+              조치하여 답변하겠습니다. (사진 첨부하면 정확한 답변이 가능합니다)
+            </Typography.Paragraph>
+          </Typography>
           <Form
             name="change-form"
             onFinish={onFinish}
@@ -110,7 +122,10 @@ const Dutycount = () => {
                 },
               ]}
             >
-              <Input.TextArea rows={4} placeholder="건의/오류 사항을 적어 주세요" />
+              <Input.TextArea
+                rows={4}
+                placeholder="건의/오류 사항을 적어 주세요"
+              />
             </Form.Item>
 
             <Space>
@@ -119,7 +134,12 @@ const Dutycount = () => {
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
               >
-                <Upload name="logo" accept=".jpg,.jpeg,.png" action="/upload.do" listType="text">
+                <Upload
+                  name="logo"
+                  accept=".jpg,.jpeg,.png"
+                  action="/upload.do"
+                  listType="text"
+                >
                   <Button icon={<UploadOutlined />}>사진 첨부</Button>
                 </Upload>
               </Form.Item>
@@ -133,7 +153,7 @@ const Dutycount = () => {
         </div>
       </Content>
     </Layout>
-  )
+  );
 };
 
-export default Dutycount;
+export default Report;
