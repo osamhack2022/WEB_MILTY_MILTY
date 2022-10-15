@@ -2,3 +2,4 @@ node_modules
 *.log
 dist
 WEB(BE)/.env
+WEB(FE)/build
