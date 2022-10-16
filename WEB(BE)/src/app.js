@@ -15,7 +15,7 @@ const { sequelize } = require('./config/database');
 
 (async () => {
   await sequelize
-    .sync({ force: true })
+    .sync({ alter: true })
     .then(() => {
       console.log(sequelize);
       console.log('connection success');

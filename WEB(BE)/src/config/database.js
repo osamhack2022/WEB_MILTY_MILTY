@@ -3,7 +3,7 @@ const path = require('path');
 const adminModel = require('../models/admin.model');
 const loginModel = require('../models/login.model');
 const requestModel = require('../models/request.model');
-const userModel = require('../models/user.model');
+const userModel = require('../models/users.model');
 const workModel = require('../models/work.model');
 const workdayModel = require('../models/workday.model');
 require('dotenv').config();
