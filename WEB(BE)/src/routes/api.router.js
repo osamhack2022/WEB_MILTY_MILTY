@@ -5,7 +5,7 @@ const passport = require('passport');
 const { join } = require('../controllers/user');
 const { duty } = require('../controllers/make_duty');
 const { user_request } = require('../controllers/user_request');
-// https://jaeiko-osamhack2022-web-milty-milty-qg47pxgg975h47xw-5000.githubpreview.dev/main
+
 // login 데이터 받는 곳
 router.post(
   '/login',
@@ -15,7 +15,7 @@ router.post(
   function (req, res) {
     // If this function gets called, authentication was successful.
     // `req.user` contains the authenticated user.
-    console.log(":::::::::::::::::::" + req.user.user_id);
+    console.log("유저 로그인 됬는지 확인 : " + req.user);
     res.status(200).json("성공!");
     /*
     res.status(200).json({ classification: 'admin' });  //관리자 페이지로 이동
