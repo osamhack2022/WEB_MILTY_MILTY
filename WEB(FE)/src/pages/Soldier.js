@@ -11,6 +11,8 @@ import Dutycalender from "./Dutycalendar";
 import Dutyprecept from "./Dutyprecept";
 import Changecalendar from "./Changecalendar";
 import Dutycount from "./Dutycount";
+import Dutygraph from "./Dutygraph";
+import Report from "./Report";
 
 const { Sider } = Layout;
 
@@ -68,14 +70,14 @@ const Admin = () => {
                     key: "5",
                     label: "근무 추이",
                     onClick: () => {
-                      navigate("/soldier/check-count");
+                      navigate("/soldier/check-count/graph");
                     },
                   },
                   {
                     key: "6",
                     label: "근무 순위",
                     onClick: () => {
-                      navigate("/soldier/check-count");
+                      navigate("/soldier/check-count/ranking");
                     },
                   },
                 ],
@@ -85,7 +87,7 @@ const Admin = () => {
                 icon: <CommentOutlined />,
                 label: "건의 사항",
                 onClick: () => {
-                  navigate("/soldier/reportlist");
+                  navigate("/soldier/report");
                 },
               },
             ]}
@@ -96,6 +98,9 @@ const Admin = () => {
           <Route path="/check-duty/dutyprecept/:date" element={<Dutyprecept />} />
           <Route path="/change-duty" element={<Changecalendar />} />
           <Route path="/check-count/count" element={<Dutycount />} />
+          <Route path="/check-count/graph" element={<Dutygraph />} />
+          <Route path="/check-count/ranking" element={<Dutycalender />} />
+          <Route path="/report" element={<Report />} />
         </Routes>
       </Layout>
     </Layout>
