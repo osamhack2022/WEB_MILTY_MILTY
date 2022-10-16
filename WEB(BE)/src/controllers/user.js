@@ -25,6 +25,7 @@ exports.join = async function (req, res) {
     // 존재하지 않으면 회원가입 저장
     let a = User.create({
       usr_name: user_name,
+      usr_id: user_id,
       usr_password: user_password,
       usr_birthday: user_birthday,
       usr_division: user_division,

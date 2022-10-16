@@ -7,9 +7,14 @@ module.exports = class User extends Sequelize.Model {
         usr_pid: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          allowNull: false,
+          allowNull: true,
           unique: true,
           autoIncrement: true,
+        },
+        usr_id: {
+          type: Sequelize.STRING(60),
+          allowNull: false,
+          unique: true,
         },
         usr_password: {
           type: Sequelize.STRING(60),
@@ -22,18 +27,18 @@ module.exports = class User extends Sequelize.Model {
           unique: false,
         },
         usr_birthday: {
-          type: Sequelize.DATE,
+          type: Sequelize.INTEGER(10),
           allowNull: false,
           unique: false,
         },
-        usr_divsion: {
+        usr_division: {
           type: Sequelize.STRING(20),
-          allowNull: true,
+          allowNull: false,
           unique: false,
         },
-        usr_divsion_code: {
+        usr_division_code: {
           type: Sequelize.INTEGER(10),
-          allowNull: true,
+          allowNull: false,
           unique: false,
         },
         usr_class: {
@@ -51,7 +56,7 @@ module.exports = class User extends Sequelize.Model {
         sequelize,
         timestamps: false,
         underscored: false,
-        tableName: 'user',
+        tableName: 'Users',
         paranoid: false,
         charset: 'utf8mb4',
         collate: 'utf8mb4_general_ci',
