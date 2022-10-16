@@ -30,12 +30,12 @@ module.exports = class Login extends Sequelize.Model {
           allowNull: false,
           unique: false,
         },
-        usr_divsion: {
+        usr_division: {
           type: Sequelize.STRING(20),
           allowNull: true,
           unique: false,
         },
-        usr_divsion_code: {
+        usr_division_code: {
           type: Sequelize.INTEGER(10),
           allowNull: true,
           unique: false,
