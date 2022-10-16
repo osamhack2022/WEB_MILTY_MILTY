@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const passport = require('passport');
-const { join } = require('../controllers/user');
+const { register } = require('../controllers/auth.controller');
 const { duty } = require('../controllers/make_duty');
 const { user_request } = require('../controllers/user_request');
 
@@ -15,7 +15,6 @@ router.post(
   function (req, res) {
     // If this function gets called, authentication was successful.
     // `req.user` contains the authenticated user.
-    console.log("유저 로그인 됬는지 확인 : " + req.user);
     res.status(200).json("성공!");
     /*
     res.status(200).json({ classification: 'admin' });  //관리자 페이지로 이동
@@ -32,7 +31,7 @@ router.get('/logout', function (req, res) {
 });
 
 // 회원가입 진행
-router.post('/register', join); // register 데이터 받는 곳
+router.post('/register', register); // register 데이터 받는 곳
 // 근무 생성
 router.post('/make_duty', duty); // 근무 생성 데이터 받는 곳
 // 유저 근무 확인 ( 한달안에 내 근무가 언제있는지)
