@@ -8,7 +8,7 @@ const Sequelize = require('sequelize');
   `request_user`	int	NULL,
   `request_changes`	int	NULL
 */
-module.exports = class Login extends Sequelize.Model {
+module.exports = class Request extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
@@ -52,7 +52,7 @@ module.exports = class Login extends Sequelize.Model {
           type: Sequelize.INTEGER,
           allowNull: true,
           unique: false,
-        },
+        }
       },
       {
         sequelize,
