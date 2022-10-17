@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const request = require('../models/request.model');
 /*
 `request_pid`	int	NOT NULL,
@@ -21,7 +20,7 @@ request_check
 */
 
 // 건의사항 및 근무변경 저장
-exports.user_request = async function (req, res) {
+exports.user_set_request = async function (req, res) {
   const {
     request_list,
     request_duty,
@@ -29,9 +28,9 @@ exports.user_request = async function (req, res) {
     request_day,
     request_user,
     request_changes,
-    request_check
+    request_check,
+    usr_pid
   } = req.body;
-
   // 건의사항
   if (request_list == 0) {
     var a = request
@@ -43,7 +42,7 @@ exports.user_request = async function (req, res) {
         request_user,
         request_changes: 0, // 근무 변경 인원이 없기때문에 기본값 0으로 설정,=
         request_check: 1,
-
+        usr_pid
       })
       .then(() => {
         res.send('건의사항(요청) 완료.');
@@ -63,7 +62,7 @@ exports.user_request = async function (req, res) {
         request_user,
         request_changes,
         request_check: 1,
-
+        usr_pid
       })
       .then(() => {
         res.send('근무변경(요청) 완료.');
@@ -77,3 +76,22 @@ exports.user_request = async function (req, res) {
 };
 
 // 유저 건의사항 및 근무 요청사항 주기
+exports.user_get_request = async function (req, res) {
+  const {
+    usr_pid
+  } = req.body;
+  const requests = await Users.findAll({ where: { usr_id: usr_pid } });
+
+  for (var i = 0; i < request.length; i++) {
+    var buf = {
+      request_list: request[i].request_list,
+      request_duty: request[i].request_duty,
+      request_reason: request[i].request_reason,
+      request_day: request[i].request_day,
+      request_user: request[i].request_user,
+      request_changes: request[i].request_changes,
+      request_check: request[i].request_check
+    };
+    res.send(buf);
+  }
+}
