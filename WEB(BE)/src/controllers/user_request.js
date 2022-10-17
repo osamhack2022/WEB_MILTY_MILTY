@@ -40,7 +40,6 @@ exports.user_set_request = async function (req, res) {
         request_usr,
         request_change_usr: 0, // 근무 변경 인원이 없기때문에 기본값 0으로 설정,=
         request_status: 1,
-
       })
       .then(() => {
         res.send('건의사항(요청) 완료.');
