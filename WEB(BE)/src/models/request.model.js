@@ -18,7 +18,7 @@ module.exports = class Request extends Sequelize.Model {
           allowNull: false,
           unique: true,
         },
-        request_list: {
+        request_type: {
           type: Sequelize.INTEGER,
           allowNull: false,
           unique: true,
@@ -33,22 +33,22 @@ module.exports = class Request extends Sequelize.Model {
           allowNull: false,
           unique: false,
         },
-        request_day: {
+        request_date: {
           type: Sequelize.DATE,
           allowNull: false,
           unique: false,
         },
-        request_user: {
+        request_usr: {
           type: Sequelize.INTEGER,
           allowNull: true,
           unique: false,
         },
-        request_changes: {
+        request_change_usr: {
           type: Sequelize.INTEGER,
           allowNull: true,
           unique: false,
         },
-        request_check: {
+        request_status: {
           type: Sequelize.INTEGER,
           allowNull: true,
           unique: false,
