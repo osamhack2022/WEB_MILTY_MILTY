@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,12 +13,22 @@ const Login = () => {
         user_password,
       })
       .then((response) => {
-        response.status === 200 && navigate("/main");
+        if (response.status === 200 && response.data.result === "success") {
+          const { user } = response.data;
+
+          sessionStorage.setItem("user_id", user.user_id);
+          sessionStorage.setItem("user_name", user.user_name);
+          sessionStorage.setItem("user_birthday", user.user_birthday);
+          sessionStorage.setItem("user_class", user.user_class);
+          sessionStorage.setItem("user_division", user.user_division);
+          sessionStorage.setItem("user_division_code", user.user_division_code);
+
+          navigate("/main");
+        }
       })
-      .then((data) => console.log("data : ", data))
       .catch((error) => {
         console.warn("ERROR : ", error);
-        error.response.status === 401 && alert("잘못된 로그인");
+        if (error.response.status === 401) alert("잘못된 로그인");
       });
   };
 
@@ -30,10 +40,6 @@ const Login = () => {
         alignItems: "center",
         justifyContent: "center",
         height: window.innerHeight,
-        // backgroundImage: "url('http://www.1gan.co.kr/news/photo/201801/140050_92606_65.jpg')",
-        // backgroundRepeat: "no-repeat",
-        // backgroundSize: "cover",
-        // backgroundColor: "rgba( 210, 210, 202, 1.0)",
       }}
     >
       <div style={{ maxWidth: "500px", padding: "0.5rem" }}>
