@@ -26,12 +26,12 @@ const { sequelize } = require('./config/database');
 })();
 // #endregion
 
-// #region PASSPORT
+// #region Session
 app.use(
   session({
     resave: false,
     saveUninitialized: true,
-    secret: 'secret',
+    secret: process.env.SESSION_SECRET,
   }),
 );
 
