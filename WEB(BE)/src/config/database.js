@@ -8,6 +8,7 @@ const workModel = require('../models/work.model');
 const workdayModel = require('../models/workday.model');
 require('dotenv').config();
 
+
 const sequelize = new Sequelize(
   process.env.DB_TABLE,
   process.env.DB_ID,
@@ -18,6 +19,8 @@ const sequelize = new Sequelize(
     models: [path.join(__dirname, '../models')],
   },
 );
+
+// const sequelize = new Sequelize('sqlite::memory:');
 const db = {};
 db.sequelize = sequelize;
 
