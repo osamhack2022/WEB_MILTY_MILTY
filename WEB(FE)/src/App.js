@@ -38,11 +38,23 @@ const App = () => {
         />
         <Route
           path="/admin/*"
-          element={<Admin user={user} setUser={setUser} />}
+          element={
+            user === null ? (
+              <Navigate to="/login" />
+            ) : (
+              <Admin user={user} setUser={setUser} />
+            )
+          }
         />
         <Route
           path="/soldier/*"
-          element={<Soldier user={user} setUser={setUser} />}
+          element={
+            user === null ? (
+              <Navigate to="/login" />
+            ) : (
+              <Soldier user={user} setUser={setUser} />
+            )
+          }
         />
         <Route
           index
