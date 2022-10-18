@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
@@ -8,7 +8,7 @@ import Main from "./pages/Main";
 import "./App.less";
 
 const App = () => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (sessionStorage.getItem("user_id") !== null) {
@@ -26,10 +26,21 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
-        <Route path="/admin/*" element={<Admin user={user} />} />
-        <Route path="/soldier/*" element={<Soldier user={user} />} />
+        <Route
+          path="/admin/*"
+          element={<Admin user={user} setUser={setUser} />}
+        />
+        <Route
+          path="/soldier/*"
+          element={<Soldier user={user} setUser={setUser} />}
+        />
+        <Route
+          index
+          element={
+            user === null ? <Login /> : <Navigate to="/soldier" replace />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

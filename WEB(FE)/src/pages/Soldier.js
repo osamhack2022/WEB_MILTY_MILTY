@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, Link, useNavigate } from "react-router-dom";
+import { Route, Routes, Link, useNavigate, redirect } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import {
   CalendarOutlined,
@@ -19,7 +19,7 @@ import Report from "./Report";
 
 const { Sider } = Layout;
 
-const Admin = ({ user }) => {
+const Admin = ({ user, setUser }) => {
   const navigate = useNavigate();
 
   return (
@@ -105,7 +105,11 @@ const Admin = ({ user }) => {
                 key: "9",
                 icon: <LogoutOutlined />,
                 label: "로그아웃",
-                onClick: () => {},
+                onClick: () => {
+                  sessionStorage.clear();
+                  setUser(null);
+                  navigate("/");
+                },
               },
             ]}
           />
