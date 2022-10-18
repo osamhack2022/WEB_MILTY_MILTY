@@ -12,12 +12,12 @@ module.exports = class Timeslot extends Sequelize.Model {
           unique: true,
         },
         timeslot_start: {
-          type: Sequelize.DATE,
+          type: Sequelize.TIME,
           allowNull: false,
           unique: true,
         },
         timeslot_end: {
-          type: Sequelize.DATE,
+          type: Sequelize.TIME,
           allowNull: false,
           unique: false,
         },
@@ -27,7 +27,7 @@ module.exports = class Timeslot extends Sequelize.Model {
           unique: false,
         },
         timeslot_point: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.FLOAT,
           allowNull: false,
           unique: false,
         }
