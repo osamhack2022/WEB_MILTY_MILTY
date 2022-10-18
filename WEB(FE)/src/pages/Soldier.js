@@ -9,6 +9,7 @@ import {
   UserOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
+import Main from "./Main";
 import Dutycalender from "./Dutycalendar";
 import Dutyprecept from "./Dutyprecept";
 import Changecalendar from "./Changecalendar";
@@ -110,8 +111,12 @@ const Admin = ({ user }) => {
           />
         </Sider>
         <Routes>
+          <Route index element={<Main user={user} />} />
           <Route path="/check-duty" element={<Dutycalender />} />
-          <Route path="/check-duty/dutyprecept/:date" element={<Dutyprecept />} />
+          <Route
+            path="/check-duty/dutyprecept/:date"
+            element={<Dutyprecept />}
+          />
           <Route path="/change-duty" element={<Changecalendar />} />
           <Route path="/check-count/count" element={<Dutycount />} />
           <Route path="/check-count/graph" element={<Dutygraph />} />

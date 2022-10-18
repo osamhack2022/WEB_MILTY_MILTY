@@ -28,9 +28,8 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
-        <Route exact path="/main" element={<Main />} />
-        <Route path="/admin/*" element={<Admin />} />
-        <Route path="/soldier/*" element={<Soldier />} />
+        <Route path="/admin/*" element={<Admin user={user} />} />
+        <Route path="/soldier/*" element={<Soldier user={user} />} />
       </Routes>
     </BrowserRouter>
   );

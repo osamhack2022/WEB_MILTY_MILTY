@@ -23,7 +23,7 @@ const Login = () => {
           sessionStorage.setItem("user_division", user.user_division);
           sessionStorage.setItem("user_division_code", user.user_division_code);
 
-          navigate("/main");
+          navigate("/soldier");
         }
       })
       .catch((error) => {
