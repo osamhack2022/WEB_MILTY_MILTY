@@ -27,6 +27,7 @@ router.post(
       '부대 코드: ', req.user.usr_division_code,
       '신분: ', req.user.usr_class,
       '전역일: ', req.user.usr_discharge_date,
+      '구분: ', req.user.classification,
     );
     res.status(200).json({
       result: 'success',
@@ -35,16 +36,12 @@ router.post(
         user_name: req.user.usr_name,
         user_birthday: req.user.usr_birthday,
         user_division: req.user.usr_division,
-        user_division_code: req.user.usr_division_code,
+        user_division_code: req.user.usr_division_code,   // user_division_code 를 통해 특정 부대의 페이지에만 접근 가능하도록 설정
         user_class: req.user.usr_class,
         user_discharge_date: req.user.usr_discharge_date,
+        classification: req.user.classification           // true이면 Front 라우터에서 admin 페이지로, false이면 user main 페이지로
       },
     });
-
-    /*
-    res.status(200).json({ classification: 'admin' });  //관리자 페이지로 이동
-    res.status(200).json({ classification: 'user' });  //유저 페이지 이동
-    */
   },
 );
 
@@ -62,7 +59,17 @@ router.post('/register', register); // register 데이터 받는 곳
 
 // #### Duty region ####
 // 근무 생성
-router.post('/set-duty', set_duty); // 근무 생성 데이터 받는 곳
+router.post('/set-duty', set_duty, function (req, res) {
+  res.status(200).json({
+    "result": "success",
+    "duty": {
+      "duty_pid": req.duty_pid, // 자동 생성 유니크 값
+      "user_division_code": req.usr_division_code, // 부대 코드
+      "duty_name": req.duty_name, // 근무 종류
+      "duty_people_num": req.duty_people_num, // 시간대별 근무 투입 인원 수
+    },
+  });
+}); // 근무 생성 데이터 받는 곳
 
 // 유저 근무 확인 ( 한달안에 내 근무가 언제있는지)
 router.post('/get-duty', get_duty);
