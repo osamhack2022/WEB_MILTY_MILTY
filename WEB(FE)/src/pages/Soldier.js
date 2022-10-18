@@ -6,7 +6,10 @@ import {
   SwapOutlined,
   BarChartOutlined,
   CommentOutlined,
+  UserOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
+import Main from "./Main";
 import Dutycalender from "./Dutycalendar";
 import Dutyprecept from "./Dutyprecept";
 import Changecalendar from "./Changecalendar";
@@ -16,7 +19,7 @@ import Report from "./Report";
 
 const { Sider } = Layout;
 
-const Admin = () => {
+const Admin = ({ user, setUser }) => {
   const navigate = useNavigate();
 
   return (
@@ -90,12 +93,34 @@ const Admin = () => {
                   navigate("/soldier/report");
                 },
               },
+              {
+                key: "8",
+                icon: <UserOutlined />,
+                label: "마이 페이지",
+                onClick: () => {
+                  navigate("/soldier/mypage");
+                },
+              },
+              {
+                key: "9",
+                icon: <LogoutOutlined />,
+                label: "로그아웃",
+                onClick: () => {
+                  sessionStorage.clear();
+                  setUser(null);
+                  navigate("/");
+                },
+              },
             ]}
           />
         </Sider>
         <Routes>
+          <Route index element={<Main user={user} />} />
           <Route path="/check-duty" element={<Dutycalender />} />
-          <Route path="/check-duty/dutyprecept/:date" element={<Dutyprecept />} />
+          <Route
+            path="/check-duty/dutyprecept/:date"
+            element={<Dutyprecept />}
+          />
           <Route path="/change-duty" element={<Changecalendar />} />
           <Route path="/check-count/count" element={<Dutycount />} />
           <Route path="/check-count/graph" element={<Dutygraph />} />
