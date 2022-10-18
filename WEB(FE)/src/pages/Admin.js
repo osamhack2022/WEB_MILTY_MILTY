@@ -18,7 +18,7 @@ import Reportlist from "./Reportlist";
 
 const { Sider } = Layout;
 
-const Admin = () => {
+const Admin = ({ user }) => {
   const navigate = useNavigate();
 
   return (
@@ -128,7 +128,7 @@ const Admin = () => {
         <Routes>
           <Route path="/write-duty" element={<WriteDuty />} />
           <Route path="/exemptlist" element={<Exemptlist />} />
-          <Route path="/set-duty" element={<SetDuty />} />
+          <Route path="/set-duty" element={<SetDuty user={user} />} />
           <Route path="/soldierlist" element={<Soldierlist />} />
           <Route path="/request" element={<Request />} />
           <Route path="/reportlist" element={<Reportlist />} />
