@@ -29,7 +29,11 @@ const App = () => {
         <Route
           path="/login"
           element={
-            user === null ? <Login /> : <Navigate to="/soldier" replace />
+            user === null ? (
+              <Login setUser={setUser} />
+            ) : (
+              <Navigate to="/soldier" replace />
+            )
           }
         />
         <Route

@@ -4,7 +4,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
 
-const Login = () => {
+const Login = ({ setUser }) => {
   const navigate = useNavigate();
   const onFinish = ({ user_id, user_password }) => {
     axios
@@ -22,7 +22,7 @@ const Login = () => {
           sessionStorage.setItem("user_class", user.user_class);
           sessionStorage.setItem("user_division", user.user_division);
           sessionStorage.setItem("user_division_code", user.user_division_code);
-
+          setUser(user);
           navigate("/soldier");
         }
       })
