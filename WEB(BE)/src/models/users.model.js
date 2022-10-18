@@ -47,7 +47,7 @@ module.exports = class User extends Sequelize.Model {
           unique: false,
         },
         classification: {
-          type: Sequelize.BOOLEAN,
+          type: Sequelize.INTEGER,
           allowNull: true,
           unique: false,
         },
