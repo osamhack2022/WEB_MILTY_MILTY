@@ -4,7 +4,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import Soldier from "./pages/Soldier";
-import Main from "./pages/Main";
 import "./App.less";
 
 const App = () => {
@@ -28,6 +27,12 @@ const App = () => {
       <Routes>
         <Route exact path="/register" element={<Register />} />
         <Route
+          path="/login"
+          element={
+            user === null ? <Login /> : <Navigate to="/soldier" replace />
+          }
+        />
+        <Route
           path="/admin/*"
           element={<Admin user={user} setUser={setUser} />}
         />
@@ -38,7 +43,11 @@ const App = () => {
         <Route
           index
           element={
-            user === null ? <Login /> : <Navigate to="/soldier" replace />
+            user === null ? (
+              <Navigate to="/login" />
+            ) : (
+              <Navigate to="/soldier" replace />
+            )
           }
         />
       </Routes>
