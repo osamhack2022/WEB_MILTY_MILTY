@@ -1,11 +1,10 @@
 const { Sequelize } = require('sequelize');
 const path = require('path');
 const adminModel = require('../models/admin.model');
-const loginModel = require('../models/login.model');
 const requestModel = require('../models/request.model');
 const userModel = require('../models/users.model');
-const workModel = require('../models/work.model');
-const workdayModel = require('../models/workday.model');
+const dutyModel = require('../models/duty.model');
+const duty_scheduleModel = require('../models/duty_schedule.model');
 require('dotenv').config();
 
 
@@ -25,18 +24,16 @@ const db = {};
 db.sequelize = sequelize;
 
 db.admin = adminModel;
-db.login = loginModel;
 db.request = requestModel;
 db.user = userModel;
-db.work = workModel;
-db.workday = workdayModel;
+db.duty = dutyModel;
+db.duty_schedule = duty_scheduleModel;
 
 adminModel.init(sequelize);
-loginModel.init(sequelize);
 requestModel.init(sequelize);
 userModel.init(sequelize);
-workModel.init(sequelize);
-workdayModel.init(sequelize);
+dutyModel.init(sequelize);
+duty_scheduleModel.init(sequelize);
 
 
 module.exports = db;
