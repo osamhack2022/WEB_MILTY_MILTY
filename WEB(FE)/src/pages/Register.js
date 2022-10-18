@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form, Input, Select, DatePicker } from "antd";
+import { Button, Form, Input, Select, DatePicker, Checkbox } from "antd";
 import moment from "moment";
 import axios from "axios";
 
@@ -202,6 +202,13 @@ const Register = () => {
               Value={moment("2022/01/01", dateFormat)}
               format={dateFormat}
             />
+          </Form.Item>
+
+          <Form.Item
+            wrapperCol={{ xs: { offset: 0 }, sm: { offset: 6 } }}
+            name="checked"
+            valuePropName="checked">
+            <Checkbox>관리자로 가입하기</Checkbox>
           </Form.Item>
 
           <Form.Item
