@@ -6,6 +6,8 @@ import {
   SwapOutlined,
   BarChartOutlined,
   CommentOutlined,
+  UserOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import Dutycalender from "./Dutycalendar";
 import Dutyprecept from "./Dutyprecept";
@@ -16,7 +18,7 @@ import Report from "./Report";
 
 const { Sider } = Layout;
 
-const Admin = () => {
+const Admin = ({ user }) => {
   const navigate = useNavigate();
 
   return (
@@ -89,6 +91,20 @@ const Admin = () => {
                 onClick: () => {
                   navigate("/soldier/report");
                 },
+              },
+              {
+                key: "8",
+                icon: <UserOutlined />,
+                label: "마이 페이지",
+                onClick: () => {
+                  navigate("/soldier/mypage");
+                },
+              },
+              {
+                key: "9",
+                icon: <LogoutOutlined />,
+                label: "로그아웃",
+                onClick: () => {},
               },
             ]}
           />
