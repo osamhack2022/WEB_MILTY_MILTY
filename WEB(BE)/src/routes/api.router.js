@@ -39,7 +39,7 @@ router.post(
         user_division_code: req.user.usr_division_code,   // user_division_code 를 통해 특정 부대의 페이지에만 접근 가능하도록 설정
         user_class: req.user.usr_class,
         user_discharge_date: req.user.usr_discharge_date,
-        classification: req.user.classification           // true이면 Front 라우터에서 admin 페이지로, false이면 user main 페이지로
+        classification: req.user.classification           // 1이면 Front 라우터에서 admin 페이지로, 2이면 user main 페이지로, null이면 로그인 못하게!
       },
     });
   },
