@@ -8,7 +8,7 @@ const Sequelize = require('sequelize');
   `request_user`	int	NULL,
   `request_changes`	int	NULL
 */
-module.exports = class Login extends Sequelize.Model {
+module.exports = class Request extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
@@ -18,7 +18,7 @@ module.exports = class Login extends Sequelize.Model {
           allowNull: false,
           unique: true,
         },
-        request_list: {
+        request_type: {
           type: Sequelize.INTEGER,
           allowNull: false,
           unique: true,
@@ -33,26 +33,26 @@ module.exports = class Login extends Sequelize.Model {
           allowNull: false,
           unique: false,
         },
-        request_day: {
+        request_date: {
           type: Sequelize.DATE,
           allowNull: false,
           unique: false,
         },
-        request_user: {
+        request_usr: {
           type: Sequelize.INTEGER,
           allowNull: true,
           unique: false,
         },
-        request_changes: {
+        request_change_usr: {
           type: Sequelize.INTEGER,
           allowNull: true,
           unique: false,
         },
-        request_check: {
+        request_status: {
           type: Sequelize.INTEGER,
           allowNull: true,
           unique: false,
-        },
+        }
       },
       {
         sequelize,

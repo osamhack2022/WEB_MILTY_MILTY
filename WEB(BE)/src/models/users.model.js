@@ -46,6 +46,11 @@ module.exports = class User extends Sequelize.Model {
           allowNull: false,
           unique: false,
         },
+        classification: {
+          type: Sequelize.BOOLEAN,
+          allowNull: true,
+          unique: false,
+        },
         usr_discharge_date: {
           type: Sequelize.DATE,
           allowNull: false,

@@ -3,9 +3,12 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { register } = require('../controllers/auth.controller');
-const { duty } = require('../controllers/set_duty');
-const { user_request } = require('../controllers/user_request');
+const { set_duty, get_duty, set_duty_timeslot, get_duty_timeslot, set_duty_schedule, get_duty_schedule } = require('../controllers/duty');
+const { get_check_count } = require('../controllers/check_count');
+const { user_set_request } = require('../controllers/user_request');
+const { user_get_request } = require('../controllers/user_request');
 
+// #### Auth region ####
 // login 데이터 받는 곳
 router.post(
   '/login',
@@ -24,6 +27,7 @@ router.post(
       '부대 코드: ', req.user.usr_division_code,
       '신분: ', req.user.usr_class,
       '전역일: ', req.user.usr_discharge_date,
+      '구분: ', req.user.classification,
     );
     res.status(200).json({
       result: 'success',
@@ -32,16 +36,12 @@ router.post(
         user_name: req.user.usr_name,
         user_birthday: req.user.usr_birthday,
         user_division: req.user.usr_division,
-        user_division_code: req.user.usr_division_code,
+        user_division_code: req.user.usr_division_code,   // user_division_code 를 통해 특정 부대의 페이지에만 접근 가능하도록 설정
         user_class: req.user.usr_class,
         user_discharge_date: req.user.usr_discharge_date,
+        classification: req.user.classification           // true이면 Front 라우터에서 admin 페이지로, false이면 user main 페이지로
       },
     });
-
-    /*
-    res.status(200).json({ classification: 'admin' });  //관리자 페이지로 이동
-    res.status(200).json({ classification: 'user' });  //유저 페이지 이동
-    */
   },
 );
 
@@ -54,14 +54,47 @@ router.get('/logout', function (req, res) {
 
 // 회원가입 진행
 router.post('/register', register); // register 데이터 받는 곳
+// #### End region ####
 
+
+// #### Duty region ####
 // 근무 생성
-router.post('/set-duty', duty); // 근무 생성 데이터 받는 곳
+router.post('/set-duty', set_duty, function (req, res) {
+  res.status(200).json({
+    "result": "success",
+    "duty": {
+      "duty_pid": req.duty_pid, // 자동 생성 유니크 값
+      "user_division_code": req.usr_division_code, // 부대 코드
+      "duty_name": req.duty_name, // 근무 종류
+      "duty_people_num": req.duty_people_num, // 시간대별 근무 투입 인원 수
+    },
+  });
+}); // 근무 생성 데이터 받는 곳
 
 // 유저 근무 확인 ( 한달안에 내 근무가 언제있는지)
+router.post('/get-duty', get_duty);
 
+// 근무 시간대 생성
+router.post('/set-duty-timeslot', set_duty_timeslot);
+
+// 근무 시간대 조회
+router.post('/get-duty-timeslot', get_duty_timeslot);
+
+// 해당 날짜의 근무표 생성
+router.post('/set-duty-schedule', set_duty_schedule);
+
+// 해당 날짜의 근무표 조회
+router.post('/get-duty-schedule', get_duty_schedule);
+
+// 근무 횟수 조회
+router.post('/get-check-count', get_check_count);
+// #### End region ####
+
+
+// #### Request region ####
 // 근무변경 및 건의사항
-router.post('/user-request-set', user_request); // 근무변경 및 건의사항 정보 넣기 / 하는중
-router.post('/user-request-get', user_request); // 근무변경 및 건의사항 정보 받기 / 하고있는중
+router.post('/user-request-set', user_set_request); // 근무변경 및 건의사항 정보 넣기
+router.post('/user-request-get', user_get_request); // 근무변경 및 건의사항 정보 받기 
+// #### End region ####
 
 module.exports = router;
