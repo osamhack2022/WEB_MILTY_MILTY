@@ -11,7 +11,7 @@ exports.set_duty = async function (req, res) {
   } = req.body;
 
   Duty.create({
-    usr_division_code: user_division_code,    // 이 부분을 Users 테이블에 있는 usr_division_code와 일치하는지 확인해야함.
+    usr_division_code: user_division_code,  // Front에 있는 현재 로그인된 부대 관리자의 부대코드를 활용하여 근무 부대코드에 저장
     duty_name: duty_name,
     duty_people_num: duty_people_num
   })
@@ -60,8 +60,8 @@ exports.get_duty_timeslot = async function (req, res) {
   let {
     duty_pid
   } = req.body;
-
-
+  const data = Timeslot.findAll({ where: { duty_pid: duty_pid } })
+  return res.status(200).json(data);
 };
 
 // 해당 날짜의 근무표 생성
@@ -80,5 +80,3 @@ exports.get_duty_schedule = async function (req, res) {
     date
   } = req.body;
 };
-
-exports.duty = function () { };
