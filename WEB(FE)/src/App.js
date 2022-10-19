@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import React from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useAuth } from "./hooks/useAuth";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
@@ -7,67 +9,42 @@ import Soldier from "./pages/Soldier";
 import "./App.less";
 
 const App = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    if (sessionStorage.getItem("user_id") !== null) {
-      setUser({
-        user_id: sessionStorage.getItem("user_id"),
-        user_name: sessionStorage.getItem("user_name"),
-        user_birthday: sessionStorage.getItem("user_birthday"),
-        user_class: sessionStorage.getItem("user_class"),
-        user_division: sessionStorage.getItem("user_division"),
-        user_division_code: sessionStorage.getItem("user_division_code"),
-      });
-    }
-  }, []);
+  const { user } = useAuth();
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/register" element={<Register />} />
-        <Route
-          path="/login"
-          element={
-            user === null ? (
-              <Login setUser={setUser} />
-            ) : (
-              <Navigate to="/soldier" replace />
-            )
-          }
-        />
-        <Route
-          path="/admin/*"
-          element={
-            user === null ? (
-              <Navigate to="/login" />
-            ) : (
-              <Admin user={user} setUser={setUser} />
-            )
-          }
-        />
-        <Route
-          path="/soldier/*"
-          element={
-            user === null ? (
-              <Navigate to="/login" />
-            ) : (
-              <Soldier user={user} setUser={setUser} />
-            )
-          }
-        />
-        <Route
-          index
-          element={
-            user === null ? (
-              <Navigate to="/login" />
-            ) : (
-              <Navigate to="/soldier" replace />
-            )
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route exact path="/register" element={<Register />} />
+      <Route
+        path="/login"
+        element={user === null ? <Login /> : <Navigate to="/" replace />}
+      />
+      <Route
+        path="/admin/*"
+        element={
+          <ProtectedRoute>
+            <Admin />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/soldier/*"
+        element={
+          <ProtectedRoute>
+            <Soldier />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        index
+        element={
+          user === null ? (
+            <Navigate to="/login" />
+          ) : (
+            <Navigate to="/soldier" replace />
+          )
+        }
+      />
+    </Routes>
   );
 };
 

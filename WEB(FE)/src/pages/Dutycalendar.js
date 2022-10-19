@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Layout, Badge, Button, PageHeader } from "antd";
+import axios from "axios";
 import CustomCalendar from "../components/CustomCalendar";
 
 const { Content } = Layout;
@@ -46,7 +47,12 @@ const data = [
 
 const getListData = (date) => data.filter((v) => date.isSame(v.date, "day"));
 
-const Dutycalendar = () => {
+const Dutycalendar = ({ user }) => {
+  useEffect(() => {
+    axios.post("/api/get-duty-schedule", {
+      user_id: user.user_id,
+    });
+  }, []);
   const dateCellRender = (value) => {
     const listData = getListData(value);
     return (

@@ -9,6 +9,7 @@ import {
   UserOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
+import { useAuth } from "../hooks/useAuth";
 import Main from "./Main";
 import Dutycalender from "./Dutycalendar";
 import Dutyprecept from "./Dutyprecept";
@@ -19,8 +20,9 @@ import Report from "./Report";
 
 const { Sider } = Layout;
 
-const Admin = ({ user, setUser }) => {
+const Admin = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -106,9 +108,7 @@ const Admin = ({ user, setUser }) => {
                 icon: <LogoutOutlined />,
                 label: "로그아웃",
                 onClick: () => {
-                  sessionStorage.clear();
-                  setUser(null);
-                  navigate("/");
+                  logout();
                 },
               },
             ]}
