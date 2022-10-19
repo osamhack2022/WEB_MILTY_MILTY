@@ -1,11 +1,13 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
-const Login = ({ setUser }) => {
-  const navigate = useNavigate();
+const Login = () => {
+  const { login } = useAuth();
+
   const onFinish = ({ user_id, user_password }) => {
     axios
       .post("/api/login", {
@@ -16,14 +18,7 @@ const Login = ({ setUser }) => {
         if (response.status === 200 && response.data.result === "success") {
           const { user } = response.data;
 
-          sessionStorage.setItem("user_id", user.user_id);
-          sessionStorage.setItem("user_name", user.user_name);
-          sessionStorage.setItem("user_birthday", user.user_birthday);
-          sessionStorage.setItem("user_class", user.user_class);
-          sessionStorage.setItem("user_division", user.user_division);
-          sessionStorage.setItem("user_division_code", user.user_division_code);
-          setUser(user);
-          navigate("/soldier");
+          login(user);
         }
       })
       .catch((error) => {

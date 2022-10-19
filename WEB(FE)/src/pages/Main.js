@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { Layout, Col, Row, Typography } from "antd";
 import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const { Content } = Layout;
 const { Title } = Typography;
 
-const Main = ({ user }) => {
+const Main = () => {
+  const { user } = useAuth();
   useEffect(() => {}, []);
 
   return (
