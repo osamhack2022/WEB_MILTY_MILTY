@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const Duty = require('../models/duty.model')
+const Timeslot = require('../models/duty.model')
 
 // 근무 종류 생성
 exports.set_duty = async function (req, res) {
@@ -24,6 +25,14 @@ exports.get_duty = async function (req, res) {
   let {
     usr_division_code
   } = req.body;
+  const data = Duty.findAll({ where: { usr_division_code: usr_division_code } });
+  for (var i = 0; i < data.length; i++) {
+    var buf = {
+      duty_name: data[i].duty_name,
+      duty_point: data[i].duty_point
+    };
+    res.send(buf);
+  }
 };
 
 // 근무 시간대 생성
@@ -34,6 +43,16 @@ exports.set_duty_timeslot = async function (req, res) {
     timeslot_end,
     point
   } = req.body;
+
+  Timeslot.create({
+    timeslot_start: timeslot_start,
+    timeslot_end: timeslot_end,
+    duty_pid: duty_pid,
+    timeslot_point: point
+  }).then(() => {
+    return res.status(200).json('duty setting completed');
+  })
+
 };
 
 // 근무 시간대 조회
@@ -41,6 +60,8 @@ exports.get_duty_timeslot = async function (req, res) {
   let {
     duty_pid
   } = req.body;
+
+
 };
 
 // 해당 날짜의 근무표 생성
