@@ -49,9 +49,6 @@ const Login = () => {
           style={{ paddingTop: "1.5rem" }}
           name="normal_login"
           className="login-form"
-          initialValues={{
-            remember: true,
-          }}
           onFinish={onFinish}
         >
           <Form.Item
@@ -83,18 +80,14 @@ const Login = () => {
               placeholder="비밀번호"
             />
           </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>로그인 저장</Checkbox>
-            </Form.Item>
-
-            <a className="login-form-forgot" href="/password-reset">
-              PW 초기화
-            </a>
-          </Form.Item>
 
           <Form.Item>
-            <Button style={{ width: "100%" }} type="primary" htmlType="submit">
+            <Button
+              block
+              style={{ marginTop: "0.5rem" }}
+              type="primary"
+              htmlType="submit"
+            >
               로그인
             </Button>
             <Link to="/register">
