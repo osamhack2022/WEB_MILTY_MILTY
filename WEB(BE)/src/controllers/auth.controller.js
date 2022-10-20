@@ -25,7 +25,7 @@ exports.register = async function (req, res) {
 
   const now = new Date();
 
-  if (id == null) {   // 가입할 때 이미 존재하는 id인지, 그리고 관리자 권한을 체크 안했는지 확인되면 병사로 가입
+  if (id == null && checked == false) {   // 가입할 때 이미 존재하는 id인지, 그리고 관리자 권한을 체크 안했는지 확인되면 병사로 가입
     // 존재하지 않으면 회원가입 저장
     console.log('checked == false 조건문');
     let user = Users.create({
