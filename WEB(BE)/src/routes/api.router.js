@@ -95,8 +95,8 @@ router.post('/get-check-count', get_check_count);
 
 // #### Request region ####
 // 근무변경 및 건의사항
-router.post('/user-request-set', user_set_request); // 근무변경 및 건의사항 정보 넣기
-router.post('/user-request-get', user_get_request); // 근무변경 및 건의사항 정보 받기 
+router.post('/set-duty-request', user_set_request); // 근무변경 및 건의사항 정보 넣기
+router.post('/get-duty-request', user_get_request); // 근무변경 및 건의사항 정보 받기 
 // #### End region ####
 
 module.exports = router;
