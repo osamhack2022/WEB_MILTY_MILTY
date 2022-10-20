@@ -15,21 +15,24 @@ import axios from "axios";
 
 const { Content } = Layout;
 
-const SetDuty = () => {
+const SetDuty = ({ user }) => {
   const [setDutyForm] = Form.useForm();
   const [setTimeslotForm] = Form.useForm();
 
   const onSetDutyFinish = (values) => {
-    console.log(values);
     axios
-      .post("/api/make-duty", values)
+      .post("/api/set-duty", {
+        usr_division_code: user.user_division_code,
+        duty_name: values.duty_name,
+        duty_people_num: values.duty_people_num,
+      })
       .then((response) => {
-        if (response.status === 200) {
-          alert("성공적으로 근무가 추가되었습니다.");
+        if (response.status === 200 && response.data.result === "success") {
+          alert("근무 등록에 성공하였습니다!");
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.warn(error);
       });
   };
 
@@ -64,10 +67,11 @@ const SetDuty = () => {
             name="set-duty"
             layout="vertical"
             onFinish={onSetDutyFinish}
+            initialValues={{ duty_people_num: 1 }}
             scrollToFirstError
           >
             <Form.Item
-              name="duty_type"
+              name="duty_name"
               label="근무 이름"
               rules={[
                 {
@@ -96,7 +100,6 @@ const SetDuty = () => {
               <InputNumber
                 min={1}
                 max={3}
-                defaultValue={1}
                 formatter={(value) => `${value}명`}
               />
             </Form.Item>

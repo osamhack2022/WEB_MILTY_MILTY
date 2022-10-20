@@ -1,11 +1,13 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
-  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const onFinish = ({ user_id, user_password }) => {
     axios
       .post("/api/login", {
@@ -13,12 +15,15 @@ const Login = () => {
         user_password,
       })
       .then((response) => {
-        response.status === 200 && navigate("/main");
+        if (response.status === 200 && response.data.result === "success") {
+          const { user } = response.data;
+
+          login(user);
+        }
       })
-      .then((data) => console.log("data : ", data))
       .catch((error) => {
         console.warn("ERROR : ", error);
-        error.response.status === 401 && alert("잘못된 로그인");
+        if (error.response.status === 401) alert("잘못된 로그인");
       });
   };
 
@@ -30,10 +35,6 @@ const Login = () => {
         alignItems: "center",
         justifyContent: "center",
         height: window.innerHeight,
-        // backgroundImage: "url('http://www.1gan.co.kr/news/photo/201801/140050_92606_65.jpg')",
-        // backgroundRepeat: "no-repeat",
-        // backgroundSize: "cover",
-        // backgroundColor: "rgba( 210, 210, 202, 1.0)",
       }}
     >
       <div style={{ maxWidth: "500px", padding: "0.5rem" }}>

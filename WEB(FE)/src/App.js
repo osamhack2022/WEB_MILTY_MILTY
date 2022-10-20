@@ -1,42 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useAuth } from "./hooks/useAuth";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import Soldier from "./pages/Soldier";
-import Main from "./pages/Main";
 import "./App.less";
 
 const App = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  const { user } = useAuth();
 
-  const handleResize = () => {
-    setWindowSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<Login />} />
-        <Route exact path="/register" element={<Register />} />
-        <Route exact path="/main" element={<Main />} />
-        <Route exact path="/info" render={() => <Info userInfo={userInfo} />} />
-        <Route path="/admin/*" element={<Admin />} />
-        <Route path="/soldier/*" element={<Soldier />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route exact path="/register" element={<Register />} />
+      <Route
+        path="/login"
+        element={user === null ? <Login /> : <Navigate to="/" replace />}
+      />
+      <Route
+        path="/admin/*"
+        element={
+          <ProtectedRoute>
+            <Admin />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/soldier/*"
+        element={
+          <ProtectedRoute>
+            <Soldier />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        index
+        element={
+          user === null ? (
+            <Navigate to="/login" />
+          ) : (
+            <Navigate to="/soldier" replace />
+          )
+        }
+      />
+    </Routes>
   );
 };
 

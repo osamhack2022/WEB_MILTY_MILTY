@@ -126,6 +126,7 @@ const Admin = () => {
           />
         </Sider>
         <Routes>
+          <Route index element={<WriteDuty />} />
           <Route path="/write-duty" element={<WriteDuty />} />
           <Route path="/exemptlist" element={<Exemptlist />} />
           <Route path="/set-duty" element={<SetDuty />} />
