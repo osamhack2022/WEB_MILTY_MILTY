@@ -8,6 +8,7 @@ import {
   SwapOutlined,
   BarChartOutlined,
   CommentOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import WriteDuty from "./WriteDuty";
 import Exemptlist from "./Exemptlist";
@@ -15,11 +16,13 @@ import SetDuty from "./SetDuty";
 import Soldierlist from "./Soldierlist";
 import Request from "./Request";
 import Reportlist from "./Reportlist";
+import { useAuth } from "../hooks/useAuth";
 
 const { Sider } = Layout;
 
 const Admin = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -120,6 +123,14 @@ const Admin = () => {
                 label: "건의 사항",
                 onClick: () => {
                   navigate("/admin/reportlist");
+                },
+              },
+              {
+                key: "12",
+                icon: <LogoutOutlined />,
+                label: "로그아웃",
+                onClick: () => {
+                  logout();
                 },
               },
             ]}
