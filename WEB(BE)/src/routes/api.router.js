@@ -21,6 +21,7 @@ router.post(
     console.log(
       '로그인 성공!',
       '아이디 :', req.user.usr_id,
+      '유저 PID :', req.user.usr_pid,
       '이름 :', req.user.usr_name,
       '생일 :', req.user.usr_birthday,
       '부대 :', req.user.usr_division,
@@ -33,6 +34,7 @@ router.post(
       result: 'success',
       user: {
         user_id: req.user.usr_id,
+        user_pid: req.user.usr_pid,
         user_name: req.user.usr_name,
         user_birthday: req.user.usr_birthday,
         user_division: req.user.usr_division,
