@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Layout,
   PageHeader,
@@ -35,26 +35,51 @@ const columns = [
   {
     title: "처리 상태",
     key: "status",
-    render: (_, { status }) =>
-      status ? (
-        <Tag color="success">처리 완료</Tag>
-      ) : (
-        <Tag color="warning">처리중</Tag>
-      ),
-  },
-];
-const data = [
-  {
-    key: 1,
-    index: 1,
-    description: "운전병 장거리 배차 전날에는 야간 근무를 넣지 말아주세요.",
-    time: "2022-10-01 00:00",
-    status: false,
+    render: (_, { status }) => {
+      if (status === 1) return <Tag color="warning">처리중</Tag>;
+      if (status === 2) return <Tag color="success">처리 완료</Tag>;
+      return <Tag color="error">처리불가</Tag>;
+    },
   },
 ];
 
 const Report = () => {
   const { user } = useAuth();
+  const [data, setData] = useState();
+
+  const fetchDutyRequest = useCallback(() => {
+    axios
+      .post("/api/get-duty-request", {
+        usr_pid: user.user_pid,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          setData(
+            response.data.request.map(
+              ({
+                request_pid,
+                request_reason,
+                request_date,
+                request_status,
+              }) => ({
+                key: request_pid,
+                index: request_pid,
+                description: request_reason,
+                time: request_date,
+                status: request_status,
+              })
+            )
+          );
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }, [user]);
+
+  useEffect(() => {
+    fetchDutyRequest();
+  }, []);
 
   const onFinish = (values) => {
     const { description } = values;
@@ -74,6 +99,8 @@ const Report = () => {
       .catch((error) => {
         console.warn(error);
       });
+
+    fetchDutyRequest();
   };
 
   return (
