@@ -6,13 +6,13 @@ const Duty_Schedule = require('../models/duty_schedule.model')
 // 근무 종류 생성(완료)
 exports.set_duty = async function (req, res) {
   let {
-    user_division_code, // 부대 코드
+    usr_division_code, // 부대 코드
     duty_name, // 근무 종류
     duty_people_num // 시간대별 근무 투입 인원 수
   } = req.body;
 
   Duty.create({
-    usr_division_code: user_division_code,  // Front에 있는 현재 로그인된 부대 관리자의 부대코드를 활용하여 근무 부대코드에 저장
+    usr_division_code: usr_division_code,  // Front에 있는 현재 로그인된 부대 관리자의 부대코드를 활용하여 근무 부대코드에 저장
     duty_name: duty_name,
     duty_people_num: duty_people_num
   })
@@ -73,7 +73,7 @@ exports.set_duty_schedule = async function (req, res) {
   } = req.body;
   Duty_Schedule.create({
     duty_schedule_division_code: user_division_code,
-    duty_schedule_date: date
+    duty_schedule_date: date,
   })
     .then(() => {
       return res.status(200).json('duty schedule setting success');

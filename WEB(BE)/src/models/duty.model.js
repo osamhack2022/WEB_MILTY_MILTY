@@ -26,11 +26,6 @@ module.exports = class Duty extends Sequelize.Model {
           allowNull: false,
           unique: false,
         },
-        duty_point: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          unique: false,
-        },
 
       },
       {
