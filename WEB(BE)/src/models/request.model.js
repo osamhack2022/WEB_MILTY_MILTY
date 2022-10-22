@@ -41,7 +41,7 @@ module.exports = class Request extends Sequelize.Model {
         },
         request_usr: {
           type: Sequelize.INTEGER,
-          allowNull: true,
+          allowNull: false,
           unique: false,
         },
         request_change_usr: {
