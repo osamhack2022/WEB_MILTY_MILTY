@@ -92,19 +92,10 @@ exports.user_get_request = async function (req, res) {
 
   const requests = await Request.findAll({ where: { request_usr: usr_pid } });
 
-  for (let i = 0; i < requests.length; i++) {
-    res.status(200).json({
-      result: 'success',
-      request: {
-        request_type: requests[i].request_type,
-        request_pid: requests[i].request_pid,
-        duty_schedule_pid: requests[i].duty_schedule_pid,
-        request_reason: requests[i].request_reason,
-        request_date: requests[i].request_date,
-        request_usr: requests[i].request_usr,
-        request_change_usr: requests[i].request_change_usr,
-        request_status: requests[i].request_status,
-      },
-    });
-  }
+  console.log('request  내용 : ', requests);
+
+  res.status(200).json({
+    result: 'success',
+    request: requests,
+  });
 }
