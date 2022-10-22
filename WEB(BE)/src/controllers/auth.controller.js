@@ -70,4 +70,5 @@ exports.register = async function (req, res) {
         throw err;
       });
   } else return res.status(401).json('ID is already taken.');
+
 };

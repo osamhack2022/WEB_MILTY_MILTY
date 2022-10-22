@@ -1,4 +1,5 @@
 const Request = require('../models/request.model');
+const User_list_model = require('../models/users.model');
 
 /*
 `request_pid`	int	NOT NULL,
@@ -101,4 +102,21 @@ exports.user_get_request = async function (req, res) {
     result: 'success',
     request: requests,
   });
+}
+
+//같은 부대 유저 정보 받기
+exports.user_get_list = async function (req, res) {
+  const {
+    usr_division_code
+  } = req.body;
+
+  const user_list = await User_list_model.findAll({ where: { usr_division_code: usr_division_code } });
+
+  console.log('user_list  내용 : ', user_list);
+
+  res.status(200).json({
+    result: 'success',
+    user_list: user_list,
+  });
+
 }
