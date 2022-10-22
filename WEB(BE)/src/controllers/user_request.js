@@ -105,7 +105,7 @@ exports.user_get_request = async function (req, res) {
 }
 
 //같은 부대 유저 정보 받기
-exports.user_get_list = async function (req, res) {
+exports.get_user_list = async function (req, res) {
   const {
     usr_division_code
   } = req.body;

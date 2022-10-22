@@ -7,7 +7,7 @@ const { set_duty, get_duty, set_duty_timeslot, get_duty_timeslot, set_duty_sched
 const { get_check_count } = require('../controllers/check_count');
 const { user_set_request } = require('../controllers/user_request');
 const { user_get_request } = require('../controllers/user_request');
-const { user_get_list } = require('../controllers/user_request');
+const { get_user_list } = require('../controllers/user_request');
 const { set_user_exempt, get_user_exempt } = require('../controllers/exempt')
 
 // #### Auth region ####
@@ -103,13 +103,16 @@ router.post('/get-user-duty-schedule', get_user_duty_schedule);
 // 근무변경 및 건의사항
 router.post('/set-duty-request', user_set_request); // 근무변경 및 건의사항 정보 넣기
 router.post('/get-duty-request', user_get_request); // 근무변경 및 건의사항 정보 받기 
-router.post('/get-duty-list', user_get_list); // 같은 부대 인원 정보
 // #### End region ####
 
 // #### Exempt region ####
 // 열외자 추가, 조회
 router.post('/set-user-exempt', set_user_exempt);
 router.post('/get-user-exempt', get_user_exempt);
+// #### End region ####
+
+// #### User region ####
+router.post('/get-user-list', get_user_list);
 // #### End region ####
 
 module.exports = router;
