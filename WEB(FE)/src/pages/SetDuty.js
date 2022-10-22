@@ -12,14 +12,21 @@ import {
 } from "antd";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const { Content } = Layout;
 
-const SetDuty = ({ user }) => {
+const SetDuty = () => {
+  const { user } = useAuth();
   const [setDutyForm] = Form.useForm();
   const [setTimeslotForm] = Form.useForm();
 
   const onSetDutyFinish = (values) => {
+    console.log({
+      usr_division_code: user.user_division_code,
+      duty_name: values.duty_name,
+      duty_people_num: values.duty_people_num,
+    });
     axios
       .post("/api/set-duty", {
         usr_division_code: user.user_division_code,
