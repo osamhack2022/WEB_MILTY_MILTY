@@ -21,7 +21,7 @@ request_status
   2 - 처리완료
 */
 
-// 건의사항 및 근무변경 저장 테스트 : 확인중
+// 건의사항 및 근무변경 추가(구현완료)
 exports.user_set_request = async function (req, res) {
   const {
     request_type,
@@ -84,7 +84,10 @@ exports.user_set_request = async function (req, res) {
   }
 };
 
-// 유저 건의사항 및 근무 요청사항 주기
+
+
+
+// 유저 건의사항 및 근무 요청사항 조회(구현완료)
 exports.user_get_request = async function (req, res) {
   const {
     usr_pid
