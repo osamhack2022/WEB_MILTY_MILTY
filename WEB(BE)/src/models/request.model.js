@@ -26,7 +26,7 @@ module.exports = class Request extends Sequelize.Model {
         },
         duty_schedule_pid: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          allowNull: true,
           unique: false,
         },
         request_reason: {
@@ -42,7 +42,7 @@ module.exports = class Request extends Sequelize.Model {
         request_usr: {
           type: Sequelize.INTEGER,
           allowNull: true,
-          unique: true,
+          unique: false,
         },
         request_change_usr: {
           type: Sequelize.INTEGER,
