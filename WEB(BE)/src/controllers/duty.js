@@ -17,7 +17,7 @@ exports.set_duty = async function (req, res) {
     duty_people_num: duty_people_num
   })
     .then(() => {
-      return res.status(200).json('duty setting completed');
+      return res.status(200).json({ result: 'success' });
     })
 };
 
@@ -26,14 +26,11 @@ exports.get_duty = async function (req, res) {
   let {
     usr_division_code
   } = req.body;
-  const data = Duty.findAll({ where: { usr_division_code: usr_division_code } });
-  for (let i = 0; i < data.length; i++) {
-    var buf = {
-      duty_name: data[i].duty_name,
-      duty_point: data[i].duty_point
-    };
-    res.send(buf);
-  }
+  const data = await Duty.findAll({ where: { usr_division_code: usr_division_code } });
+
+  console.log('근무 종류 조회 : ', data);
+
+  res.status(200).json({ result: 'success', duty: data });
 };
 
 // 근무 시간대 생성(수정중)
@@ -42,14 +39,14 @@ exports.set_duty_timeslot = async function (req, res) {
     duty_pid,
     timeslot_start,
     timeslot_end,
-    point
+    point,
   } = req.body;
 
   Timeslot.create({
     timeslot_start: timeslot_start,
     timeslot_end: timeslot_end,
     duty_pid: duty_pid,
-    timeslot_point: point
+    timeslot_point: point,
   }).then(() => {
     return res.status(200).json('duty setting completed');
   })
@@ -61,20 +58,24 @@ exports.get_duty_timeslot = async function (req, res) {
   let {
     duty_pid
   } = req.body;
-  const data = Timeslot.findAll({ where: { duty_pid: duty_pid } })
-  return res.status(200).json(data);
+  const data = Timeslot.findAll({ where: { duty_pid: duty_pid } });
+  console.log('근무 시간대 조회 : ', data);
+  return res.status(200).json({ result: 'success', duty: data });
 };
 
-// 해당 날짜의 근무표 생성(완료)
+// 해당 날짜의 경작서 틀 생성
 exports.set_duty_schedule = async function (req, res) {
   let {
     user_division_code,           // 근무 PID
-    date
+    date,
   } = req.body;
+  const data = Duty.findAll({ where: { usr_division_code: usr_division_code } });
   Duty_Schedule.create({
     duty_schedule_division_code: user_division_code,
     duty_schedule_date: date,
-  })
+    duty_type: data,
+  }
+  )
     .then(() => {
       return res.status(200).json('duty schedule setting success');
     })
