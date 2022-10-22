@@ -15,17 +15,18 @@ module.exports = class Request extends Sequelize.Model {
         request_pid: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          allowNull: false,
+          allowNull: true,
+          autoIncrement: true,
           unique: true,
         },
         request_type: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          unique: true,
+          unique: false,
         },
-        request_duty: {
-          type: Sequelize.DATE,
-          allowNull: false,
+        duty_schedule_pid: {
+          type: Sequelize.INTEGER,
+          allowNull: true,
           unique: false,
         },
         request_reason: {
