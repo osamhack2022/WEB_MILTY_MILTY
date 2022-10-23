@@ -94,13 +94,12 @@ const Report = () => {
       .then((response) => {
         if (response.status === 200 && response.data.result === "success") {
           alert("건의사항 등록에 성공하였습니다");
+          fetchDutyRequest();
         }
       })
       .catch((error) => {
         console.warn(error);
       });
-
-    fetchDutyRequest();
   };
 
   return (
