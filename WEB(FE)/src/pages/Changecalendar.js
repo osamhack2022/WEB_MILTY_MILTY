@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Layout,
   Badge,
@@ -8,12 +9,14 @@ import {
   Select,
   PageHeader,
 } from "antd";
-import React, { useState } from "react";
 import CustomCalendar from "../components/CustomCalendar";
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const { Content } = Layout;
 
-const data = [
+// 디자인 표기를 위한 더미 데이터
+const dummyData = [
   {
     key: 1,
     date: "2022-10-08",
@@ -52,10 +55,60 @@ const data = [
   },
 ];
 
-const getListData = (date) => data.filter((v) => date.isSame(v.date, "day"));
+const dummyList = [
+  {
+    label: "a",
+    value: "aa"
+  },
+  {
+    label: "b",
+    value: "bb"
+  },
+];
 
 const Changecalendar = () => {
+  const { user } = useAuth();
+  const [data, setData] = useState([]);
+  const [list, setList] = useState([]);
   const [open, setOpen] = useState(false);
+
+  const fetchPersonalDuty = useCallback(() => {
+    axios
+      .post("/api/get-user-duty-schedule", {
+        user_pid: user.user_id,
+        user_division_code: user.user_division_code,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          setData(response.data.schedule);
+        }
+      })
+      .catch((error) => {
+        console.warn("ERROR : ", error);
+      });
+  }, [user])
+
+  const fetchUserList = useCallback(() => {
+    axios
+      .post("/api/get-user-list", {
+        usr_division_code: user.user_division_code,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          setList(response.data.user);
+        }
+      })
+      .catch((error) => {
+        console.warn("ERROR : ", error);
+      });
+  }, [user]);
+
+  useEffect(() => {
+    fetchPersonalDuty();
+  }, []);
+
+  // api 테스트시 dummyData -> data로 변경
+  const getListData = (date) => dummyData.filter((v) => date.isSame(v.date));
 
   const showDrawer = () => {
     setOpen(true);
@@ -127,11 +180,9 @@ const Changecalendar = () => {
                 >
                   <Select
                     placeholder="근무를 변경할 사람을 선택해 주세요"
+                    options={dummyList}
                     allowClear
                   >
-                    <Select.Option value="a">a</Select.Option>
-                    <Select.Option value="b">b</Select.Option>
-                    <Select.Option value="c">c</Select.Option>
                   </Select>
                 </Form.Item>
                 <Form.Item
