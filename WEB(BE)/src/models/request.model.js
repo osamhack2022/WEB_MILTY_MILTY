@@ -50,6 +50,11 @@ module.exports = class Request extends Sequelize.Model {
           allowNull: false,
           unique: false,
         },
+        request_division_code: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          unique: false,
+        },
         request_change_usr: {
           type: Sequelize.INTEGER,
           allowNull: true,
