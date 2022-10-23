@@ -6,7 +6,7 @@ const Exempt = require('../models/exempt.model');
 const { Op } = require('sequelize');
 
 
-// 근무 종류 생성(완료)
+// 근무 종류 생성(구현 완료)
 exports.set_duty = async function (req, res) {
   let {
     usr_division_code, // 부대 코드
@@ -24,7 +24,7 @@ exports.set_duty = async function (req, res) {
     })
 };
 
-// 근무 종류 조회(완료)
+// 근무 종류 조회(구현 완료)
 exports.get_duty = async function (req, res) {
   let {
     usr_division_code,
@@ -36,7 +36,7 @@ exports.get_duty = async function (req, res) {
   res.status(200).json({ result: 'success', duty: data });
 };
 
-// 경작서 틀 생성(완료 - 테스트는 아직 X)
+// 경작서 틀 생성(구현 완료)
 exports.set_duty_timeslot = async function (req, res) {
   let {
     duty_pid,
@@ -65,14 +65,14 @@ exports.set_duty_timeslot = async function (req, res) {
 
 };
 
-// 경작서 틀 조회(완료 - 테스트는 아직 X)
+// 경작서 틀 조회(구현 완료)
 exports.get_duty_timeslot = async function (req, res) {
   let {
     duty_pid
   } = req.body;
-  const data = Timeslot.findAll({ where: { duty_pid: duty_pid } });
+  const data = await Timeslot.findAll({ where: { duty_pid: duty_pid } });
   console.log('경작서 틀 조회 : ', data);
-  return res.status(200).json({ result: 'success', duty: data });
+  return res.status(200).json({ result: 'success', timeslot: data });
 };
 
 // 해당 날짜의 경작서 틀 생성(민철님 작업)
