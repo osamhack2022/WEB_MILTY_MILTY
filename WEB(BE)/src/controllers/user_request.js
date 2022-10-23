@@ -44,6 +44,10 @@ exports.user_set_request = async function (req, res) {
   );
 
   const now = new Date();
+  const user_division_code = User_list_model.findOne({
+    attributes: ['usr_division_code'],
+    where: { usr_pid: request_usr }
+  });
 
   // 건의사항
   if (request_type == 0) {
@@ -54,6 +58,7 @@ exports.user_set_request = async function (req, res) {
       request_usr: request_usr,
       request_change_usr: null, // 근무 변경 인원이 없기때문에 기본값 null으로 설정
       request_status: 1,
+      request_division_code: user_division_code['usr_division_code'],
     })
       .then(() => {
         res.json({ result: 'success' });
@@ -73,6 +78,7 @@ exports.user_set_request = async function (req, res) {
         request_usr,
         request_change_usr,
         request_status: 1,
+        request_division_code: user_division_code['usr_division_code'],
       })
       .then(() => {
         res.send('근무변경(요청) 완료.');
