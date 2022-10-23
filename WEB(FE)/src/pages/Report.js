@@ -50,26 +50,19 @@ const Report = () => {
 
   const fetchDutyRequest = useCallback(() => {
     axios
-      .post("/api/get-duty-request", {
+      .post("/api/user/get-report", {
         usr_pid: user.user_pid,
       })
       .then((response) => {
         if (response.status === 200 && response.data.result === "success") {
           setData(
-            response.data.request.map(
-              ({
-                request_pid,
-                request_reason,
-                request_date,
-                request_status,
-              }) => ({
-                key: request_pid,
-                index: request_pid,
-                description: request_reason,
-                time: request_date,
-                status: request_status,
-              })
-            )
+            response.data.request.map(({ pid, description, time, status }) => ({
+              key: pid,
+              index: pid,
+              description,
+              time,
+              status,
+            }))
           );
         }
       })

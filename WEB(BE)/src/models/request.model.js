@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const moment = require('moment');
 /*
 `request_pid`	int	NOT NULL,
   `request_list`	varchar2(30)	NULL,
@@ -38,8 +39,18 @@ module.exports = class Request extends Sequelize.Model {
           type: Sequelize.DATE,
           allowNull: false,
           unique: false,
+          get() {
+            return moment(this.getDataValue('request_date')).format(
+              'YYYY-MM-DD hh:mm',
+            );
+          },
         },
         request_usr: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          unique: false,
+        },
+        request_division_code: {
           type: Sequelize.INTEGER,
           allowNull: false,
           unique: false,
@@ -53,7 +64,7 @@ module.exports = class Request extends Sequelize.Model {
           type: Sequelize.INTEGER,
           allowNull: true,
           unique: false,
-        }
+        },
       },
       {
         sequelize,
