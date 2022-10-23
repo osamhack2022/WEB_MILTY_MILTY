@@ -12,6 +12,7 @@ import {
 import CustomCalendar from "../components/CustomCalendar";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
+import moment from "moment";
 
 const { Content } = Layout;
 
@@ -58,7 +59,7 @@ const dummyData = [
 const dummyList = [
   {
     label: "a",
-    value: "aa"
+    value: "aa",
   },
   {
     label: "b",
@@ -67,48 +68,53 @@ const dummyList = [
 ];
 
 const Changecalendar = () => {
-  const { user } = useAuth();
-  const [data, setData] = useState([]);
-  const [list, setList] = useState([]);
+  // const { user } = useAuth();
+  // const [data, setData] = useState([]);
+  // const [list, setList] = useState([]);
   const [open, setOpen] = useState(false);
 
-  const fetchPersonalDuty = useCallback(() => {
-    axios
-      .post("/api/get-user-duty-schedule", {
-        user_pid: user.user_id,
-        user_division_code: user.user_division_code,
-      })
-      .then((response) => {
-        if (response.status === 200 && response.data.result === "success") {
-          setData(response.data.schedule);
-        }
-      })
-      .catch((error) => {
-        console.warn("ERROR : ", error);
-      });
-  }, [user])
+  // const fetchPersonalDuty = useCallback(() => {
+  //   axios
+  //     .post("/api/get-user-duty-schedule", {
+  //       user_pid: user.user_id,
+  //       user_division_code: user.user_division_code,
+  //     })
+  //     .then((response) => {
+  //       if (response.status === 200 && response.data.result === "success") {
+  //         setData(response.data.schedule);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.warn("ERROR : ", error);
+  //     });
+  // }, [user])
 
-  const fetchUserList = useCallback(() => {
-    axios
-      .post("/api/get-user-list", {
-        usr_division_code: user.user_division_code,
-      })
-      .then((response) => {
-        if (response.status === 200 && response.data.result === "success") {
-          setList(response.data.user);
-        }
-      })
-      .catch((error) => {
-        console.warn("ERROR : ", error);
-      });
-  }, [user]);
+  // const fetchUserList = useCallback(() => {
+  //   axios
+  //     .post("/api/get-user-list", {
+  //       usr_division_code: user.user_division_code,
+  //     })
+  //     .then((response) => {
+  //       // 제대로 작동할지 미지수
+  //       // 오류 발생시 아예 response.data.user를 카피하고 작업하는게 나을 듯 합니다
+  //       if (response.status === 200 && response.data.result === "success") {
+  //         setList(response.data.user.forEach(v => {
+  //           v.label = v.user_name;
+  //           v.value = v.user_id;
+  //         }));
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.warn("ERROR : ", error);
+  //     });
+  // }, [user]);
 
-  useEffect(() => {
-    fetchPersonalDuty();
-  }, []);
+  // useEffect(() => {
+  //   fetchPersonalDuty();
+  // }, []);
 
   // api 테스트시 dummyData -> data로 변경
-  const getListData = (date) => dummyData.filter((v) => date.isSame(v.date));
+  const getListData = (date) => dummyData.filter((v) => date.isSame(v.date, "day"));
 
   const showDrawer = () => {
     setOpen(true);
@@ -117,7 +123,27 @@ const Changecalendar = () => {
     setOpen(false);
   };
   const onFinish = (values) => {
-    console.log("Success:", values);
+    console.log("Success:", {
+      request_type: 1,
+      request_usr: values.change_target,
+      request_reason: values.change_reason,
+      request_date: moment().format("YYYY-MM-DD HH:MM:SS"),
+    });
+    axios
+      .post("/api/set-duty-request", {
+        request_type: 1,
+        request_usr: values.change_target,
+        request_reason: values.change_reason,
+        request_date: moment().format("YYYY-MM-DD HH:MM:SS"),
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          alert("성공적으로 변경이 되었습니다.");
+        }
+      })
+      .catch((error) => {
+        console.warn("ERROR : ", error);
+      });
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -170,7 +196,7 @@ const Changecalendar = () => {
                 autoComplete="off"
               >
                 <Form.Item
-                  name="change-target"
+                  name="change_target"
                   label="변경 대상"
                   rules={[
                     {
@@ -178,6 +204,7 @@ const Changecalendar = () => {
                     },
                   ]}
                 >
+                  {/*options =  list 로 변경하면 됩니다.*/}
                   <Select
                     placeholder="근무를 변경할 사람을 선택해 주세요"
                     options={dummyList}
@@ -187,7 +214,7 @@ const Changecalendar = () => {
                 </Form.Item>
                 <Form.Item
                   label="변경 사유"
-                  name="change-reason"
+                  name="change_reason"
                   rules={[
                     {
                       required: true,
