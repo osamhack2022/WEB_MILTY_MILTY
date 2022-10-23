@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Layout, Badge, Button, PageHeader } from "antd";
-import axios from "axios";
 import CustomCalendar from "../components/CustomCalendar";
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const { Content } = Layout;
 
-const data = [
+// 디자인 표기를 위한 더미 데이터
+const dummyData = [
   {
     key: 1,
     date: "2022-10-08",
@@ -45,14 +47,41 @@ const data = [
   },
 ];
 
-const getListData = (date) => data.filter((v) => date.isSame(v.date, "day"));
+const Dutycalendar = () => {
+  const { user } = useAuth();
+  const [data, setData] = useState([]);
 
-const Dutycalendar = ({ user }) => {
+  const fetchMonthSchedule = useCallback(() => {
+    axios
+      .get("/api/get-user-duty-schedule", {
+        user_pid: user.user_id,
+        user_division_code: user.user_division_code,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          setData(response.data.user_duty_list);
+        }
+      })
+      .catch((error) => {
+        console.warn("ERROR : ", error);
+      });
+  }, [user])
+
   useEffect(() => {
-    axios.post("/api/get-duty-schedule", {
-      user_id: user.user_id,
-    });
+    fetchMonthSchedule();
   }, []);
+
+  const getListData = (date) => dummyData.filter((v) => date.isSame(v.date, "day"));
+
+  // 전체 데이터를 가져오는 방식이라 일단 제거
+  // const onPanelChange = () => {
+  //   console.log("panel changed, try getMonthSchedule");
+  //   data = getMonthSchedule()
+  // };
+
+  // api 적용시 line49 getListData 지우고 아래 주석으로 변경하면 될 것 같습니다.
+  // const getListData = (date) => getMonthSchedule.filter((v) => date.isSame(v.date, "day"));
+
   const dateCellRender = (value) => {
     const listData = getListData(value);
     return (
