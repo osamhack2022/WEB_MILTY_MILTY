@@ -44,10 +44,11 @@ exports.user_set_request = async function (req, res) {
   );
 
   const now = new Date();
-  const user_division_code = User_list_model.findOne({
+  const user_division_code = await User_list_model.findOne({
     attributes: ['usr_division_code'],
     where: { usr_pid: request_usr }
   });
+  console.log('부대코드 :', user_division_code['usr_division_code']);
 
   // 건의사항
   if (request_type == 0) {
