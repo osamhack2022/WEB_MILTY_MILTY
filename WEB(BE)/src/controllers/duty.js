@@ -1,6 +1,7 @@
 const User = require('../models/users.model');
 const Duty = require('../models/duty.model');
 const Timeslot = require('../models/timeslot.model');
+Timeslot.belongsTo(Duty, { foreignKey: 'duty_pid' });
 const Duty_Schedule = require('../models/duty_schedule.model');
 const Exempt = require('../models/exempt.model');
 const { Op } = require('sequelize');
@@ -81,24 +82,63 @@ exports.get_duty_timeslot = async function (req, res) {
   return res.status(200).json({ result: 'success', timeslot: data, duty_name: duty_name['duty_name'] });
 };
 
-// 해당 날짜의 경작서 틀 생성(민철님 작업)
+// 해당 날짜의 경작서(인원 배치)생성(민철님 작업)
 exports.set_duty_schedule = async function (req, res) {
   let {
     user_division_code,           // 근무 PID
     date,
   } = req.body;
 
-  // 근무자 리스트 생성
-  duty_user_list = User.findAll({
+  // ==== Region : 해당 부대의 duty_pid 리스트 불러오기 ====
+  const duty_pid_list = Duty.findOne({
+    attributes: ['duty_pid'],
+    where: { usr_division_code: user_division_code },
+  });
+  console.log('duty_pid 리스트:', duty_pid_list);
+
+  // 해당 일자 timeslots 리스트(timeslot_pid, timeslot_point 가 중요)
+  let timeslots = Timeslot.findAll({
+    attributes: ['timeslot_pid', 'timeslot_point'],
+    where: { duty_pid: duty_pid_list['duty_pid'] },
+  });
+  console.log('timeslots 리스트', timeslots);
+  // ==== End Region ====
+
+  // ==== Start Region : 현재 열외자 리스트 생성 ====
+  const now = new Date();
+
+  const current_excluder_list = Exempt.findOne({
+    attributes: ['usr_pid'],
+    where: { exempt_division_code: user_division_code },
+    [Op.and]: [
+      {
+        timeslot_start: { [Op.lte]: now },
+      },
+      {
+        timeslot_end: { [Op.gte]: now },
+      },
+    ],
+  });
+  console.log('현재 열외자 리스트 : ', current_excluder_list);
+
+  // 근무자 리스트 생성(후보 user들의 리스트)
+  let usrs = User.findAll({
+    attributes: ['usr_pid'],
     where: {
-      usr_pid: { [Op.ne]: Exempt.usr_pid }, // Exempt.usr_pid와 같지 않은 유저들 목록 불러서 저장
+      usr_pid: { [Op.ne]: current_excluder_list.usr_pid }, // Exempt.usr_pid와 같지 않은 유저들 목록 불러서 저장
       usr_class: {
         [Op.or]: ['이병', '일병', '상병', '병장'],
       },
-
     },
   });
+  console.log('근무자 리스트 : ', usrs);
 
+  // ==== End Region ====
+
+  // 저장된 타임슬롯 불러오기
+
+
+  // 경작서 DB에 저장(이 부분 수정해야 함)
   Duty_Schedule.create({
     duty_schedule_division_code: user_division_code,
     duty_schedule_date: date,
