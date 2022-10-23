@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
@@ -16,8 +16,9 @@ const Login = () => {
       })
       .then((response) => {
         if (response.status === 200 && response.data.result === "success") {
-          const { user } = response.data;
-
+          const { user, token } = response.data;
+          sessionStorage.setItem('access_token', token);
+          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
           login(user);
         }
       })
