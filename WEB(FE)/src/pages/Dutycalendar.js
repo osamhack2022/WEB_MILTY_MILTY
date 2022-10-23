@@ -51,7 +51,7 @@ const Dutycalendar = () => {
   const { user } = useAuth();
   const [data, setData] = useState([]);
 
-  const fetchMonthSchedule = useCallback(() => {
+  const fetchPersonalDuty = useCallback(() => {
     axios
       .get("/api/get-user-duty-schedule", {
         user_pid: user.user_id,
@@ -68,19 +68,11 @@ const Dutycalendar = () => {
   }, [user])
 
   useEffect(() => {
-    fetchMonthSchedule();
+    fetchPersonalDuty();
   }, []);
 
-  const getListData = (date) => dummyData.filter((v) => date.isSame(v.date, "day"));
-
-  // 전체 데이터를 가져오는 방식이라 일단 제거
-  // const onPanelChange = () => {
-  //   console.log("panel changed, try getMonthSchedule");
-  //   data = getMonthSchedule()
-  // };
-
-  // api 적용시 line49 getListData 지우고 아래 주석으로 변경하면 될 것 같습니다.
-  // const getListData = (date) => getMonthSchedule.filter((v) => date.isSame(v.date, "day"));
+  // api 테스트시 dummyData -> data로 변경
+  const getListData = (date) => dummyData.filter((v) => date.isSame(v.date));
 
   const dateCellRender = (value) => {
     const listData = getListData(value);
