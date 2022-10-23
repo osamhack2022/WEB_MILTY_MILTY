@@ -34,5 +34,7 @@ requestModel.init(sequelize);
 userModel.init(sequelize);
 dutyModel.init(sequelize);
 duty_scheduleModel.init(sequelize);
+timeslotModel.init(sequelize);
+exemptModel.init(sequelize);
 
 module.exports = db;

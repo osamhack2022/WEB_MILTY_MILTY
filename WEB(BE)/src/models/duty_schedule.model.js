@@ -11,16 +11,6 @@ module.exports = class Duty_Schedule extends Sequelize.Model {
           autoIncrement: true,
           unique: true,
         },
-        duty_schedule_start: {
-          type: Sequelize.DATE,
-          allowNull: false,
-          unique: false,
-        },
-        duty_schedule_end: {
-          type: Sequelize.DATE,
-          allowNull: false,
-          unique: false,
-        },
         duty_schedule_division_code: {
           type: Sequelize.INTEGER,
           allowNull: false,
