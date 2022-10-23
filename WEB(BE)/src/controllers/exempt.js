@@ -50,9 +50,5 @@ exports.get_user_exempt = async function (req, res) {
 
   console.log('전체 열외자 배열 목록 : ', excluders);
 
-  if (excluders) {
-    return res.status(200).json({ result: "success", exempt: excluders });
-  } else {
-    return res.status(401).json({ result: "fail" });
-  }
+  return res.status(200).json({ result: "success", exempt: excluders });
 };
