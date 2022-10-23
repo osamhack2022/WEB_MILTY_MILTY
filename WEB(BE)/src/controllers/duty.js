@@ -71,8 +71,14 @@ exports.get_duty_timeslot = async function (req, res) {
     duty_pid
   } = req.body;
   const data = await Timeslot.findAll({ where: { duty_pid: duty_pid } });
-  console.log('경작서 틀 조회 : ', data);
-  return res.status(200).json({ result: 'success', timeslot: data });
+  const duty_name = await Duty.findOne({
+    attributes: ['duty_name'],
+    where: {
+      duty_pid: duty_pid,
+    }
+  });
+  console.log('경작서 틀 조회 : ', data, '근무 이름 : ', duty_name['duty_name']);
+  return res.status(200).json({ result: 'success', timeslot: data, duty_name: duty_name['duty_name'] });
 };
 
 // 해당 날짜의 경작서 틀 생성(민철님 작업)
@@ -86,6 +92,10 @@ exports.set_duty_schedule = async function (req, res) {
   duty_user_list = User.findAll({
     where: {
       usr_pid: { [Op.ne]: Exempt.usr_pid }, // Exempt.usr_pid와 같지 않은 유저들 목록 불러서 저장
+      usr_class: {
+        [Op.or]: ['이병', '일병', '상병', '병장'],
+      },
+
     },
   });
 
