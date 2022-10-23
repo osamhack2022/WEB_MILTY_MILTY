@@ -1,7 +1,10 @@
-const User = require('../models/users.model')
-const Duty = require('../models/duty.model')
-const Timeslot = require('../models/timeslot.model')
-const Duty_Schedule = require('../models/duty_schedule.model')
+const User = require('../models/users.model');
+const Duty = require('../models/duty.model');
+const Timeslot = require('../models/timeslot.model');
+const Duty_Schedule = require('../models/duty_schedule.model');
+const Exempt = require('../models/exempt.model');
+const { Op } = require('sequelize');
+
 
 // 근무 종류 생성(완료)
 exports.set_duty = async function (req, res) {
@@ -33,7 +36,7 @@ exports.get_duty = async function (req, res) {
   res.status(200).json({ result: 'success', duty: data });
 };
 
-// 경작서 틀 생성(수정중)
+// 경작서 틀 생성(완료 - 테스트는 아직 X)
 exports.set_duty_timeslot = async function (req, res) {
   let {
     duty_pid,
@@ -49,10 +52,10 @@ exports.set_duty_timeslot = async function (req, res) {
   // 타임슬롯 생성
   for (let i = 0; timeslot.length; i++) {
     Timeslot.create({
-      timeslot_start: timeslot.timeslot_start[i],
-      timeslot_end: timeslot.timeslot_end[i],
+      timeslot_start: timeslot[i].timeslot_start,
+      timeslot_end: timeslot[i].timeslot_end,
       duty_pid: duty_pid,
-      timeslot_point: timeslot.timeslot_point[i],
+      timeslot_point: timeslot[i].timeslot_point,
     });
   }
 
@@ -60,7 +63,7 @@ exports.set_duty_timeslot = async function (req, res) {
 
 };
 
-// 경작서 틀 조회(수정중)
+// 경작서 틀 조회(완료 - 테스트는 아직 X)
 exports.get_duty_timeslot = async function (req, res) {
   let {
     duty_pid
@@ -70,13 +73,19 @@ exports.get_duty_timeslot = async function (req, res) {
   return res.status(200).json({ result: 'success', duty: data });
 };
 
-// 해당 날짜의 경작서 틀 생성(수정중))
+// 해당 날짜의 경작서 틀 생성(민철님 작업)
 exports.set_duty_schedule = async function (req, res) {
   let {
     user_division_code,           // 근무 PID
     date,
   } = req.body;
-  const duty_type_data = Duty.findAll({ where: { usr_division_code: user_division_code } });
+
+  // 근무자 리스트 생성
+  duty_user_list = User.findAll({
+    where: {
+      usr_pid: { [Op.ne]: Exempt.usr_pid }, // Exempt.usr_pid와 같지 않은 유저들 목록 불러서 저장
+    },
+  });
 
   Duty_Schedule.create({
     duty_schedule_division_code: user_division_code,
@@ -90,7 +99,7 @@ exports.set_duty_schedule = async function (req, res) {
     });
 };
 
-// 해당 날짜의 근무표 조회(수정중)
+// 해당 날짜의 근무표 조회(민철님 작업)
 exports.get_duty_schedule = async function (req, res) {
   let {
     duty_pid,
@@ -106,15 +115,15 @@ exports.get_user_duty_schedule = async function (req, res) {
     user_division_code,
   } = req.body;
 
-  const data = Duty.findAll({ where: { usr_division_code: usr_division_code } });
-  const user = User.findAll({ where: { usr_pid: user_pid } });
-  for (let i = 0; i < data.length; i++) {
-    var buf = {
-      date: data[i].duty_name,
-      duty_name: data[i].duty_point,
-      // startTime:,
-      // endTime,
-    };
-    res.send(buf);
-  };
-}
+  const user_duty_data = Duty_Schedule.findAll(
+    {
+      where: {
+        usr_pid: user_pid,
+        duty_schedule_division_code: user_division_code,
+      }
+    });
+  // 여기서 타임슬롯 PID를 불러와야 한다.
+
+
+  res.status(200).json({ result: 'success', user_duty_data });
+};
