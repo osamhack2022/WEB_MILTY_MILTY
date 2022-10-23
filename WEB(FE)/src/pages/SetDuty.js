@@ -8,11 +8,13 @@ import {
   Form,
   Input,
   InputNumber,
+  Select,
   Button,
+  Drawer,
 } from "antd";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
+import SetDutyTimeslot from "../components/SetDutyTimeslot";
 
 const { Content } = Layout;
 
@@ -20,6 +22,8 @@ const SetDuty = () => {
   const { user } = useAuth();
   const [setDutyForm] = Form.useForm();
   const [duty, setDuty] = useState([]);
+  const [selectedDuty, setSelectedDuty] = useState({});
+  const [open, setOpen] = useState(false);
 
   const fetchDuty = useCallback(() => {
     axios
@@ -50,25 +54,12 @@ const SetDuty = () => {
       .then((response) => {
         if (response.status === 200 && response.data.result === "success") {
           alert("근무 등록에 성공하였습니다!");
+          fetchDuty();
         }
       })
       .catch((error) => {
         console.warn(error);
       });
-  };
-
-  const onSetTimeslotFinish = (values) => {
-    console.log(values);
-    // axios
-    //   .post("/api/set-duty-timeslot", values)
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       alert("성공적으로 근무가 추가되었습니다.");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   };
 
   return (
@@ -120,7 +111,7 @@ const SetDuty = () => {
             >
               <InputNumber
                 min={1}
-                max={3}
+                max={10}
                 formatter={(value) => `${value}명`}
               />
             </Form.Item>
@@ -135,125 +126,38 @@ const SetDuty = () => {
             </Form.Item>
           </Form>
 
-          {duty.map((item) => (
-            <div key={item.duty_pid}>
-              <Divider />
+          <Divider />
 
-              <Typography.Title
-                level={3}
-                editable={{
-                  tooltip: "근무 이름 수정하기",
-                }}
-              >
-                {item.duty_name}
-              </Typography.Title>
-              <Form
-                name="set_timeslot"
-                layout="vertical"
-                onFinish={onSetTimeslotFinish}
-                scrollToFirstError
-              >
-                <Form.List name="timeslot">
-                  {(fields, { add, remove }) => (
-                    <>
-                      {fields.map(({ key, name, ...restField }) => (
-                        <Space
-                          key={key}
-                          style={{
-                            display: "flex",
-                            marginBottom: 12,
-                          }}
-                          align="center"
-                        >
-                          <Input.Group compact>
-                            <Form.Item
-                              {...restField}
-                              name={[name, "start_time"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "",
-                                },
-                              ]}
-                              style={{ marginBottom: "0px" }}
-                            >
-                              <Input
-                                className="site-input-left"
-                                placeholder="시작 시간"
-                                style={{ textAlign: "center", width: "6rem" }}
-                              />
-                            </Form.Item>
-                            <Input
-                              className="site-input-split"
-                              style={{ width: 30 }}
-                              placeholder="~"
-                              disabled
-                            />
-                            <Form.Item
-                              {...restField}
-                              name={[name, "end_time"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "",
-                                },
-                              ]}
-                              style={{ marginBottom: "0px" }}
-                            >
-                              <Input
-                                className="site-input-right"
-                                placeholder="끝 시간"
-                                style={{ textAlign: "center", width: "6rem" }}
-                              />
-                            </Form.Item>
-                          </Input.Group>
-
-                          <Form.Item
-                            {...restField}
-                            name={[name, "point"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: "",
-                              },
-                            ]}
-                            style={{ marginBottom: "0px" }}
-                          >
-                            <InputNumber
-                              step={0.5}
-                              formatter={(value) => `${value}점`}
-                            />
-                          </Form.Item>
-                          <MinusCircleOutlined onClick={() => remove(name)} />
-                        </Space>
-                      ))}
-                      <Form.Item>
-                        <Button
-                          type="dashed"
-                          onClick={() => add()}
-                          block
-                          icon={<PlusOutlined />}
-                        >
-                          근무 시간대 추가
-                        </Button>
-                      </Form.Item>
-                    </>
-                  )}
-                </Form.List>
-                <Form.Item>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    style={{ marginTop: "6px" }}
-                  >
-                    저장
-                  </Button>
-                </Form.Item>
-              </Form>
-            </div>
-          ))}
+          <Typography.Title level={3}>기존 근무 설정하기</Typography.Title>
+          <Space>
+            <Select
+              style={{ width: 120 }}
+              placeholder="근무 선택"
+              onChange={(value) =>
+                setSelectedDuty(duty.find((e) => e.duty_pid === value))
+              }
+            >
+              {duty.map((item) => (
+                <Select.Option key={item.duty_pid} value={item.duty_pid}>
+                  {item.duty_name}
+                </Select.Option>
+              ))}
+            </Select>
+            <Button type="primary" onClick={() => setOpen(true)}>
+              근무 설정
+            </Button>
+          </Space>
         </div>
       </Content>
+
+      <Drawer
+        title={`${selectedDuty.duty_name} 근무 설정`}
+        placement="right"
+        onClose={() => setOpen(false)}
+        open={open}
+      >
+        <SetDutyTimeslot duty_pid={selectedDuty.duty_pid} />
+      </Drawer>
     </Layout>
   );
 };
