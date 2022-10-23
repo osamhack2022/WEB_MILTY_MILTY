@@ -90,48 +90,63 @@ exports.set_duty_schedule = async function (req, res) {
   } = req.body;
 
   // ==== Region : 해당 부대의 duty_pid 리스트 불러오기 ====
-  const duty_pid_list = Duty.findOne({
+  const duty_pid_list = await Duty.findAll({
     attributes: ['duty_pid'],
     where: { usr_division_code: user_division_code },
   });
-  console.log('duty_pid 리스트:', duty_pid_list);
+  for (const d of duty_pid_list) {
+    console.log(d.dataValues);
+  }
 
-  // 해당 일자 timeslots 리스트(timeslot_pid, timeslot_point 가 중요)
-  let timeslots = Timeslot.findAll({
+
+  // 해당 일자 timeslots 리스트(timeslot_pid, timeslot_point 가 중요)(이 부분 고쳐야 합니다.)
+  let timeslots = await Timeslot.findAll({
     attributes: ['timeslot_pid', 'timeslot_point'],
-    where: { duty_pid: duty_pid_list['duty_pid'] },
+    where: { duty_pid: d.dataValues },
   });
   console.log('timeslots 리스트', timeslots);
   // ==== End Region ====
 
-  // ==== Start Region : 현재 열외자 리스트 생성 ====
-  const now = new Date();
 
-  const current_excluder_list = Exempt.findOne({
+  // ==== Start Region : 현재 열외자 리스트 생성((이 부분 고쳐야 합니다. 열외자 리스트는 잘 나오는데 기간에 따라서 걸려지지가 않습니다.) ====
+
+  const current_excluder_list = await Exempt.findOne({
     attributes: ['usr_pid'],
     where: { exempt_division_code: user_division_code },
     [Op.and]: [
       {
-        timeslot_start: { [Op.lte]: now },
+        timeslot_start: { [Op.lte]: date },
       },
       {
-        timeslot_end: { [Op.gte]: now },
+        timeslot_end: { [Op.gte]: date },
       },
     ],
   });
   console.log('현재 열외자 리스트 : ', current_excluder_list);
 
   // 근무자 리스트 생성(후보 user들의 리스트)
-  let usrs = User.findAll({
-    attributes: ['usr_pid'],
-    where: {
-      usr_pid: { [Op.ne]: current_excluder_list.usr_pid }, // Exempt.usr_pid와 같지 않은 유저들 목록 불러서 저장
-      usr_class: {
-        [Op.or]: ['이병', '일병', '상병', '병장'],
+  if (current_excluder_list !== null) {
+    let usrs = await User.findAll({
+      attributes: ['usr_pid'],
+      where: {
+        usr_pid: { [Op.ne]: current_excluder_list.usr_pid }, // Exempt.usr_pid와 같지 않은 유저들 목록 불러서 저장
+        usr_class: {
+          [Op.or]: ['이병', '일병', '상병', '병장'],
+        },
       },
-    },
-  });
-  console.log('근무자 리스트 : ', usrs);
+    })
+  } else if (current_excluder_list == null) {
+    let usrs = await User.findAll({
+      attributes: ['usr_pid'],
+      where: {
+        usr_class: {
+          [Op.or]: ['이병', '일병', '상병', '병장'],
+        },
+      },
+    })
+    console.log('근무자 리스트 : ', usrs);
+  }
+
 
   // ==== End Region ====
 
