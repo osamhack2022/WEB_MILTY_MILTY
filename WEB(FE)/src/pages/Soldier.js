@@ -11,9 +11,9 @@ import {
 } from "@ant-design/icons";
 import { useAuth } from "../hooks/useAuth";
 import Main from "./Main";
-import Dutycalender from "./Dutycalendar";
+import CheckDuty from "./CheckDuty";
 import Dutyprecept from "./Dutyprecept";
-import Changecalendar from "./Changecalendar";
+import ChangeDuty from "./ChangeDuty";
 import Dutycount from "./Dutycount";
 import Dutygraph from "./Dutygraph";
 import Report from "./Report";
@@ -117,15 +117,15 @@ const Admin = () => {
         </Sider>
         <Routes>
           <Route index element={<Main user={user} />} />
-          <Route path="/check-duty" element={<Dutycalender />} />
+          <Route path="/check-duty" element={<CheckDuty />} />
           <Route
             path="/check-duty/dutyprecept/:date"
             element={<Dutyprecept />}
           />
-          <Route path="/change-duty" element={<Changecalendar />} />
+          <Route path="/change-duty" element={<ChangeDuty />} />
           <Route path="/check-count/count" element={<Dutycount />} />
           <Route path="/check-count/graph" element={<Dutygraph />} />
-          <Route path="/check-count/ranking" element={<Dutycalender />} />
+          <Route path="/check-count/ranking" />
           <Route path="/report" element={<Report />} />
           <Route path="/mypage" element={<Mypage />} />
         </Routes>

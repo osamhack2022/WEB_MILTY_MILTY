@@ -47,7 +47,7 @@ const data = [
 
 const getListData = (date) => data.filter((v) => date.isSame(v.date, "day"));
 
-const Dutycalendar = ({ user }) => {
+const CheckDuty = ({ user }) => {
   useEffect(() => {
     axios.post("/api/get-duty-schedule", {
       user_id: user.user_id,
@@ -98,4 +98,4 @@ const Dutycalendar = ({ user }) => {
   );
 };
 
-export default Dutycalendar;
+export default CheckDuty;

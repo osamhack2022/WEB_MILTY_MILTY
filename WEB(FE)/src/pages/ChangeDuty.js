@@ -54,7 +54,7 @@ const data = [
 
 const getListData = (date) => data.filter((v) => date.isSame(v.date, "day"));
 
-const Changecalendar = () => {
+const ChangeDuty = () => {
   const [open, setOpen] = useState(false);
 
   const showDrawer = () => {
@@ -177,4 +177,4 @@ const Changecalendar = () => {
   );
 };
 
-export default Changecalendar;
+export default ChangeDuty;
