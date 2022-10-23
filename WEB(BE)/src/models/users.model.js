@@ -58,7 +58,7 @@ module.exports = class User extends Sequelize.Model {
         },
         usr_point: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          allowNull: true,
           unique: false,
         },
         created_at: {
