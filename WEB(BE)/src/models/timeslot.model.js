@@ -24,7 +24,7 @@ module.exports = class Timeslot extends Sequelize.Model {
         duty_pid: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          unique: true,
+          unique: false,
         },
         timeslot_point: {
           type: Sequelize.FLOAT,

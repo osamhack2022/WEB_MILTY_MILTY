@@ -49,13 +49,15 @@ exports.set_duty_timeslot = async function (req, res) {
     Timeslot.destroy({ where: { duty_pid: duty_pid } });
   }
 
+  console.log(timeslot);
+
   // 타임슬롯 생성
-  for (let i = 0; timeslot.length; i++) {
+  for (const t of timeslot) {
     Timeslot.create({
-      timeslot_start: timeslot[i].timeslot_start,
-      timeslot_end: timeslot[i].timeslot_end,
+      timeslot_start: t.timeslot_start,
+      timeslot_end: t.timeslot_end,
       duty_pid: duty_pid,
-      timeslot_point: timeslot[i].timeslot_point,
+      timeslot_point: t.timeslot_point,
     });
   }
 
