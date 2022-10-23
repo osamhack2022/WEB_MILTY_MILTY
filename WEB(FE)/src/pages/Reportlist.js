@@ -41,6 +41,7 @@ const Reportlist = () => {
   const { user } = useAuth();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loadingApprove, setLoadingApprove] = useState(false);
+  const [loadingDisapprove, setLoadingDisapprove] = useState(false);
   const [report, setReport] = useState();
 
   const fetchDutyRequest = useCallback(() => {
@@ -82,6 +83,15 @@ const Reportlist = () => {
     }, 1000);
   };
 
+  const disapprove = () => {
+    setLoadingDisapprove(true);
+    // ajax request after empty completing
+    setTimeout(() => {
+      setSelectedRowKeys([]);
+      setLoadingDisapprove(false);
+    }, 1000);
+  };
+
   const onSelectChange = (newSelectedRowKeys) => {
     console.log(
       `selectedRowKeys changed: (${selectedRowKeys}) => (${newSelectedRowKeys})`
@@ -89,10 +99,6 @@ const Reportlist = () => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
   const hasSelected = selectedRowKeys.length > 0;
 
   return (
@@ -114,7 +120,15 @@ const Reportlist = () => {
                 disabled={!hasSelected}
                 loading={loadingApprove}
               >
-                일괄 처리
+                선택 항목 처리
+              </Button>
+              <Button
+                type="danger"
+                onClick={disapprove}
+                disabled={!hasSelected}
+                loading={loadingDisapprove}
+              >
+                선택 항목 거부
               </Button>
               <span style={{ marginLeft: 8 }}>
                 {hasSelected ? `${selectedRowKeys.length}개 선택됨` : ""}
@@ -122,7 +136,7 @@ const Reportlist = () => {
             </Space>
           </div>
           <Table
-            rowSelection={rowSelection}
+            rowSelection={{ selectedRowKeys, onChange: onSelectChange }}
             columns={columns}
             dataSource={report}
             scroll={{ x: 768 }}
