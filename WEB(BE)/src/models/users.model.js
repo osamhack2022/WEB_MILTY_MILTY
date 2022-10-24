@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const moment = require('moment');
 
 module.exports = class User extends Sequelize.Model {
   static init(sequelize) {

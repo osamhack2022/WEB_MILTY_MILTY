@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 const express = require('express');
+const moment = require('moment');
+const passport = require('passport');
 
 const router = express.Router();
 const passport = require('passport');
@@ -18,6 +20,7 @@ const {
   get_user_duty_schedule,
 } = require('../controllers/duty');
 const { get_check_count } = require('../controllers/check_count');
+const { user_get_report, admin_get_report } = require('../controllers/report');
 const { user_set_request } = require('../controllers/user_request');
 const { user_get_request } = require('../controllers/user_request');
 const { get_user_list } = require('../controllers/user_request');
@@ -85,7 +88,7 @@ router.post('/get-user-duty-schedule', get_user_duty_schedule);
 // #### End region ####
 
 // #### Request region ####
-// 근무변경 및 건의사항
+// 근무변경
 router.post('/set-duty-request', user_set_request); // 근무변경 및 건의사항 정보 넣기
 router.post('/get-duty-request', user_get_request); // 근무변경 및 건의사항 정보 받기
 // #### End region ####

@@ -45,30 +45,24 @@ const columns = [
 
 const Report = () => {
   const { user } = useAuth();
+  const [form] = Form.useForm();
   const [data, setData] = useState();
 
   const fetchDutyRequest = useCallback(() => {
     axios
-      .post("/api/get-duty-request", {
+      .post("/api/user/get-report", {
         usr_pid: user.user_pid,
       })
       .then((response) => {
         if (response.status === 200 && response.data.result === "success") {
           setData(
-            response.data.request.map(
-              ({
-                request_pid,
-                request_reason,
-                request_date,
-                request_status,
-              }) => ({
-                key: request_pid,
-                index: request_pid,
-                description: request_reason,
-                time: request_date,
-                status: request_status,
-              })
-            )
+            response.data.request.map(({ pid, description, time, status }) => ({
+              key: pid,
+              index: pid,
+              description,
+              time,
+              status,
+            }))
           );
         }
       })
@@ -95,6 +89,7 @@ const Report = () => {
         if (response.status === 200 && response.data.result === "success") {
           alert("건의사항 등록에 성공하였습니다");
           fetchDutyRequest();
+          form.resetFields();
         }
       })
       .catch((error) => {
@@ -139,11 +134,12 @@ const Report = () => {
               조치하여 답변하겠습니다.
             </Typography.Paragraph>
           </Typography>
-          <Form onFinish={onFinish} autoComplete="off">
+          <Form form={form} onFinish={onFinish} autoComplete="off">
             <Form.Item
               name="description"
               rules={[
                 {
+                  message: "내용을 작성해주세요",
                   required: true,
                 },
               ]}
@@ -156,7 +152,7 @@ const Report = () => {
 
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                제출하기
+                작성하기
               </Button>
             </Form.Item>
           </Form>

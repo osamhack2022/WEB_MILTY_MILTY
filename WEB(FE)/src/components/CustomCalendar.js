@@ -87,6 +87,7 @@ const CustomCalendar = (props) => {
 
   return (
     <Calendar
+      className="custom-calendar"
       locale={locale}
       style={{ padding: "0.5rem", ...style }}
       defaultValue={defaultValue}
