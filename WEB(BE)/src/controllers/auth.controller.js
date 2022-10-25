@@ -90,10 +90,13 @@ exports.authToken = (req, res, next) => {
   try {
     const result = jwt.verify(token, SECERT_JWT);
     console.log(result);
+    if (typeof next === 'function') next();
     // 검증 성공시 응답.
-    return res
-      .status(200)
-      .json({ request_id: result.id, message: 'Verify token' });
+    return res.status(200).json({
+      id: result.id,
+      classification: result.classification,
+      message: 'Verify token',
+    });
   } catch (err) {
     // 검증에 실패하거나 토큰이 만료시 응답.
     return res.status(401).json({ message: 'Wrong token' });

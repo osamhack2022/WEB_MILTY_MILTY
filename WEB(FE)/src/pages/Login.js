@@ -17,8 +17,10 @@ const Login = () => {
       .then((response) => {
         if (response.status === 200 && response.data.result === "success") {
           const { user, token } = response.data;
+          // 로그인과 동시에 token이 발급되며 header를 통해 토큰 값이 전달됩니다.
+          user.token = token;
           sessionStorage.setItem('access_token', token);
-          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+          axios.defaults.headers.common.Authorization = token;
           login(user);
         }
       })
