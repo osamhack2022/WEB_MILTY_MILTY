@@ -8,6 +8,9 @@ import Admin from "./pages/Admin";
 import Soldier from "./pages/Soldier";
 import "./App.less";
 
+const ADMIN = 0;
+const USER = 1;
+
 const App = () => {
   const { user } = useAuth();
 
@@ -21,7 +24,7 @@ const App = () => {
       <Route
         path="/admin/*"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute classification={ADMIN}>
             <Admin />
           </ProtectedRoute>
         }
@@ -29,12 +32,12 @@ const App = () => {
       <Route
         path="/soldier/*"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute classification={USER}>
             <Soldier />
           </ProtectedRoute>
         }
       />
-      <Route
+      <Route exact
         index
         element={
           user === null ? (

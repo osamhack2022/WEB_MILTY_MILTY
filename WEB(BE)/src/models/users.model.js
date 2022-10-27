@@ -57,15 +57,10 @@ module.exports = class User extends Sequelize.Model {
           allowNull: false,
           unique: false,
         },
-        created_at: {
-          type: Sequelize.DATE,
-          allowNull: false,
-          unique: false
-        },
       },
       {
         sequelize,
-        timestamps: false,
+        timestamps: true,
         underscored: false,
         tableName: 'users',
         paranoid: false,
