@@ -4,7 +4,6 @@ const moment = require('moment');
 const passport = require('passport');
 
 const router = express.Router();
-const passport = require('passport');
 const {
   register,
   login,
