@@ -4,7 +4,6 @@ const moment = require('moment');
 const passport = require('passport');
 
 const router = express.Router();
-const passport = require('passport');
 const { register, login, authToken } = require('../controllers/auth.controller');
 const { set_duty, get_duty, set_duty_timeslot, get_duty_timeslot, set_duty_schedule, get_duty_schedule, get_user_duty_on_dashboard, get_user_duty_schedule } = require('../controllers/duty');
 const { get_check_count } = require('../controllers/check_count');
