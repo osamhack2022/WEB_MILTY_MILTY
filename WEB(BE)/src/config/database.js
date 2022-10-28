@@ -14,6 +14,7 @@ const sequelize = new Sequelize(
   process.env.DB_PASSWORD,
   {
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT || 3306,
     dialect: 'mysql',
     timezone: '+09:00', // DB에 저장할 때 시간 설정
     dialectOptions: {
