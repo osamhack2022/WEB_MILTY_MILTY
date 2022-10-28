@@ -11,7 +11,7 @@ exports.set_user_exempt = async function (req, res) {
   } = req.body;
 
   const user = await User.findOne({
-    attributes: ['usr_division_code'],
+    attributes: ['usr_division_code', 'usr_name', 'usr_class'],
     where: {
       usr_pid: user_pid,
     },
@@ -23,10 +23,14 @@ exports.set_user_exempt = async function (req, res) {
     'exempt_end :', exempt_end,
     'exempt_type :', exempt_type,
     '부대코드 :', user['usr_division_code'],
+    '유저명: ', user['usr_name'],
   );
+
+  const user_name = `${user['usr_class']} ${user['usr_name']}`;
 
   Exempt.create({
     usr_pid: user_pid,
+    user_name: user_name,
     exempt_division_code: user['usr_division_code'],
     exempt_start: exempt_start,
     exempt_end: exempt_end,
@@ -45,7 +49,7 @@ exports.get_user_exempt = async function (req, res) {
   } = req.body;
 
   const excluders = await Exempt.findAll({
-    where: { exempt_division_code: user_division_code }
+    where: { exempt_division_code: user_division_code },
   });
 
   console.log('전체 열외자 배열 목록 : ', excluders);
