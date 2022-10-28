@@ -19,7 +19,7 @@ module.exports = class Exempt extends Sequelize.Model {
         usr_pid: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          unique: true,
+          unique: false,
         },
         exempt_start: {
           type: Sequelize.DATE,
