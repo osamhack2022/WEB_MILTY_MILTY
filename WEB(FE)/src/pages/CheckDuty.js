@@ -1,88 +1,79 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Layout, Badge, Button, PageHeader } from "antd";
 import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 import CustomCalendar from "../components/CustomCalendar";
 
 const { Content } = Layout;
 
-const data = [
-  {
-    key: 1,
-    date: "2022-10-08",
-    name: "무기고",
-    startTime: "08:00",
-    endTime: "12:00",
-    isDone: true,
-    isSigned: true,
-  },
-  {
-    key: 2,
-    date: "2022-10-15",
-    name: "위병소",
-    startTime: "12:00",
-    endTime: "16:00",
-    isDone: false,
-    isSigned: true,
-  },
-  {
-    key: 3,
-    date: "2022-10-15",
-    name: "CCTV",
-    startTime: "20:00",
-    endTime: "22:00",
-    isDone: false,
-    isSigned: false,
-  },
-  {
-    key: 4,
-    date: "2022-10-17",
-    name: "CCTV",
-    startTime: "20:00",
-    endTime: "22:00",
-    isDone: false,
-    isSigned: false,
-  },
-];
+const CheckDuty = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [schedule, setSchedule] = useState([]);
 
-const getListData = (date) => data.filter((v) => date.isSame(v.date, "day"));
+  const fetchUserDutySchedule = useCallback(() => {
+    axios
+      .post("/api/user/get-duty-schedule", {
+        user_pid: user.user_pid,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          setSchedule(
+            response.data.schedule.map(
+              ({ pid, date, duty_name, start_time, end_time }) => ({
+                key: pid,
+                index: pid,
+                date,
+                duty_name,
+                start_time,
+                end_time,
+              })
+            )
+          );
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }, [user]);
 
-const CheckDuty = ({ user }) => {
-  useEffect(() => {
-    axios.post("/api/get-duty-schedule", {
-      user_id: user.user_id,
-    });
-  }, []);
-  const dateCellRender = (value) => {
-    const listData = getListData(value);
-    return (
-      <div>
-        <ul className="events">
-          {listData.map((item) => (
-            <li key={item.key}>
-              <Badge
-                style={{}}
-                color={(() => {
-                  let color;
-                  if (item.isDone) color = "green";
-                  else if (item.isSigned) color = "geekblue";
-                  else color = "red";
+  useEffect(() => {}, []);
 
-                  return color;
-                })()}
-                text={`${item.name} ${item.startTime}-${item.endTime}`}
-              />
-            </li>
-          ))}
-        </ul>
-        {listData.length === 0 ? null : (
-          <Link to={`dutyprecept/${value.format("YYYY-MM-DD")}`}>
-            <Button>경작서 확인</Button>
-          </Link>
-        )}
-      </div>
-    );
-  };
+  const dateCellRender = useCallback(
+    (date) => {
+      const data = schedule.filter((item) => date.isSame(item.date, "day"));
+
+      return (
+        <div>
+          <ul className="events">
+            {data.map((item) => (
+              <li key={item.key}>
+                <Badge
+                  style={{}}
+                  color={(() => {
+                    let color;
+                    if (item.isDone) color = "green";
+                    else if (item.isSigned) color = "geekblue";
+                    else color = "red";
+
+                    return color;
+                  })()}
+                  text={`${item.name} ${item.startTime}-${item.endTime}`}
+                />
+              </li>
+            ))}
+          </ul>
+          {data.length === 0 ? null : (
+            <Link to={`${date.format("YYYY-MM-DD")}`}>
+              <Button href={`${date.format("YYYY-MM-DD")}`}>경작서 확인</Button>
+            </Link>
+          )}
+        </div>
+      );
+    },
+    [schedule]
+  );
 
   return (
     <Layout>
@@ -92,7 +83,10 @@ const CheckDuty = ({ user }) => {
           onBack={() => null}
           title="근무 확인"
         />
-        <CustomCalendar dateCellRender={dateCellRender} />
+        <CustomCalendar
+          onSelect={(date) => navigate(date.format("YYYY-MM-DD"))}
+          dateCellRender={dateCellRender}
+        />
       </Content>
     </Layout>
   );
