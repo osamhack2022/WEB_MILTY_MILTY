@@ -17,6 +17,7 @@ import Changecalendar from "./Changecalendar";
 import Dutycount from "./Dutycount";
 import Dutygraph from "./Dutygraph";
 import Report from "./Report";
+import Mypage from "./Mypage";
 
 const { Sider } = Layout;
 
@@ -126,6 +127,7 @@ const Admin = () => {
           <Route path="/check-count/graph" element={<Dutygraph />} />
           <Route path="/check-count/ranking" element={<Dutycalender />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/mypage" element={<Mypage />} />
         </Routes>
       </Layout>
     </Layout>

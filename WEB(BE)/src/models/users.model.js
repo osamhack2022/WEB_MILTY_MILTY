@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const moment = require('moment');
 
 module.exports = class User extends Sequelize.Model {
   static init(sequelize) {
@@ -69,7 +70,7 @@ module.exports = class User extends Sequelize.Model {
       },
       {
         sequelize,
-        timestamps: false,
+        timestamps: true,
         underscored: false,
         tableName: 'users',
         paranoid: false,
