@@ -11,10 +11,20 @@ module.exports = class Exempt extends Sequelize.Model {
           autoIncrement: true,
           unique: true,
         },
+        exempt_division_code: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          unique: false,
+        },
         usr_pid: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          unique: true,
+          unique: false,
+        },
+        user_name: {
+          type: Sequelize.STRING(100),
+          allowNull: false,
+          unique: false,
         },
         exempt_start: {
           type: Sequelize.DATE,

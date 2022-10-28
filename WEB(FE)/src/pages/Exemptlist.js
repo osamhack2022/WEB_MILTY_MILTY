@@ -1,101 +1,88 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Layout, Space, PageHeader, Alert, Badge } from "antd";
+import moment from "moment";
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 import CustomCalendar from "../components/CustomCalendar";
 
 const { Content } = Layout;
 
-const data = [
-  {
-    key: 1,
-    user: {
-      class: "일병",
-      name: "한동현",
-      senior: true,
-      tags: ["운전병"],
-    },
-    date: "2022-10-08",
-    type: "휴가",
-  },
-  {
-    key: 2,
-    user: {
-      class: "이병",
-      name: "박민석",
-      senior: false,
-      tags: ["환자"],
-    },
-    date: "2022-10-15",
-    type: "환자",
-  },
-  {
-    key: 3,
-    user: {
-      class: "이병",
-      name: "박민석",
-      senior: false,
-      tags: ["환자"],
-    },
-    date: "2022-10-16",
-    type: "환자",
-  },
-  {
-    key: 4,
-    user: {
-      class: "이병",
-      name: "박민석",
-      senior: false,
-      tags: ["환자"],
-    },
-    date: "2022-10-17",
-    type: "환자",
-  },
-  {
-    key: 5,
-    user: {
-      class: "일병",
-      name: "한동현",
-      senior: true,
-      tags: ["운전병"],
-    },
-    date: "2022-10-17",
-    type: "운행",
-  },
-];
-
-const getListData = (date) => data.filter((v) => date.isSame(v.date, "day"));
-
 const Exemptlist = () => {
-  const customDateCellRender = (value) => {
-    const listData = getListData(value);
+  const { user } = useAuth();
+  const [exempt, setExempt] = useState([]);
 
-    return (
-      <ul className="events">
-        {listData.map((item) => (
-          <li key={item.key}>
-            <Badge
-              style={{}}
-              color={(() => {
-                let color;
-                switch (item.type) {
-                  case "휴가":
-                    color = "blue";
-                    break;
-                  case "환자":
-                    color = "red";
-                    break;
-                  default:
-                    color = "lime";
-                }
+  const fetchExempt = useCallback(() => {
+    axios
+      .post("/api/get-user-exempt", {
+        user_division_code: user.user_division_code,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          setExempt(
+            response.data.exempt.map(
+              ({
+                exempt_pid,
+                exempt_start,
+                exempt_end,
+                user_name,
+                exempt_type,
+              }) => ({
+                key: exempt_pid,
+                index: exempt_pid,
+                name: user_name,
+                start_date: moment(exempt_start),
+                end_date: moment(exempt_end),
+                type: exempt_type,
+              })
+            )
+          );
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }, [user]);
 
-                return color;
-              })()}
-              text={`${item.user.class} ${item.user.name} - ${item.type}`}
-            />
-          </li>
-        ))}
-      </ul>
-    );
-  };
+  useEffect(() => {
+    fetchExempt();
+  }, []);
+
+  const customDateCellRender = useCallback(
+    (date) => {
+      const data = exempt.filter((item) =>
+        date.isBetween(item.start_date, item.end_date, "days", "[]")
+      );
+
+      return (
+        <ul className="events">
+          {data.map((item) => (
+            <li key={item.key}>
+              <Badge
+                style={{}}
+                color={(() => {
+                  let color;
+                  switch (item.type) {
+                    case "휴가":
+                      color = "blue";
+                      break;
+                    case "환자":
+                      color = "red";
+                      break;
+                    default:
+                      color = "lime";
+                  }
+
+                  return color;
+                })()}
+                text={`${item.name} - ${item.type}`}
+              />
+            </li>
+          ))}
+        </ul>
+      );
+    },
+    [exempt]
+  );
 
   return (
     <Layout>
