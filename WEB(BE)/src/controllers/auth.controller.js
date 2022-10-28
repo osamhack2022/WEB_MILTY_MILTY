@@ -25,31 +25,36 @@ exports.register = async function (req, res) {
   const id = await Users.findOne({ where: { usr_id: user_id } });
   console.log('########## ID :  ', id, 'checked : ', checked, '######## \n');
 
-  if (!id) {
-    // 가입할 때 이미 존재하는 id인지, 그리고 관리자 권한을 체크 안했는지 확인되면 병사로 가입
-    // 존재하지 않으면 회원가입 저장
-    console.log('checked == false 조건문');
-    let user = Users.create({
-      usr_name: user_name,
-      usr_id: user_id,
-      usr_password: user_password,
-      usr_birthday: user_birthday,
-      usr_division: user_division,
-      usr_division_code: user_division_code,
-      usr_class: user_class,
-      classification: checked ? 0 : 1,
-      // 가입할 때 이미 존재하는 id인지, 그리고 관리자 권한을 체크 했는지 확인되면 관리자로 가입 요청
-      // (추후 DB에서 검토 후 classification: true로 바꾸면 관리자로 로그인)
-      usr_discharge_date: user_discharge_date,
-    })
-      .then(() => {
-        return res.status(200).json('register success');
-        // res.send('SUCCESS');
+  try {
+    if (!id) {
+      // 가입할 때 이미 존재하는 id인지, 그리고 관리자 권한을 체크 안했는지 확인되면 병사로 가입
+      // 존재하지 않으면 회원가입 저장
+
+      await Users.create({
+        usr_name: user_name,
+        usr_id: user_id,
+        usr_password: user_password,
+        usr_birthday: user_birthday,
+        usr_division: user_division,
+        usr_division_code: user_division_code,
+        usr_class: user_class,
+        classification: checked ? 0 : 1,
+        // 가입할 때 이미 존재하는 id인지, 그리고 관리자 권한을 체크 했는지 확인되면 관리자로 가입 요청
+        // (추후 DB에서 검토 후 classification: true로 바꾸면 관리자로 로그인)
+        usr_discharge_date: user_discharge_date,
       })
-      .catch(err => {
-        throw err;
-      });
-  } else return res.status(401).json('ID is already taken.');
+        .then(() => {
+          return res.status(200).json('register success');
+          // res.send('SUCCESS');
+        })
+        .catch(err => {
+          throw err;
+        });
+    } else throw new Error('create error');
+  } catch (err) {
+    console.log('ERROR: ', err);
+    return res.status(401).json('ID is already taken.');
+  }
 };
 const SECERT_JWT = process.env.SECERT_JWT || 'OSAM2022-MILLY-SECERT-TOKEN';
 const generateJWT = (id, classification) =>
