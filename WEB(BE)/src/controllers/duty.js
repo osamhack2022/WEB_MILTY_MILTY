@@ -175,6 +175,13 @@ exports.get_duty_schedule = async function (req, res) {
   } = req.body;
 };
 
+// 유저 근무 대시보드 조회(수정중)
+exports.get_user_duty_on_dashboard = async function (req, res) {
+  let {
+    user_pid,
+  } = req.body;
+}
+
 // 본인(병사)의 근무 스케줄 조회(수정중)
 exports.get_user_duty_schedule = async function (req, res) {
   let {

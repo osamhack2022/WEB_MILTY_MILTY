@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { register } = require('../controllers/auth.controller');
-const { set_duty, get_duty, set_duty_timeslot, get_duty_timeslot, set_duty_schedule, get_duty_schedule, get_user_duty_schedule } = require('../controllers/duty');
+const { set_duty, get_duty, set_duty_timeslot, get_duty_timeslot, set_duty_schedule, get_duty_schedule, get_user_duty_on_dashboard, get_user_duty_schedule } = require('../controllers/duty');
 const { get_check_count } = require('../controllers/check_count');
 const { user_set_request } = require('../controllers/user_request');
 const { user_get_request } = require('../controllers/user_request');
@@ -109,6 +109,11 @@ router.post('/get-duty-request', user_get_request); // 근무변경 및 건의�
 // 열외자 추가, 조회
 router.post('/set-user-exempt', set_user_exempt);
 router.post('/get-user-exempt', get_user_exempt);
+// #### End region ####
+
+// #### Exempt region ####
+// 유저 대시보드
+router.post('/get-user-dashboard', get_user_duty_on_dashboard);
 // #### End region ####
 
 // #### User region ####
