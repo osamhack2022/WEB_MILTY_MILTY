@@ -37,7 +37,7 @@ const App = () => {
           </ProtectedRoute>
         }
       />
-      <Route exact
+      <Route
         index
         element={
           user === null ? (
