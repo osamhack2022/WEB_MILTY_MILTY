@@ -76,6 +76,7 @@ exports.login = (req, res, next) => {
   res.status(200).json({
     result: 'success',
     user: {
+      user_pid: req.user.usr_pid,
       user_id: req.user.usr_id,
       user_name: req.user.usr_name,
       user_birthday: req.user.usr_birthday,
