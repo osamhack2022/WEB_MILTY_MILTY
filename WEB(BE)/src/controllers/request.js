@@ -16,7 +16,7 @@ request_status
 */
 
 // 건의사항 및 근무변경 추가(구현완료)
-exports.user_set_duty_request = async function (req, res) {
+exports.user_set_duty_request = async (req, res) => {
   const {
     request_type,
     duty_schedule_pid,
@@ -100,11 +100,34 @@ exports.user_set_duty_request = async function (req, res) {
       });
   } else {
     console.log('request_type 값 오류');
+    res.status(200).json({
+      result: 'fail',
+    });
   }
 };
 
-// 유저 건의사항 및 근무 요청사항 조회(구현완료)
-exports.admin_get_duty_request = async function (req, res) {
+// 관리자 근무 변경 요청 승인/거부(근무 변경 로직 구현 필요)
+exports.admin_set_duty_request = async (req, res) => {
+  const { pid, status } = req.body;
+  try {
+    await Request.update(
+      {
+        request_status: status,
+      },
+      {
+        where: { request_pid: pid },
+      },
+    );
+    res.status(200).json({
+      result: 'success',
+    });
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
+// 유저 근무 요청사항 조회(구현완료)
+exports.admin_get_duty_request = async (req, res) => {
   const { division_code } = req.body;
 
   try {
