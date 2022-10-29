@@ -1,5 +1,5 @@
 const Request = require('../models/request.model');
-const User_list_model = require('../models/users.model');
+const Users = require('../models/users.model');
 
 /*
 `request_pid`	int	NOT NULL,
@@ -50,15 +50,15 @@ exports.user_set_request = async function (req, res) {
   );
 
   const now = new Date();
-  const user_division_code = await User_list_model.findOne({
+  const user_division_code = await Users.findOne({
     attributes: ['usr_division_code'],
-    where: { usr_pid: request_usr }
+    where: { usr_pid: request_usr },
   });
   console.log('부대코드 :', user_division_code['usr_division_code']);
 
   // 건의사항
   if (request_type == 0) {
-    const user = await User_list_model.findOne({
+    const user = await Users.findOne({
       where: { usr_pid: request_usr },
     });
 
@@ -119,16 +119,24 @@ exports.user_get_request = async function (req, res) {
 
 //같은 부대 유저 정보 받기
 exports.get_user_list = async function (req, res) {
-  const { usr_division_code } = req.body;
+  const { user_division_code } = req.body;
 
-  const user_list = await User_list_model.findAll({
-    where: { usr_division_code: usr_division_code },
+  const user_list = await Users.findAll({
+    attributes: ['usr_pid', 'usr_name', 'usr_class', 'usr_discharge_date'],
+    where: { usr_division_code: user_division_code },
   });
 
   console.log('user_list  내용 : ', user_list);
 
   res.status(200).json({
     result: 'success',
-    user_list: user_list,
+    users: user_list.map(
+      ({ usr_pid, usr_name, usr_class, usr_discharge_date }) => ({
+        user_pid: usr_pid,
+        user_name: usr_name,
+        user_class: usr_class,
+        user_discharge_date: usr_discharge_date,
+      }),
+    ),
   });
 };
