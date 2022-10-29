@@ -8,6 +8,7 @@ const {
   register,
   login,
   authToken,
+  set_user_info,
 } = require('../controllers/auth.controller');
 const {
   set_duty,
@@ -50,6 +51,9 @@ router.get('/logout', function (req, res) {
 router.post('/register', register); // register 데이터 받는 곳
 
 router.get('/authtoken', authToken);
+
+// 사용자 정보 변경
+router.post('/set-user-info', set_user_info);
 
 // #endregion
 

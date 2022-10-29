@@ -108,3 +108,58 @@ exports.authToken = (req, res, next) => {
     return res.status(401).json({ message: 'Wrong token' });
   }
 };
+
+exports.set_user_info = async (req, res) => {
+  const {
+    user_id,
+    user_pid,
+    user_password,
+    user_name,
+    user_birthday,
+    user_division,
+    user_division_code,
+    user_class,
+    user_discharge_date,
+  } = req.body;
+  const encrypted_user_password = bcrypt.hashSync(user_password);
+
+  try {
+    await Users.update(
+      {
+        usr_name: user_name,
+        usr_id: user_id,
+        usr_password: encrypted_user_password,
+        usr_birthday: user_birthday,
+        usr_division: user_division,
+        usr_division_code: user_division_code,
+        usr_class: user_class,
+        usr_discharge_date: user_discharge_date,
+      },
+      {
+        where: { usr_pid: user_pid },
+      },
+    );
+
+    const token = generateJWT(user_id, user_class);
+
+    res.status(200).json({
+      result: 'success',
+      user: {
+        user_pid,
+        user_id,
+        user_name,
+        user_birthday,
+        user_division,
+        user_division_code,
+        user_class,
+        user_discharge_date,
+      },
+      token,
+    });
+  } catch (err) {
+    console.warn(err);
+    res.status(200).json({
+      result: 'fail',
+    });
+  }
+};
