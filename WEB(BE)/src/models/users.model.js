@@ -28,7 +28,7 @@ module.exports = class User extends Sequelize.Model {
           unique: false,
         },
         usr_birthday: {
-          type: Sequelize.INTEGER(10),
+          type: Sequelize.STRING(10),
           allowNull: false,
           unique: false,
         },

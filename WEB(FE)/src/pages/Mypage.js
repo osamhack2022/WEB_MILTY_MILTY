@@ -146,7 +146,7 @@ const Mypage = () => {
                   label="생년월일"
                   rules={[
                     {
-                      type: "number",
+                      type: "string",
                       message: "올바른 생년월일을 입력해 주세요",
                     },
                     {
@@ -213,7 +213,7 @@ const Mypage = () => {
                 >
                   <DatePicker
                     Value={moment("2022-01-01", "YYYY-MM-DD")}
-                    format={"YYYY-MM-DD"}
+                    format="YYYY-MM-DD"
                   />
                 </Form.Item>
 
