@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Layout, Space, PageHeader, Table, Tag, Button } from "antd";
+import moment from "moment";
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
+import CustomCalendar from "../components/CustomCalendar";
 
 const { Content } = Layout;
 
@@ -73,97 +77,52 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    key: "1",
-    before: {
-      class: "일병",
-      name: "한동현",
-      senior: true,
-      tags: ["운전병"],
-    },
-    after: {
-      class: "병장",
-      name: "심진우",
-      senior: true,
-      tags: ["휴가"],
-    },
-    duty: {
-      name: "CCTV",
-      startTime: "08:00",
-      endTime: "09:00",
-    },
-    reason: "일병 한동현 운행",
-  },
-  {
-    key: "2",
-    before: {
-      class: "병장",
-      name: "심진우",
-      senior: true,
-      tags: ["휴가"],
-    },
-    after: {
-      class: "상병",
-      name: "최일구",
-      senior: true,
-      tags: ["분대장", "휴가"],
-    },
-    duty: {
-      name: "무기고",
-      startTime: "22:00",
-      endTime: "24:00",
-    },
-    reason: "병장 심진우 휴가",
-  },
-  {
-    key: "3",
-    before: {
-      class: "상병",
-      name: "최일구",
-      senior: true,
-      tags: ["분대장", "휴가"],
-    },
-    after: {
-      class: "이병",
-      name: "박민석",
-      senior: false,
-      tags: ["환자"],
-    },
-    duty: {
-      name: "무기고",
-      startTime: "04:00",
-      endTime: "06:00",
-    },
-    reason: "상병 최일구 휴가",
-  },
-  {
-    key: "4",
-    before: {
-      class: "이병",
-      name: "박민석",
-      senior: false,
-      tags: ["환자"],
-    },
-    after: {
-      class: "병장",
-      name: "심진우",
-      senior: true,
-      tags: ["휴가"],
-    },
-    duty: {
-      name: "불침번",
-      startTime: "22:00",
-      endTime: "24:00",
-    },
-    reason: "이병 박민석 환자",
-  },
-];
-
 const Request = () => {
+  const { user } = useAuth();
+  const [requestList, setRequestList] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loadingApprove, setLoadingApprove] = useState(false);
   const [loadingDisapprove, setLoadingDisapprove] = useState(false);
+
+  const fetchRequestList = useCallback(() => {
+    axios
+      .post("/api/admin/get-duty-request", {
+        division_code: user.user_division_code,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          setRequestList(
+            response.data.request.map(
+              (item) => ({
+                key: item.pid,
+                before: {
+                  class: item.before_class,
+                  name: item.before_name,
+                },
+                after: {
+                  class: item.after_class,
+                  name: item.after_name,
+                },
+                duty: {
+                  name: item.duty_name,
+                  startTime: item.start_time,
+                  endTime: item.end_time,
+                  duty_schedule_pid: item.duty_schedule_pid,
+                },
+                reason: item.reason,
+              })
+            )
+          );
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      })
+  }, [user]);
+
+  useEffect(() => {
+    fetchRequestList();
+  }, []);
 
   const approve = () => {
     setLoadingApprove(true);
@@ -233,7 +192,7 @@ const Request = () => {
           <Table
             rowSelection={rowSelection}
             columns={columns}
-            dataSource={data}
+            dataSource={requestList}
             scroll={{ x: 768 }}
           />
         </div>
