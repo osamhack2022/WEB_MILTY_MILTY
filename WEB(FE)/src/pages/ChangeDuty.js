@@ -1,167 +1,151 @@
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Layout,
-  Badge,
+  Tag,
   Button,
   Drawer,
   Form,
   Input,
   Select,
   PageHeader,
+  Divider,
 } from "antd";
-import React, { useState } from "react";
+import moment from "moment";
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 import CustomCalendar from "../components/CustomCalendar";
 
 const { Content } = Layout;
 
-const data = [
+const schedule = [
   {
-    key: 1,
+    pid: 1,
     date: "2022-10-08",
     name: "무기고",
     startTime: "08:00",
     endTime: "12:00",
-    isDone: true,
-    isSigned: true,
   },
   {
-    key: 2,
+    pid: 2,
     date: "2022-10-15",
     name: "위병소",
     startTime: "12:00",
     endTime: "16:00",
-    isDone: false,
-    isSigned: true,
   },
   {
-    key: 3,
+    pid: 3,
     date: "2022-10-15",
     name: "CCTV",
     startTime: "20:00",
     endTime: "22:00",
-    isDone: false,
-    isSigned: false,
   },
   {
-    key: 4,
+    pid: 4,
     date: "2022-10-17",
     name: "CCTV",
     startTime: "20:00",
     endTime: "22:00",
-    isDone: false,
-    isSigned: false,
   },
 ];
 
-const getListData = (date) => data.filter((v) => date.isSame(v.date, "day"));
+const color = (name) => {
+  switch (name) {
+    case "CCTV":
+      return "green";
+    case "무기고":
+      return "gold";
+    case "불침번":
+      return "geekblue";
+    case "위병소":
+      return "purple";
+    case "당직":
+      return "magenta";
+    default:
+      return "default";
+  }
+};
 
 const ChangeDuty = () => {
+  const { user } = useAuth();
+  const [form] = Form.useForm();
+  const [selectedSchedule, setSelectedSchedule] = useState({});
+  const [options, setOptions] = useState([]);
   const [open, setOpen] = useState(false);
+  // const [schedule, setSchedule] = useState([]);
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
   const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    const { target, reason } = values;
+
+    axios
+      .post("/api/set-duty-request", {
+        request_type: 1,
+        duty_schedule_pid: selectedSchedule,
+        request_usr: user.user_pid,
+        request_change_usr: target,
+        request_reason: reason,
+        request_date: moment().format("YYYY-MM-DD HH:mm:ss"),
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          alert("근무 변경 요청에 성공하였습니다");
+          setOpen(false);
+          form.resetFields();
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
   };
 
-  const dateCellRender = (value) => {
-    const listData = getListData(value);
-    return (
+  const fetchSoldier = useCallback(() => {
+    axios
+      .post("/api/get-user-list", {
+        user_division_code: user.user_division_code,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          setOptions(
+            response.data.users.map((user) => ({
+              label: `${user.user_class} ${user.user_name}`,
+              value: user.user_pid,
+            }))
+          );
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }, [user]);
+
+  useEffect(() => {
+    fetchSoldier();
+  }, []);
+
+  const dateCellRender = useCallback(
+    (date) => (
       <div>
-        <ul className="events">
-          {listData.map((item) => (
-            <li key={item.key}>
-              <Badge
-                style={{}}
-                color={(() => {
-                  let color;
-                  if (item.isDone) color = "green";
-                  else if (item.isSigned) color = "geekblue";
-                  else color = "red";
-
-                  return color;
-                })()}
-                text={`${item.name} ${item.startTime}-${item.endTime}`}
-              />
-            </li>
-          ))}
-        </ul>
-        {listData.length === 0 ? (
-          <div />
-        ) : (
-          <div>
-            <Button onClick={showDrawer}>근무 변경</Button>
-            <Drawer
-              title="근무 변경"
-              placement="right"
-              size="large"
-              onClose={onClose}
-              open={open}
+        {schedule
+          .filter((item) => date.isSame(item.date, "day"))
+          .map((item) => (
+            <Button
+              type="text"
+              key={item.pid}
+              style={{ padding: "0" }}
+              onClick={() => {
+                setSelectedSchedule(item);
+                setOpen(true);
+              }}
             >
-              <Form
-                name="change-form"
-                labelCol={{
-                  span: 4,
-                }}
-                wrapperCol={{
-                  span: 16,
-                }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                autoComplete="off"
-              >
-                <Form.Item
-                  name="change-target"
-                  label="변경 대상"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <Select
-                    placeholder="근무를 변경할 사람을 선택해 주세요"
-                    allowClear
-                  >
-                    <Select.Option value="a">a</Select.Option>
-                    <Select.Option value="b">b</Select.Option>
-                    <Select.Option value="c">c</Select.Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  label="변경 사유"
-                  name="change-reason"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <Input.TextArea rows={4} />
-                </Form.Item>
-                <Form.Item
-                  wrapperCol={{
-                    offset: 4,
-                    span: 16,
-                  }}
-                >
-                  <Button type="primary" htmlType="submit">
-                    변경 요청
-                  </Button>
-                </Form.Item>
-              </Form>
-            </Drawer>
-          </div>
-        )}
+              <Tag color={color(item.name)}>{item.name}</Tag>
+              <span>
+                {item.startTime}-{item.endTime}
+              </span>
+            </Button>
+          ))}
       </div>
-    );
-  };
+    ),
+    [schedule]
+  );
 
   return (
     <Layout>
@@ -172,6 +156,59 @@ const ChangeDuty = () => {
           title="근무 변경"
         />
         <CustomCalendar dateCellRender={dateCellRender} />
+
+        <Drawer
+          title="근무 변경"
+          placement="right"
+          onClose={() => setOpen(false)}
+          open={open}
+        >
+          <Tag color={color(selectedSchedule.name)}>
+            {selectedSchedule.name}
+          </Tag>
+          <span>
+            {selectedSchedule.date} / {selectedSchedule.startTime}-
+            {selectedSchedule.endTime}
+          </span>
+          <Divider />
+          <Form
+            name="change-form"
+            form={form}
+            requiredMark={false}
+            onFinish={onFinish}
+            autoComplete="off"
+          >
+            <Form.Item
+              name="target"
+              label="변경 대상"
+              rules={[
+                {
+                  required: true,
+                  message: "근무를 변경할 사람을 선택해 주세요",
+                },
+              ]}
+            >
+              <Select placeholder="근무 변경할 사람 선택" options={options} />
+            </Form.Item>
+            <Form.Item
+              label="변경 사유"
+              name="reason"
+              rules={[
+                {
+                  required: true,
+                  message: "근무 변경 사유를 작성해주세요",
+                },
+              ]}
+            >
+              <Input.TextArea rows={4} />
+            </Form.Item>
+            <Form.Item>
+              <Button block type="primary" htmlType="submit">
+                변경 요청
+              </Button>
+            </Form.Item>
+          </Form>
+        </Drawer>
       </Content>
     </Layout>
   );
