@@ -79,7 +79,7 @@ const Report = () => {
     const { description } = values;
 
     axios
-      .post("/api/set-duty-request", {
+      .post("/api/user/set-duty-request", {
         request_type: 0,
         request_usr: user.user_pid,
         request_reason: description,

@@ -5,16 +5,6 @@ const Duty = require('../models/duty.model');
 const Users = require('../models/users.model');
 
 /*
-`request_pid`	int	NOT NULL,
-  `request_list`	varchar2(30)	NULL,
-  `request_duty`	date	NULL,
-  `request_reason`	varchar2(100)	NULL,
-  `request_day`	date	NULL,
-  `request_user`	int	NULL,
-  `request_changes`	int	NULL
-*/
-
-/*
 request_type
   0 - 건의사항 
   1 - 근무변경
@@ -26,7 +16,7 @@ request_status
 */
 
 // 건의사항 및 근무변경 추가(구현완료)
-exports.user_set_request = async function (req, res) {
+exports.user_set_duty_request = async function (req, res) {
   const {
     request_type,
     duty_schedule_pid,

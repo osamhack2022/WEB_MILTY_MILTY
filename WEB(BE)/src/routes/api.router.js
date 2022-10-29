@@ -28,7 +28,7 @@ const {
 } = require('../controllers/report');
 const {
   admin_get_duty_request,
-  user_set_request,
+  user_set_duty_request,
   get_user_list,
 } = require('../controllers/request');
 const { set_user_exempt, get_user_exempt } = require('../controllers/exempt');
@@ -100,7 +100,7 @@ router.post('/get-user-duty-schedule', get_user_duty_schedule);
 // #### Request region ####
 // 근무변경
 router.post('/admin/get-duty-request', admin_get_duty_request); // 근무변경 정보 받기
-router.post('/set-duty-request', user_set_request); // 근무변경 및 건의사항 정보 넣기
+router.post('/user/set-duty-request', user_set_duty_request); // 근무변경 및 건의사항 정보 넣기
 // 건의사항
 router.post('/user/get-report', user_get_report); // 사용자 건의사항 정보 받기
 router.post('/admin/get-report', admin_get_report); // 관리자 건의사항 정보 받기

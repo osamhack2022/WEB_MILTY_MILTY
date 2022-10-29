@@ -77,7 +77,7 @@ const ChangeDuty = () => {
     const { target, reason } = values;
 
     axios
-      .post("/api/set-duty-request", {
+      .post("/api/user/set-duty-request", {
         request_type: 1,
         duty_schedule_pid: selectedSchedule.pid,
         request_usr: user.user_pid,
