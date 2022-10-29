@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const moment = require('moment');
 
 module.exports = class Exempt extends Sequelize.Model {
   static init(sequelize) {
@@ -30,17 +31,25 @@ module.exports = class Exempt extends Sequelize.Model {
           type: Sequelize.DATE,
           allowNull: false,
           unique: false,
+          get() {
+            return moment(this.getDataValue('exempt_start')).format(
+              'YYYY-MM-DD',
+            );
+          },
         },
         exempt_end: {
           type: Sequelize.DATE,
           allowNull: false,
           unique: false,
+          get() {
+            return moment(this.getDataValue('exempt_end')).format('YYYY-MM-DD');
+          },
         },
         exempt_type: {
           type: Sequelize.STRING(100),
           allowNull: false,
           unique: false,
-        }
+        },
       },
       {
         sequelize,

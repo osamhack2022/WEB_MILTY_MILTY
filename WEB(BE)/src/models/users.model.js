@@ -56,6 +56,11 @@ module.exports = class User extends Sequelize.Model {
           type: Sequelize.DATE,
           allowNull: false,
           unique: false,
+          get() {
+            return moment(this.getDataValue('usr_discharge_date')).format(
+              'YYYY-MM-DD',
+            );
+          },
         },
         usr_point: {
           type: Sequelize.INTEGER,
