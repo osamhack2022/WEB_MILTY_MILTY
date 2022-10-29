@@ -4,8 +4,21 @@ const moment = require('moment');
 const passport = require('passport');
 
 const router = express.Router();
-const { register, login, authToken } = require('../controllers/auth.controller');
-const { set_duty, get_duty, set_duty_timeslot, get_duty_timeslot, set_duty_schedule, get_duty_schedule, get_user_duty_on_dashboard, get_user_duty_schedule } = require('../controllers/duty');
+const {
+  register,
+  login,
+  authToken,
+} = require('../controllers/auth.controller');
+const {
+  set_duty,
+  get_duty,
+  set_duty_timeslot,
+  get_duty_timeslot,
+  set_duty_schedule,
+  get_duty_schedule,
+  get_user_duty_on_dashboard,
+  get_user_duty_schedule,
+} = require('../controllers/duty');
 const { get_check_count } = require('../controllers/check_count');
 const { user_get_report, admin_get_report } = require('../controllers/report');
 const { user_set_request } = require('../controllers/user_request');
@@ -77,7 +90,10 @@ router.post('/get-user-duty-schedule', get_user_duty_schedule);
 // #### Request region ####
 // 근무변경
 router.post('/set-duty-request', user_set_request); // 근무변경 및 건의사항 정보 넣기
-router.post('/get-duty-request', user_get_request); // 근무변경 및 건의사항 정보 받기
+router.post('/get-duty-request', user_get_request); // 근무변경 정보 받기
+// 건의사항
+router.post('/user/get-report', user_get_report); // 사용자 건의사항 정보 받기
+router.post('/admin/get-report', admin_get_report); // 관리자 건의사항 정보 받기
 // #### End region ####
 
 // #### Exempt region ####
