@@ -21,7 +21,8 @@ exports.user_get_report = async (req, res) => {
       result: 'success',
       request: data,
     });
-  } catch {
+  } catch (err) {
+    console.warn(err);
     res.status(200).json({
       result: 'fail',
     });
@@ -63,7 +64,31 @@ exports.admin_get_report = async (req, res) => {
       result: 'success',
       request: data,
     });
-  } catch {
+  } catch (err) {
+    console.warn(err);
+    res.status(200).json({
+      result: 'fail',
+    });
+  }
+};
+
+exports.admin_set_report = async (req, res) => {
+  const { pid, status } = req.body;
+  try {
+    await Request.update(
+      {
+        request_status: status,
+      },
+      {
+        where: { request_pid: pid },
+      },
+    );
+
+    res.status(200).json({
+      result: 'success',
+    });
+  } catch (err) {
+    console.warn(err);
     res.status(200).json({
       result: 'fail',
     });
