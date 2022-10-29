@@ -44,7 +44,7 @@ const Reportlist = () => {
   const [loadingDisapprove, setLoadingDisapprove] = useState(false);
   const [report, setReport] = useState();
 
-  const fetchDutyRequest = useCallback(() => {
+  const fetchReport = useCallback(() => {
     axios
       .post("/api/admin/get-report", {
         division_code: user.user_division_code,
@@ -71,32 +71,49 @@ const Reportlist = () => {
   }, [user]);
 
   useEffect(() => {
-    fetchDutyRequest();
+    fetchReport();
   }, []);
 
-  const approve = () => {
+  const approve = async () => {
     setLoadingApprove(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoadingApprove(false);
-    }, 1000);
-  };
 
-  const disapprove = () => {
-    setLoadingDisapprove(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoadingDisapprove(false);
-    }, 1000);
-  };
-
-  const onSelectChange = (newSelectedRowKeys) => {
-    console.log(
-      `selectedRowKeys changed: (${selectedRowKeys}) => (${newSelectedRowKeys})`
+    await Promise.all(
+      selectedRowKeys.map((pid) =>
+        axios
+          .post("/api/admin/set-report", {
+            pid,
+            status: 2,
+          })
+          .catch((error) => {
+            console.warn(error);
+          })
+      )
     );
-    setSelectedRowKeys(newSelectedRowKeys);
+
+    fetchReport();
+    setSelectedRowKeys([]);
+    setLoadingApprove(false);
+  };
+
+  const disapprove = async () => {
+    setLoadingDisapprove(true);
+
+    await Promise.all(
+      selectedRowKeys.map((pid) =>
+        axios
+          .post("/api/admin/set-report", {
+            pid,
+            status: 0,
+          })
+          .catch((error) => {
+            console.warn(error);
+          })
+      )
+    );
+
+    fetchReport();
+    setSelectedRowKeys([]);
+    setLoadingDisapprove(false);
   };
 
   const hasSelected = selectedRowKeys.length > 0;
@@ -136,7 +153,11 @@ const Reportlist = () => {
             </Space>
           </div>
           <Table
-            rowSelection={{ selectedRowKeys, onChange: onSelectChange }}
+            rowSelection={{
+              selectedRowKeys,
+              onChange: (newSelectedRowKeys) =>
+                setSelectedRowKeys(newSelectedRowKeys),
+            }}
             columns={columns}
             dataSource={report}
             scroll={{ x: 768 }}
