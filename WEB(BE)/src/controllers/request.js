@@ -1,4 +1,7 @@
 const Request = require('../models/request.model');
+const Schedule = require('../models/duty_schedule.model');
+const Timeslot = require('../models/timeslot.model');
+const Duty = require('../models/duty.model');
 const Users = require('../models/users.model');
 
 /*
@@ -111,17 +114,74 @@ exports.user_set_request = async function (req, res) {
 };
 
 // 유저 건의사항 및 근무 요청사항 조회(구현완료)
-exports.user_get_request = async function (req, res) {
-  const { usr_pid } = req.body;
+exports.admin_get_duty_request = async function (req, res) {
+  const { division_code } = req.body;
 
-  const requests = await Request.findAll({ where: { request_usr: usr_pid } });
+  try {
+    const requests = await Request.findAll({
+      where: { request_division_code: division_code, request_type: 1 },
+    });
 
-  console.log('request  내용 : ', requests);
+    const data = await Promise.all(
+      requests.map(
+        async ({
+          request_pid,
+          request_reason,
+          request_usr,
+          request_change_usr,
+          request_status,
+          duty_schedule_pid,
+        }) => {
+          const schedule = await Schedule.findOne({
+            where: { duty_schedule_pid: duty_schedule_pid },
+          });
 
-  res.status(200).json({
-    result: 'success',
-    request: requests,
-  });
+          const timeslot = await Timeslot.findOne({
+            where: { timeslot_pid: schedule.timeslot_pid },
+          });
+
+          const duty = await Duty.findOne({
+            attributes: ['duty_name'],
+            where: { duty_pid: timeslot.duty_pid },
+          });
+
+          const before = await Users.findOne({
+            attributes: ['usr_name', 'usr_class'],
+            where: { usr_pid: request_usr },
+          });
+          const after = await Users.findOne({
+            attributes: ['usr_name', 'usr_class'],
+            where: { usr_pid: request_change_usr },
+          });
+
+          return {
+            pid: request_pid,
+            reason: request_reason,
+            before_class: before.usr_class,
+            before_name: before.usr_name,
+            after_class: after.usr_class,
+            after_name: after.usr_name,
+            duty_name: duty.duty_name,
+            start_time: `${schedule.duty_schedule_date} ${timeslot.timeslot_start}`,
+            end_time: `${schedule.duty_schedule_date} ${timeslot.timeslot_end}`,
+            status: request_status,
+          };
+        },
+      ),
+    );
+
+    console.log(data);
+
+    res.status(200).json({
+      result: 'success',
+      request: data,
+    });
+  } catch (err) {
+    console.warn(err);
+    res.status(200).json({
+      result: 'fail',
+    });
+  }
 };
 
 //같은 부대 유저 정보 받기
