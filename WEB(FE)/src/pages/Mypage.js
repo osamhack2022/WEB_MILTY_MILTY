@@ -24,10 +24,10 @@ const Mypage = () => {
     console.log(values);
     axios
       // 관련 API가 없어서 일단 공란으로 유지
-      .post("/api/", values)
+      .post("/api/set-user-info", { ...values, user_pid: user.user_pid })
       .then((response) => {
-        if (response.status === 200) {
-          alert("성공적으로 수정이 되었습니다.");
+        if (response.status === 200 && response.data.result === "success") {
+          alert("사용자 정보가 성공적으로 수정이 되었습니다.");
         }
       })
       .catch((error) => {
@@ -50,7 +50,8 @@ const Mypage = () => {
             border: "1px solid rgb(235, 237, 240)",
             backgroundColor: "#ECEBE2",
             padding: "1rem",
-          }}>
+          }}
+        >
           <Row justify="space-around">
             <Col span={12}>
               <Form
@@ -58,7 +59,10 @@ const Mypage = () => {
                 labelCol={{ span: 6 }}
                 name="mypage"
                 onFinish={onFinish}
-                initialValues={{ ...user, user_discharge_date: moment(user.user_discharge_date) }}
+                initialValues={{
+                  ...user,
+                  user_discharge_date: moment(user.user_discharge_date),
+                }}
                 scrollToFirstError
               >
                 <Form.Item
@@ -120,7 +124,10 @@ const Mypage = () => {
                     },
                     ({ getFieldValue }) => ({
                       validator(_, value) {
-                        if (!value || getFieldValue("user_password") === value) {
+                        if (
+                          !value ||
+                          getFieldValue("user_password") === value
+                        ) {
                           return Promise.resolve();
                         }
 
@@ -139,7 +146,7 @@ const Mypage = () => {
                   label="생년월일"
                   rules={[
                     {
-                      type: "string",
+                      type: "number",
                       message: "올바른 생년월일을 입력해 주세요",
                     },
                     {
@@ -173,7 +180,7 @@ const Mypage = () => {
                   label="부대코드"
                   rules={[
                     {
-                      type: "string",
+                      type: "number",
                       message: "올바른 부대코드를 입력해 주세요",
                     },
                     {
@@ -213,7 +220,8 @@ const Mypage = () => {
                 <Form.Item
                   wrapperCol={{ xs: { offset: 0 }, sm: { offset: 6 } }}
                   name="checked"
-                  valuePropName="checked">
+                  valuePropName="checked"
+                >
                   <Checkbox disabled>관리자 여부</Checkbox>
                 </Form.Item>
 
@@ -234,8 +242,8 @@ const Mypage = () => {
           </Row>
         </div>
       </Content>
-    </Layout >
+    </Layout>
   );
-}
+};
 
 export default Mypage;
