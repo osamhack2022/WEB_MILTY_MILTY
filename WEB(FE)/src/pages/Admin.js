@@ -7,7 +7,6 @@ import {
   UserOutlined,
   ExportOutlined,
   SwapOutlined,
-  BarChartOutlined,
   CommentOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
@@ -82,14 +81,6 @@ const Admin = () => {
                 label: "근무 변경 요청 목록",
                 onClick: () => {
                   navigate("/admin/request");
-                },
-              },
-              {
-                key: "check-count",
-                icon: <BarChartOutlined />,
-                label: "장병 근무 현황",
-                onClick: () => {
-                  navigate("/admin/check-count");
                 },
               },
               {
