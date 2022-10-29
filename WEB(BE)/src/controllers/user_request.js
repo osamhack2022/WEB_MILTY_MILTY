@@ -76,27 +76,34 @@ exports.user_set_request = async function (req, res) {
         res.json({ result: 'success' });
       })
       .catch(err => {
-        throw err;
+        console.log(err);
+        res.status(200).json({
+          result: 'fail',
+        });
       });
   }
   // 근무변경
   else if (request_type == 1) {
-    request
-      .create({
-        request_type,
-        duty_schedule_pid,
-        request_reason,
-        request_date,
-        request_usr,
-        request_change_usr,
-        request_status: 1,
-        request_division_code: user_division_code['usr_division_code'],
-      })
+    Request.create({
+      request_type,
+      duty_schedule_pid,
+      request_reason,
+      request_date,
+      request_usr,
+      request_change_usr,
+      request_status: 1,
+      request_division_code: user_division_code['usr_division_code'],
+    })
       .then(() => {
-        res.send('근무변경(요청) 완료.');
+        res.status(200).json({
+          result: 'success',
+        });
       })
       .catch(err => {
-        throw err;
+        console.log(err);
+        res.status(200).json({
+          result: 'fail',
+        });
       });
   } else {
     console.log('request_type 값 오류');
