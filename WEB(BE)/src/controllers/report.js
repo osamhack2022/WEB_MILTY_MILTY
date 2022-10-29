@@ -4,7 +4,9 @@ const Users = require('../models/users.model');
 exports.user_get_report = async (req, res) => {
   const { usr_pid } = req.body;
   try {
-    const requests = await Request.findAll({ where: { request_usr: usr_pid } });
+    const requests = await Request.findAll({
+      where: { request_usr: usr_pid, request_type: 0 },
+    });
 
     const data = await Promise.all(
       requests.map(
@@ -33,7 +35,7 @@ exports.admin_get_report = async (req, res) => {
   const { division_code } = req.body;
   try {
     const requests = await Request.findAll({
-      where: { request_division_code: division_code },
+      where: { request_division_code: division_code, request_type: 0 },
     });
 
     const data = await Promise.all(
