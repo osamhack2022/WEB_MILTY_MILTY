@@ -42,11 +42,11 @@ const { set_user_exempt, get_user_exempt } = require('../controllers/exempt');
 *     tags: [User Auth]
 *     summary: 로그인 로직 처리
 *     parameters:
-*       - name: ID
+*       - name: usr_id
 *         in: Post
 *         type: string
 *         description: 사용자 군번
-*       - name: password
+*       - name: usr_password
 *         in: Post
 *         type: string
 *         description: 사용자 비밀번호
@@ -92,42 +92,42 @@ router.get('/logout', function (req, res) {
 *     tags: [User Auth]
 *     summary: 신규 계정 생성
 *     parameters:
-*       - name: name
+*       - name: usr_name
 *         in: Post
 *         type: string
 *         description: 이름
-*       - name: ID
+*       - name: usr_id
 *         in: Post
 *         type: string
 *         description: 군번
-*       - name: password
+*       - name: usr_password
 *         in: Post
 *         type: string
 *         description: 비밀번호
-*       - name: birthday
+*       - name: usr_birthday
 *         in: Post
 *         type: string
 *         format: date
 *         description: 생년월일
-*       - name: division
+*       - name: usr_division
 *         in: Post
 *         type: string
 *         description: 소속부대
-*       - name: division_code
+*       - name: usr_division_code
 *         in: Post
 *         type: integer
 *         description: 부대코드
-*       - name: rank
+*       - name: usr_class
 *         in: Post
 *         type: string
 *         enum: [이병, 일병, 상병, 병장]
 *         description: 계급
-*       - name: discharge_date
+*       - name: usr_discharge_date
 *         in: Post
 *         type: string
 *         format: date
 *         description: 전역일
-*       - name: isAdmin
+*       - name: classification
 *         in: Post
 *         type: boolean
 *         description: 관리자 여부
@@ -148,37 +148,37 @@ router.get('/authtoken', authToken);
 *     tags: [User Auth]
 *     summary: 회원정보 변경
 *     parameters:
-*       - name: name
+*       - name: usr_name
 *         in: Post
 *         type: string
 *         description: 이름
-*       - name: ID
+*       - name: usr_id
 *         in: Post
 *         type: string
 *         description: 군번
-*       - name: password
+*       - name: usr_password
 *         in: Post
 *         type: string
 *         description: 비밀번호
-*       - name: birthday
+*       - name: usr_birthday
 *         in: Post
 *         type: string
 *         format: date
 *         description: 생년월일
-*       - name: division
+*       - name: usr_division
 *         in: Post
 *         type: string
 *         description: 소속부대
-*       - name: division_code
+*       - name: usr_division_code
 *         in: Post
 *         type: integer
 *         description: 부대코드
-*       - name: rank
+*       - name: usr_class
 *         in: Post
 *         type: string
 *         enum: [이병, 일병, 상병, 병장]
 *         description: 계급
-*       - name: discharge_date
+*       - name: usr_discharge_date
 *         in: Post
 *         type: string
 *         format: date
@@ -202,10 +202,18 @@ router.post('/set-user-info', set_user_info);
 *     tags: [Duty]
 *     summary: 근무 생성
 *     parameters:
-*       - name: name
+*       - name: usr_division_code
+*         in: Post
+*         type: integer
+*         description: 부대 코드
+*       - name: duty_name
 *         in: Post
 *         type: string
-*         description: 이름
+*         description: 근무 종류
+*       - name: duty_people_num
+*         in: Post
+*         type: integer
+*         description: 시간대별 근무 투입 인원수
 *     responses:
 *       "200":
 *         description: 근무 생성 성공
@@ -241,39 +249,291 @@ router.post('/set-duty', set_duty, function (req, res) {
   });
 }); // 근무 생성 데이터 받는 곳
 
-// 유저 근무 확인 ( 한달안에 내 근무가 언제있는지)
+// 근무 정보 조회
+/**
+* @swagger
+* /get-duty:
+*   post:
+*     tags: [Duty]
+*     summary: 근무 정보 조회
+*     parameters:
+*       - name: usr_division_code
+*         in: Post
+*         type: integer
+*         description: 부대 코드
+*     responses:
+*       "200":
+*         description: 근무 정보 반환
+*         schema:
+*           type: array
+*           items:
+*             type: object
+*             properties:
+*               duty_pid:
+*                 type: integer
+*                 description: 자동 생성 값
+*                 example: 1
+*               user_division_code:
+*                 type: integer
+*                 description: 부대 코드
+*                 example: 1234
+*               duty_name:
+*                 type: string
+*                 description: 근무 종류
+*                 example: CCTV
+*               duty_people_num:
+*                 type: integer
+*                 description: 시간대별 근무 투입 인원수
+*                 example: 2
+*/
 router.post('/get-duty', get_duty);
 
 // 근무 시간대 생성
+/**
+* @swagger
+* /set-duty-timeslot:
+*   post:
+*     tags: [Duty]
+*     summary: 경작서 틀 생성
+*     parameters:
+*       - name: duty_pid
+*         in: Post
+*         type: integer
+*         description: 근무 코드
+*     responses:
+*       "200":
+*         description: timeslot 생성 완료
+*/
 router.post('/set-duty-timeslot', set_duty_timeslot);
 
 // 근무 시간대 조회
+/**
+* @swagger
+* /get-duty-timeslot:
+*   post:
+*     tags: [Duty]
+*     summary: 경작서 틀 조회
+*     parameters:
+*       - name: duty_pid
+*         in: Post
+*         type: integer
+*         description: 근무 코드
+*     responses:
+*       "200":
+*         description: timeslot 정보 반환
+*         schema:
+*           type: object
+*           properties:
+*             result:
+*               type: string
+*               description: 결과
+*               example: success
+*             duty_name:
+*               type: string
+*               description: 근무 종류
+*               example: CCTV
+*             timeslot:
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   timeslot_pid:
+*                     type: integer
+*                     description: 자동 생성 값
+*                     example: 1
+*                   timeslot_start:
+*                     type: string
+*                     format: date-time
+*                     description: 근무 시작 시간
+*                     example: 2022-10-30 20:00
+*                   timeslot_end:
+*                     type: string
+*                     format: date-time
+*                     description: 근무 종료 시간
+*                     example: 2022-10-30 21:00
+*                   duty_pid:
+*                     type: integer
+*                     description: 근무 pid
+*                     example: 1
+*                   timeslot_point:
+*                     type: integer
+*                     description: 해당 근무의 피로도
+*                     example: 3
+*/
 router.post('/get-duty-timeslot', get_duty_timeslot);
 
 // 해당 날짜의 근무표 생성
+/**
+* @swagger
+* /set-duty-schedule:
+*   post:
+*     tags: [Duty]
+*     summary: 근무표 생성
+*     parameters:
+*       - name: user_division_code
+*         in: Post
+*         type: integer
+*         description: 부대 코드
+*       - name: date
+*         in: Post
+*         type: string
+*         format: date
+*         description: 근무 수행일
+*     responses:
+*       "200":
+*         description: 근무표 생성 완료
+*/
 router.post('/set-duty-schedule', set_duty_schedule);
 
 // 해당 날짜의 근무표 조회
 router.post('/get-duty-schedule', get_duty_schedule);
 
 // 근무 횟수 조회
+/**
+* @swagger
+* /get-check-count:
+*   post:
+*     tags: [Duty]
+*     summary: 근무횟수 조회
+*     parameters:
+*       - name: usr_id
+*         in: Post
+*         type: integer
+*         description: 사용자 군번
+*     responses:
+*       "200":
+*         description: 근무 횟수 정보
+*         schema:
+*           type: object
+*           properties:
+*             result:
+*               type: string
+*               description: 결과
+*               example: success
+*             count:
+*               type: integer
+*               description: 근무 횟수
+*               example: 5
+*/
 router.post('/get-check-count', get_check_count);
 // #### End region ####
 
 // #### get-user-duty-schedule region ####
 // 본인(병사)의 근무 스케줄 조회
+/**
+* @swagger
+* /get-user-duty-schedule:
+*   post:
+*     tags: [Duty]
+*     summary: 본인의 근무 스케쥴 조회
+*     parameters:
+*       - name: usr_pid
+*         in: Post
+*         type: integer
+*         description: 사용자 고유번호
+*       - name: usr_division_code
+*         in: Post
+*         type: integer
+*         description: 소속부대 코드
+*     responses:
+*       "200":
+*         description: 근무 스케쥴 정보
+*         schema:
+*           type: array
+*           items:
+*             type: object
+*             properties:
+*               duty:
+*                 type: string
+*                 description: 근무 스케쥴
+*                 example: {...}
+*/
 router.post('/get-user-duty-schedule', get_user_duty_schedule);
 // #### End region ####
 
 // #### Request region ####
 // 근무변경
+/**
+* @swagger
+* /admin/get-duty-request:
+*   post:
+*     tags: [Admin, Duty Request]
+*     summary: 근무변경 요청 조회
+*     parameters:
+*     responses:
+*       "200":
+*         description: 정보 수신
+*/
 router.post('/admin/get-duty-request', admin_get_duty_request); // 근무변경 정보 받기
+/**
+* @swagger
+* /admin/set-duty-request:
+*   post:
+*     tags: [Admin, Duty Request]
+*     summary: 근무변경 요청 입력
+*     parameters:
+*       - name: param1
+*         in: Post
+*         type: integer
+*         description: 변경 정보
+*     responses:
+*       "200":
+*         description: 입력 성공
+*/
 router.post('/admin/set-duty-request', admin_set_duty_request); // 근무변경 및 건의사항 정보 넣기
+/**
+* @swagger
+* /user/set-duty-request:
+*   post:
+*     tags: [User, Duty Request]
+*     summary: 근무변경 요청 입력
+*     parameters:
+*       - name: param1
+*         in: Post
+*         type: integer
+*         description: 변경 정보
+*     responses:
+*       "200":
+*         description: 입력 성공
+*/
 router.post('/user/set-duty-request', user_set_duty_request); // 근무변경 및 건의사항 정보 넣기
 
 // 건의사항
+/**
+* @swagger
+* /user/get-report:
+*   post:
+*     tags: [User, Report]
+*     summary: 사용자 건의사항 정보 받기
+*     parameters:
+*     responses:
+*       "200":
+*         description: 정보 수신
+*/
 router.post('/user/get-report', user_get_report); // 사용자 건의사항 정보 받기
+/**
+* @swagger
+* /admin/get-report:
+*   post:
+*     tags: [Admin, Report]
+*     summary: 관리자 건의사항 정보 받기
+*     parameters:
+*     responses:
+*       "200":
+*         description: 정보 수신
+*/
 router.post('/admin/get-report', admin_get_report); // 관리자 건의사항 정보 받기
+/**
+* @swagger
+* /admin/set-report:
+*   post:
+*     tags: [Admin, Report]
+*     summary: 관리자 건의사항 처리 상태 설정
+*     parameters:
+*     responses:
+*       "200":
+*         description: 정보 수신
+*/
 router.post('/admin/set-report', admin_set_report); // 관리자 건의사항 처리 상태 설정
 // #### End region ####
 
