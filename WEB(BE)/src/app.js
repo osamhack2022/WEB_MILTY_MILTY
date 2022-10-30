@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const { swaggerUi, specs } = require('./apidocs/swagger');
 
 const app = express();
 const path = require('path');
@@ -53,6 +54,10 @@ app.get('/', function (res, req) {
   req.sendFile(path.join(__dirname, '../../WEB(FE)/build/index.html'));
 });
 app.use('/', require('./routes'));
+// #endregion
+
+// # regions SWAGGER
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // #endregion
 
 // #region SERVER OPERATION

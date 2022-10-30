@@ -35,6 +35,30 @@ const {
 const { set_user_exempt, get_user_exempt } = require('../controllers/exempt');
 
 // #region Auth
+/**
+* @swagger
+* /login:
+*   post:
+*     tags: [User Auth]
+*     summary: 로그인 로직 처리
+*     parameters:
+*       - name: code
+*         in: Post
+*         type: string
+*         description: 사용자 군번
+*       - name: password
+*         in: Post
+*         type: string
+*         description: 사용자 비밀번호
+*     responses:
+*       '200':
+*         description: 로그인 성공
+*         contnet:
+*           application:json
+*       '400':
+*         description: 로그인 정보 오류
+*     
+*/
 router.post(
   '/login',
   passport.authenticate('local', {
@@ -44,6 +68,18 @@ router.post(
 );
 
 // 로그아웃
+/**
+* @swagger
+* /logout:
+*   get:
+*     tags: [User Auth]
+*     summary: 로그아웃 처리
+*     parameters:
+*     responses:
+*       "200":
+*         discription: 로그아웃 성공
+*     
+*/
 router.get('/logout', function (req, res) {
   console.log('LOGOUT TRY');
   req.logout();
