@@ -53,8 +53,6 @@ const { set_user_exempt, get_user_exempt } = require('../controllers/exempt');
 *     responses:
 *       '200':
 *         description: 로그인 성공
-*         contnet:
-*           application:json
 *       '400':
 *         description: 로그인 정보 오류
 *     
@@ -77,7 +75,7 @@ router.post(
 *     parameters:
 *     responses:
 *       "200":
-*         discription: 로그아웃 성공
+*         description: 로그아웃 성공
 *     
 */
 router.get('/logout', function (req, res) {
@@ -135,7 +133,7 @@ router.get('/logout', function (req, res) {
 *         description: 관리자 여부
 *     responses:
 *       "200":
-*         discription: 회원가입 성공
+*         description: 회원가입 성공
 *     
 */
 router.post('/register', register); // register 데이터 받는 곳
@@ -187,7 +185,7 @@ router.get('/authtoken', authToken);
 *         description: 전역일
 *     responses:
 *       "200":
-*         discription: 정보 변경 성공
+*         description: 정보 변경 성공
 *     
 */
 router.post('/set-user-info', set_user_info);
@@ -210,8 +208,26 @@ router.post('/set-user-info', set_user_info);
 *         description: 이름
 *     responses:
 *       "200":
-*         discription: 회원가입 성공
-*     
+*         description: 근무 생성 성공
+*         schema:
+*           type: object
+*           properties:
+*             duty_pid:
+*               type: integer
+*               description: 자동 생성 값
+*               example: 1
+*             user_division_code:
+*               type: integer
+*               description: 부대 코드
+*               example: 1234
+*             duty_name:
+*               type: string
+*               description: 근무 종류
+*               example: CCTV
+*             duty_people_num:
+*               type: integer
+*               description: 시간대별 근무 투입 인원수
+*               example: 2
 */
 router.post('/set-duty', set_duty, function (req, res) {
   res.status(200).json({
