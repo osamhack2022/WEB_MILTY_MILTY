@@ -42,7 +42,7 @@ const { set_user_exempt, get_user_exempt } = require('../controllers/exempt');
 *     tags: [User Auth]
 *     summary: 로그인 로직 처리
 *     parameters:
-*       - name: code
+*       - name: ID
 *         in: Post
 *         type: string
 *         description: 사용자 군번
@@ -87,17 +87,132 @@ router.get('/logout', function (req, res) {
 });
 
 // 회원가입 진행
+/**
+* @swagger
+* /register:
+*   post:
+*     tags: [User Auth]
+*     summary: 신규 계정 생성
+*     parameters:
+*       - name: name
+*         in: Post
+*         type: string
+*         description: 이름
+*       - name: ID
+*         in: Post
+*         type: string
+*         description: 군번
+*       - name: password
+*         in: Post
+*         type: string
+*         description: 비밀번호
+*       - name: birthday
+*         in: Post
+*         type: string
+*         format: date
+*         description: 생년월일
+*       - name: division
+*         in: Post
+*         type: string
+*         description: 소속부대
+*       - name: division_code
+*         in: Post
+*         type: integer
+*         description: 부대코드
+*       - name: rank
+*         in: Post
+*         type: string
+*         enum: [이병, 일병, 상병, 병장]
+*         description: 계급
+*       - name: discharge_date
+*         in: Post
+*         type: string
+*         format: date
+*         description: 전역일
+*       - name: isAdmin
+*         in: Post
+*         type: boolean
+*         description: 관리자 여부
+*     responses:
+*       "200":
+*         discription: 회원가입 성공
+*     
+*/
 router.post('/register', register); // register 데이터 받는 곳
 
 router.get('/authtoken', authToken);
 
 // 사용자 정보 변경
+/**
+* @swagger
+* /set-user-info:
+*   post:
+*     tags: [User Auth]
+*     summary: 회원정보 변경
+*     parameters:
+*       - name: name
+*         in: Post
+*         type: string
+*         description: 이름
+*       - name: ID
+*         in: Post
+*         type: string
+*         description: 군번
+*       - name: password
+*         in: Post
+*         type: string
+*         description: 비밀번호
+*       - name: birthday
+*         in: Post
+*         type: string
+*         format: date
+*         description: 생년월일
+*       - name: division
+*         in: Post
+*         type: string
+*         description: 소속부대
+*       - name: division_code
+*         in: Post
+*         type: integer
+*         description: 부대코드
+*       - name: rank
+*         in: Post
+*         type: string
+*         enum: [이병, 일병, 상병, 병장]
+*         description: 계급
+*       - name: discharge_date
+*         in: Post
+*         type: string
+*         format: date
+*         description: 전역일
+*     responses:
+*       "200":
+*         discription: 정보 변경 성공
+*     
+*/
 router.post('/set-user-info', set_user_info);
 
 // #endregion
 
+
 // #### Duty region ####
 // 근무 생성
+/**
+* @swagger
+* /set-duty:
+*   post:
+*     tags: [Duty]
+*     summary: 근무 생성
+*     parameters:
+*       - name: name
+*         in: Post
+*         type: string
+*         description: 이름
+*     responses:
+*       "200":
+*         discription: 회원가입 성공
+*     
+*/
 router.post('/set-duty', set_duty, function (req, res) {
   res.status(200).json({
     result: 'success',
@@ -139,6 +254,7 @@ router.post('/get-user-duty-schedule', get_user_duty_schedule);
 router.post('/admin/get-duty-request', admin_get_duty_request); // 근무변경 정보 받기
 router.post('/admin/set-duty-request', admin_set_duty_request); // 근무변경 및 건의사항 정보 넣기
 router.post('/user/set-duty-request', user_set_duty_request); // 근무변경 및 건의사항 정보 넣기
+
 // 건의사항
 router.post('/user/get-report', user_get_report); // 사용자 건의사항 정보 받기
 router.post('/admin/get-report', admin_get_report); // 관리자 건의사항 정보 받기
