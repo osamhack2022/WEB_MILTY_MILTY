@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Layout,
   PageHeader,
@@ -6,25 +6,15 @@ import {
   Tag,
   Form,
   Input,
-  Space,
-  Upload,
   Button,
   Typography,
   Divider,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import moment from "moment";
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const { Content } = Layout;
-
-const normFile = (e) => {
-  console.log("Upload event:", e);
-
-  if (Array.isArray(e)) {
-    return e;
-  }
-
-  return e?.fileList;
-};
 
 const columns = [
   {
@@ -45,30 +35,66 @@ const columns = [
   {
     title: "처리 상태",
     key: "status",
-    render: (_, { status }) =>
-      status ? (
-        <Tag color="success">처리 완료</Tag>
-      ) : (
-        <Tag color="warning">처리중</Tag>
-      ),
-  },
-];
-const data = [
-  {
-    key: 1,
-    index: 1,
-    description: "운전병 장거리 배차 전날에는 야간 근무를 넣지 말아주세요.",
-    time: "2022-10-01 00:00",
-    status: false,
+    render: (_, { status }) => {
+      if (status === 1) return <Tag color="warning">처리중</Tag>;
+      if (status === 2) return <Tag color="success">처리 완료</Tag>;
+      return <Tag color="error">처리불가</Tag>;
+    },
   },
 ];
 
 const Report = () => {
+  const { user } = useAuth();
+  const [form] = Form.useForm();
+  const [data, setData] = useState();
+
+  const fetchDutyRequest = useCallback(() => {
+    axios
+      .post("/api/user/get-report", {
+        usr_pid: user.user_pid,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          setData(
+            response.data.request.map(({ pid, description, time, status }) => ({
+              key: pid,
+              index: pid,
+              description,
+              time,
+              status,
+            }))
+          );
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }, [user]);
+
+  useEffect(() => {
+    fetchDutyRequest();
+  }, []);
+
   const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    const { description } = values;
+
+    axios
+      .post("/api/user/set-duty-request", {
+        request_type: 0,
+        request_usr: user.user_pid,
+        request_reason: description,
+        request_date: moment().format("YYYY-MM-DD HH:mm:ss"),
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          alert("건의사항 등록에 성공하였습니다");
+          fetchDutyRequest();
+          form.resetFields();
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
   };
 
   return (
@@ -105,19 +131,15 @@ const Report = () => {
             </Typography.Title>
             <Typography.Paragraph>
               오류가 발생한 부분이나 건의사항이 있을 경우 관리자가 즉각 확인하여
-              조치하여 답변하겠습니다. (사진 첨부하면 정확한 답변이 가능합니다)
+              조치하여 답변하겠습니다.
             </Typography.Paragraph>
           </Typography>
-          <Form
-            name="change-form"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
+          <Form form={form} onFinish={onFinish} autoComplete="off">
             <Form.Item
-              name="change-reason"
+              name="description"
               rules={[
                 {
+                  message: "내용을 작성해주세요",
                   required: true,
                 },
               ]}
@@ -128,27 +150,11 @@ const Report = () => {
               />
             </Form.Item>
 
-            <Space>
-              <Form.Item
-                name="upload"
-                valuePropName="fileList"
-                getValueFromEvent={normFile}
-              >
-                <Upload
-                  name="logo"
-                  accept=".jpg,.jpeg,.png"
-                  action="/upload.do"
-                  listType="text"
-                >
-                  <Button icon={<UploadOutlined />}>사진 첨부</Button>
-                </Upload>
-              </Form.Item>
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  제출하기
-                </Button>
-              </Form.Item>
-            </Space>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                작성하기
+              </Button>
+            </Form.Item>
           </Form>
         </div>
       </Content>

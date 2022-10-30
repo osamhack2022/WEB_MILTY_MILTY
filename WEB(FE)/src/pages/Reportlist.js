@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Layout, Space, PageHeader, Table, Tag, Button } from "antd";
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const { Content } = Layout;
 
@@ -27,66 +29,93 @@ const columns = [
   {
     title: "처리 상태",
     key: "status",
-    render: (_, { status }) =>
-      status ? (
-        <Tag color="success">처리 완료</Tag>
-      ) : (
-        <Tag color="warning">처리중</Tag>
-      ),
-  },
-];
-
-const data = [
-  {
-    key: 1,
-    index: 1,
-    description: "운전병 장거리 배차 전날에는 야간 근무를 넣지 말아주세요.",
-    name: "일병 한동현",
-    time: "2022-10-01 00:00",
-    status: false,
-  },
-  {
-    key: 2,
-    index: 2,
-    description: "사이트에 오류가 많습니다. 해결해주세요.",
-    name: "익명",
-    time: "2022-10-09 12:03",
-    status: true,
-  },
-  {
-    key: 3,
-    index: 3,
-    description: "요즘들어 밥이 너무 맛이 없습니다.",
-    name: "익명",
-    time: "2022-10-09 12:13",
-    status: false,
+    render: (_, { status }) => {
+      if (status === 1) return <Tag color="warning">처리중</Tag>;
+      if (status === 2) return <Tag color="success">처리 완료</Tag>;
+      return <Tag color="error">처리불가</Tag>;
+    },
   },
 ];
 
 const Reportlist = () => {
+  const { user } = useAuth();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loadingApprove, setLoadingApprove] = useState(false);
+  const [loadingDisapprove, setLoadingDisapprove] = useState(false);
+  const [report, setReport] = useState();
 
-  const approve = () => {
+  const fetchReport = useCallback(() => {
+    axios
+      .post("/api/admin/get-report", {
+        division_code: user.user_division_code,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.result === "success") {
+          setReport(
+            response.data.request.map(
+              ({ pid, description, time, user_name, status }) => ({
+                key: pid,
+                index: pid,
+                description,
+                name: user_name,
+                time,
+                status,
+              })
+            )
+          );
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }, [user]);
+
+  useEffect(() => {
+    fetchReport();
+  }, []);
+
+  const approve = async () => {
     setLoadingApprove(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoadingApprove(false);
-    }, 1000);
-  };
 
-  const onSelectChange = (newSelectedRowKeys) => {
-    console.log(
-      `selectedRowKeys changed: (${selectedRowKeys}) => (${newSelectedRowKeys})`
+    await Promise.all(
+      selectedRowKeys.map((pid) =>
+        axios
+          .post("/api/admin/set-report", {
+            pid,
+            status: 2,
+          })
+          .catch((error) => {
+            console.warn(error);
+          })
+      )
     );
-    setSelectedRowKeys(newSelectedRowKeys);
+
+    fetchReport();
+    setSelectedRowKeys([]);
+    setLoadingApprove(false);
   };
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
+  const disapprove = async () => {
+    setLoadingDisapprove(true);
+
+    await Promise.all(
+      selectedRowKeys.map((pid) =>
+        axios
+          .post("/api/admin/set-report", {
+            pid,
+            status: 0,
+          })
+          .catch((error) => {
+            console.warn(error);
+          })
+      )
+    );
+
+    fetchReport();
+    setSelectedRowKeys([]);
+    setLoadingDisapprove(false);
   };
+
   const hasSelected = selectedRowKeys.length > 0;
 
   return (
@@ -94,7 +123,6 @@ const Reportlist = () => {
       <Content style={{ padding: "1rem" }}>
         <PageHeader
           style={{
-            border: "1px solid rgb(235, 237, 240)",
             backgroundColor: "#ECEBE2",
           }}
           onBack={() => null}
@@ -109,7 +137,15 @@ const Reportlist = () => {
                 disabled={!hasSelected}
                 loading={loadingApprove}
               >
-                일괄 처리
+                선택 항목 처리
+              </Button>
+              <Button
+                type="danger"
+                onClick={disapprove}
+                disabled={!hasSelected}
+                loading={loadingDisapprove}
+              >
+                선택 항목 거부
               </Button>
               <span style={{ marginLeft: 8 }}>
                 {hasSelected ? `${selectedRowKeys.length}개 선택됨` : ""}
@@ -117,9 +153,13 @@ const Reportlist = () => {
             </Space>
           </div>
           <Table
-            rowSelection={rowSelection}
+            rowSelection={{
+              selectedRowKeys,
+              onChange: (newSelectedRowKeys) =>
+                setSelectedRowKeys(newSelectedRowKeys),
+            }}
             columns={columns}
-            dataSource={data}
+            dataSource={report}
             scroll={{ x: 768 }}
           />
         </div>

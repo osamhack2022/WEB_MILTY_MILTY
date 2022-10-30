@@ -8,6 +8,9 @@ import Admin from "./pages/Admin";
 import Soldier from "./pages/Soldier";
 import "./App.less";
 
+const ADMIN = 0;
+const USER = 1;
+
 const App = () => {
   const { user } = useAuth();
 
@@ -21,7 +24,7 @@ const App = () => {
       <Route
         path="/admin/*"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute classification={ADMIN}>
             <Admin />
           </ProtectedRoute>
         }
@@ -29,19 +32,18 @@ const App = () => {
       <Route
         path="/soldier/*"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute classification={USER}>
             <Soldier />
           </ProtectedRoute>
         }
       />
       <Route
         index
-        element={
-          user === null ? (
-            <Navigate to="/login" />
-          ) : (
-            <Navigate to="/soldier" replace />
-          )
+        element={ // index에서 user 비교 후 해당된 경로로 이동. !! eslint 문법 어긋난 수정이 필요한 코드
+          // eslint-disable-next-line no-nested-ternary
+          user === null ? <Navigate to="/login" /> :
+            user.classification === ADMIN
+              ? <Navigate to="/admin" replace /> : <Navigate to="/soldier" replace />
         }
       />
     </Routes>

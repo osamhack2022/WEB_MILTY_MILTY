@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const { swaggerUi, specs } = require('./apidocs/swagger');
 
 const app = express();
 const path = require('path');
@@ -12,7 +13,6 @@ const session = require('express-session');
 
 // #region SEQULIZE
 const { sequelize } = require('./config/database');
-
 (async () => {
   await sequelize
     .sync({ alter: true })
@@ -31,7 +31,7 @@ app.use(
   session({
     resave: false,
     saveUninitialized: true,
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'OSAM2022',
   }),
 );
 
@@ -54,6 +54,10 @@ app.get('/', function (res, req) {
   req.sendFile(path.join(__dirname, '../../WEB(FE)/build/index.html'));
 });
 app.use('/', require('./routes'));
+// #endregion
+
+// # regions SWAGGER
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // #endregion
 
 // #region SERVER OPERATION

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
@@ -16,8 +16,11 @@ const Login = () => {
       })
       .then((response) => {
         if (response.status === 200 && response.data.result === "success") {
-          const { user } = response.data;
-
+          const { user, token } = response.data;
+          // 로그인과 동시에 token이 발급되며 header를 통해 토큰 값이 전달됩니다.
+          user.token = token;
+          sessionStorage.setItem('access_token', token);
+          axios.defaults.headers.common.Authorization = token;
           login(user);
         }
       })
@@ -49,9 +52,6 @@ const Login = () => {
           style={{ paddingTop: "1.5rem" }}
           name="normal_login"
           className="login-form"
-          initialValues={{
-            remember: true,
-          }}
           onFinish={onFinish}
         >
           <Form.Item
@@ -83,18 +83,14 @@ const Login = () => {
               placeholder="비밀번호"
             />
           </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>로그인 저장</Checkbox>
-            </Form.Item>
-
-            <a className="login-form-forgot" href="/password-reset">
-              PW 초기화
-            </a>
-          </Form.Item>
 
           <Form.Item>
-            <Button style={{ width: "100%" }} type="primary" htmlType="submit">
+            <Button
+              block
+              style={{ marginTop: "0.5rem" }}
+              type="primary"
+              htmlType="submit"
+            >
               로그인
             </Button>
             <Link to="/register">

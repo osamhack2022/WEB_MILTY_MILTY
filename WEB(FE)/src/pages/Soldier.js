@@ -11,12 +11,12 @@ import {
 } from "@ant-design/icons";
 import { useAuth } from "../hooks/useAuth";
 import Main from "./Main";
-import Dutycalender from "./Dutycalendar";
-import Dutyprecept from "./Dutyprecept";
-import Changecalendar from "./Changecalendar";
-import Dutycount from "./Dutycount";
-import Dutygraph from "./Dutygraph";
+import CheckDuty from "./CheckDuty";
+import CheckDutyPrecept from "./CheckDutyPrecept";
+import ChangeDuty from "./ChangeDuty";
+import CheckCount from "./CheckCount";
 import Report from "./Report";
+import Mypage from "./Mypage";
 
 const { Sider } = Layout;
 
@@ -62,30 +62,10 @@ const Admin = () => {
               {
                 key: "3",
                 icon: <BarChartOutlined />,
-                label: "근무 횟수",
-                children: [
-                  {
-                    key: "4",
-                    label: "근무 횟수",
-                    onClick: () => {
-                      navigate("/soldier/check-count/count");
-                    },
-                  },
-                  {
-                    key: "5",
-                    label: "근무 추이",
-                    onClick: () => {
-                      navigate("/soldier/check-count/graph");
-                    },
-                  },
-                  {
-                    key: "6",
-                    label: "근무 순위",
-                    onClick: () => {
-                      navigate("/soldier/check-count/ranking");
-                    },
-                  },
-                ],
+                label: "근무 통계",
+                onClick: () => {
+                  navigate("/soldier/check-count");
+                },
               },
               {
                 key: "7",
@@ -116,16 +96,12 @@ const Admin = () => {
         </Sider>
         <Routes>
           <Route index element={<Main user={user} />} />
-          <Route path="/check-duty" element={<Dutycalender />} />
-          <Route
-            path="/check-duty/dutyprecept/:date"
-            element={<Dutyprecept />}
-          />
-          <Route path="/change-duty" element={<Changecalendar />} />
-          <Route path="/check-count/count" element={<Dutycount />} />
-          <Route path="/check-count/graph" element={<Dutygraph />} />
-          <Route path="/check-count/ranking" element={<Dutycalender />} />
+          <Route path="/check-duty" element={<CheckDuty />} />
+          <Route path="/check-duty/:date" element={<CheckDutyPrecept />} />
+          <Route path="/change-duty" element={<ChangeDuty />} />
+          <Route path="/check-count" element={<CheckCount />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/mypage" element={<Mypage />} />
         </Routes>
       </Layout>
     </Layout>

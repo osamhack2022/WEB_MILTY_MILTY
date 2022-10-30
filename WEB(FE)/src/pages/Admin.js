@@ -5,9 +5,10 @@ import {
   EditOutlined,
   ControlOutlined,
   UserOutlined,
+  ExportOutlined,
   SwapOutlined,
-  BarChartOutlined,
   CommentOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import WriteDuty from "./WriteDuty";
 import Exemptlist from "./Exemptlist";
@@ -15,11 +16,13 @@ import SetDuty from "./SetDuty";
 import Soldierlist from "./Soldierlist";
 import Request from "./Request";
 import Reportlist from "./Reportlist";
+import { useAuth } from "../hooks/useAuth";
 
 const { Sider } = Layout;
 
 const Admin = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -41,7 +44,7 @@ const Admin = () => {
             mode="inline"
             items={[
               {
-                key: "1",
+                key: "write-duty",
                 icon: <EditOutlined />,
                 label: "근무 작성",
                 onClick: () => {
@@ -49,49 +52,15 @@ const Admin = () => {
                 },
               },
               {
-                key: "2",
+                key: "set-duty",
                 icon: <ControlOutlined />,
-                label: "근무 설정",
-                children: [
-                  {
-                    key: "3",
-                    label: "열외자 목록",
-                    onClick: () => {
-                      navigate("/admin/exemptlist");
-                    },
-                  },
-                  {
-                    key: "4",
-                    label: "장병 일반 근무 설정",
-                    onClick: () => {
-                      navigate("/admin/set-duty");
-                    },
-                  },
-                  {
-                    key: "5",
-                    label: "당직 사령 근무 설정",
-                    onClick: () => {
-                      navigate("/admin/set-duty");
-                    },
-                  },
-                  {
-                    key: "6",
-                    label: "당직 / 상황병 근무 설정",
-                    onClick: () => {
-                      navigate("/admin/set-duty");
-                    },
-                  },
-                  {
-                    key: "7",
-                    label: "기타 특수근무직 근무 설정",
-                    onClick: () => {
-                      navigate("/admin/set-duty");
-                    },
-                  },
-                ],
+                label: "장병 일반 근무 설정",
+                onClick: () => {
+                  navigate("/admin/set-duty");
+                },
               },
               {
-                key: "8",
+                key: "soldierlist",
                 icon: <UserOutlined />,
                 label: "장병 리스트",
                 onClick: () => {
@@ -99,7 +68,15 @@ const Admin = () => {
                 },
               },
               {
-                key: "9",
+                key: "exemptlist",
+                icon: <ExportOutlined />,
+                label: "열외자 목록",
+                onClick: () => {
+                  navigate("/admin/exemptlist");
+                },
+              },
+              {
+                key: "request",
                 icon: <SwapOutlined />,
                 label: "근무 변경 요청 목록",
                 onClick: () => {
@@ -107,26 +84,25 @@ const Admin = () => {
                 },
               },
               {
-                key: "10",
-                icon: <BarChartOutlined />,
-                label: "장병 근무 현황",
-                onClick: () => {
-                  navigate("/admin/check-count");
-                },
-              },
-              {
-                key: "11",
+                key: "reportlist",
                 icon: <CommentOutlined />,
                 label: "건의 사항",
                 onClick: () => {
                   navigate("/admin/reportlist");
                 },
               },
+              {
+                key: "logout",
+                icon: <LogoutOutlined />,
+                label: "로그아웃",
+                onClick: () => {
+                  logout();
+                },
+              },
             ]}
           />
         </Sider>
         <Routes>
-          <Route index element={<WriteDuty />} />
           <Route path="/write-duty" element={<WriteDuty />} />
           <Route path="/exemptlist" element={<Exemptlist />} />
           <Route path="/set-duty" element={<SetDuty />} />

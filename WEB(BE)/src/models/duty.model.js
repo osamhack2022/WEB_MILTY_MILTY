@@ -14,7 +14,7 @@ module.exports = class Duty extends Sequelize.Model {
         usr_division_code: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          unique: true,
+          unique: false,
         },
         duty_name: {
           type: Sequelize.STRING(100),
@@ -22,11 +22,6 @@ module.exports = class Duty extends Sequelize.Model {
           unique: false,
         },
         duty_people_num: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          unique: false,
-        },
-        duty_point: {
           type: Sequelize.INTEGER,
           allowNull: false,
           unique: false,

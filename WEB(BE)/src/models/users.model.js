@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const moment = require('moment');
 
 module.exports = class User extends Sequelize.Model {
   static init(sequelize) {
@@ -27,7 +28,7 @@ module.exports = class User extends Sequelize.Model {
           unique: false,
         },
         usr_birthday: {
-          type: Sequelize.INTEGER(10),
+          type: Sequelize.STRING(10),
           allowNull: false,
           unique: false,
         },
@@ -55,18 +56,23 @@ module.exports = class User extends Sequelize.Model {
           type: Sequelize.DATE,
           allowNull: false,
           unique: false,
+          get() {
+            return moment(this.getDataValue('usr_discharge_date')).format(
+              'YYYY-MM-DD',
+            );
+          },
         },
-        created_at: {
-          type: Sequelize.DATE,
-          allowNull: false,
-          unique: false
+        usr_point: {
+          type: Sequelize.INTEGER,
+          allowNull: true,
+          unique: false,
         },
       },
       {
         sequelize,
-        timestamps: false,
+        timestamps: true,
         underscored: false,
-        tableName: 'Users',
+        tableName: 'users',
         paranoid: false,
         charset: 'utf8mb4',
         collate: 'utf8mb4_general_ci',

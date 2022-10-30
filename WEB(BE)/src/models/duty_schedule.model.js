@@ -11,16 +11,6 @@ module.exports = class Duty_Schedule extends Sequelize.Model {
           autoIncrement: true,
           unique: true,
         },
-        duty_schedule_start: {
-          type: Sequelize.DATE,
-          allowNull: false,
-          unique: true,
-        },
-        duty_schedule_end: {
-          type: Sequelize.DATE,
-          allowNull: false,
-          unique: true,
-        },
         duty_schedule_division_code: {
           type: Sequelize.INTEGER,
           allowNull: false,
@@ -29,12 +19,12 @@ module.exports = class Duty_Schedule extends Sequelize.Model {
         usr_pid: {
           type: Sequelize.STRING(100),
           allowNull: false,
-          unique: false,
+          unique: true,
         },
         timeslot_pid: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          unique: false,
+          unique: true,
         },
         duty_schedule_date: {
           type: Sequelize.DATE,
